@@ -1,0 +1,37 @@
+
+-----setup OS-----
+Raspberry Pi Tutorial 1 - PC Headless Setup 2017 UPDATE
+https://www.youtube.com/watch?v=RlUhDUJfTe8
+
+Raspberry Pi Tutorial 2 - Remote Desktop & VNC on PC 2017 UPDATE
+https://www.youtube.com/watch?annotation_id=annotation_2899476445&feature=iv&src_vid=S6tnNBlqtNI&v=DG366Hh15-k
+
+
+
+enable ssh
+
+
+
+
+------update-------
+sudo apt-get update
+sudo apt-get upgrade
+
+
+------text-to-speech------
+// install
+sudo apt-get install libttspico-utils
+
+// saves the text as a file in the current directory
+
+pico2wave -w lookdave.wav "Look Dave, I can see you're really upset about this." && aplay lookdave.wav
+
+
+
+-----installing bluetooth-----
+// https://github.com/pkozul/ha-tts-bluetooth-speaker
+
+sudo apt-get update
+sudo apt-get sudo-upgrade
+
+sudo apt-get install pi-bluetooth

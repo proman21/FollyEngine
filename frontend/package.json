@@ -1,0 +1,30 @@
+{
+  "private": true,
+  "name": "real-engine",
+  "version": "0.1.0",
+  "description": "Game Engine for Real Life",
+  "main": "dist/bundle.js",
+  "dependencies": {
+    "bootstrap": "^3.3.7",
+    "jquery": "^3.2.1",
+    "vue": "^2.4.2",
+    "vue-router": "^2.7.0",
+    "vuex": "^2.3.1"
+  },
+  "devDependencies": {
+    "css-loader": "^0.28.5",
+    "vue-loader": "^13.0.4",
+    "vue-template-compiler": "^2.4.2",
+    "webpack": "^3.5.5"
+  },
+  "scripts": {
+    "build:js": "webpack",
+    "build": "npm run build:js"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "",
+  "license": ""
+}
