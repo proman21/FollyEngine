@@ -139,7 +139,8 @@ def api_device_by_id(device_id):
         if purpose == None:
             flask.abort(400)
 
-        device.id = id
+        # Note: we don't want to be able to change the device ID
+        # device.id = device_id
         device.model_id = model_id
         device.ip = ip
         device.purpose = purpose
