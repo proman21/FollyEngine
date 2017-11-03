@@ -1,6 +1,6 @@
-# Real Engine
+# Real Engine: A Game Engine for the Real World
 
-This project aims to create a real world game engine.
+[![Build Status](https://travis-ci.org/RealEngine/Real_Engine.svg?branch=master)](https://travis-ci.org/RealEngine/Real_Engine)
 
 ## Project Structure
 
