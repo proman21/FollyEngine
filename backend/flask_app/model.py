@@ -466,7 +466,7 @@ class Event(db.Model):
     deviceID = db.Column(db.Integer, nullable=True)
     tagID = db.Column(db.Integer, nullable=True)
 
-    _tablename__ = 'tb_events'
+    __tablename__ = 'tb_events'
     __table_args__ = (
         db.ForeignKeyConstraint(
             [sceneID],
