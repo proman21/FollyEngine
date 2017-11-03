@@ -130,11 +130,13 @@ class DeviceTest(DatabaseTest):
 
         devices = [
             model.PhysicalDevice(
+                id=1,
                 model_id=headset_model.id,
                 ip="10.0.0.1",
                 purpose="rfid reader",
             ),
             model.PhysicalDevice(
+                id=2,
                 model_id=scanner_model.id,
                 ip="10.0.0.2",
                 purpose="emic text to speech",

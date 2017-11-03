@@ -62,6 +62,8 @@ class DeviceTest(Test):
         """Test that a new device can be added"""
 
         request_data = {
+            'id': 1,
+            'model_id': 1,
             'ip': '10.0.0.1',
             'purpose': 'rfid reader',
         }
@@ -78,6 +80,7 @@ class DeviceTest(Test):
         expected = [
             {
                 'id': 1,
+                'model_id': 1,
                 'ip': '10.0.0.1',
                 'purpose': 'rfid reader',
             },
@@ -106,6 +109,8 @@ class DeviceTest(Test):
 
         # Add a new device
         data = {
+            'id': 1,
+            'model_id': 1,
             'ip': '10.0.0.1',
             'purpose': 'rfid reader',
         }
@@ -116,6 +121,7 @@ class DeviceTest(Test):
         # Now try updating the device
         updated_device = {
             'id': 1,
+            'model_id': 1,
             'ip': '10.0.0.100',
             'purpose': 'rfid reader with new purpose',
         }
@@ -134,6 +140,8 @@ class DeviceTest(Test):
 
         # Add a new device
         data = {
+            'id': 1,
+            'model_id': 1,
             'ip': '10.0.0.1',
             'purpose': 'rfid reader',
         }
@@ -260,17 +268,14 @@ class ActionTest(Test):
     def test_new_action(self):
         """Test that actions can be added"""
 
-        ast_str = """
-        {
-            "t": "CompoundStatement",
-            "statements": [
-            ]
+        ast = {
+            't': 'CompoundStatement',
+            'statements': []
         }
-        """
 
         data = {
             'name': 'Action 1',
-            'ast': ast_str,
+            'ast': json.dumps(ast),
         }
         response = self.test_client.post('/api/actions/', data=json.dumps(data))
         self.assertEqual(response.status_code, 303)
@@ -284,7 +289,7 @@ class ActionTest(Test):
             {
                 'id': 1,
                 'name': 'Action 1',
-                'ast': ast_str,
+                'ast': ast,
             },
         ]
         self.assertEqual(actions, expected)
@@ -398,26 +403,17 @@ class EntityTest(Test):
         expected_entities = [
             {
                 'id': 1,
+                'type': 'virtual_entity',
                 'parent_id': None,
-                'json_schema': """{
-                    "type": "object",
-                    "title": "VE1",
-                    "properties": {}
-                }""",
+                'properties': {},
                 'title': 'VE1',
                 'description': 'virtual entity 1',
+                'instances': [],
+                'children': [],
             },
         ]
-        # self.assertEqual(entities, expected_entities)
-        for i, expected in enumerate(expected_entities):
-            self.assertEqual(entities[i]['id'], expected['id'])
-            self.assertEqual(entities[i]['parent_id'], expected['parent_id'])
-            self.assertEqual(
-                    json.loads(entities[i]['json_schema']),
-                    json.loads(expected['json_schema'])
-            )
-            self.assertEqual(entities[i]['title'], expected['title'])
-            self.assertEqual(entities[i]['description'], expected['description'])
+
+        self.assertEqual(entities, expected_entities)
 
     def test_entity_get_404(self):
         """Test get fails for unknown entity id"""
@@ -448,6 +444,7 @@ class EntityTest(Test):
         updated_entity = {
             'title': 'new title',
             'description': 'new description',
+            'properties': {},
         }
         response = self.test_client.put('/api/entities/1', data=json.dumps(updated_entity));
         self.assertEqual(response.status_code, 201)
