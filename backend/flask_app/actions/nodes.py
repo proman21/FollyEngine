@@ -22,7 +22,7 @@
 Abstract Syntax Tree (AST) for the real world game engine mini language.
 """
 
-from typing import List, Union, NamedTuple
+from typing import List, Union
 import enum
 
 StatementType = Union[
@@ -62,72 +62,117 @@ class Operator(enum.Enum):
     LOGICAL_OR = enum.auto()
     LOGICAL_AND = enum.auto()
 
-class CompoundStatement(NamedTuple):
+class CompoundStatement:
     """Node that represents a sequence of other statements"""
     statements: List[StatementType]
 
-class IfElseStatement(NamedTuple):
+    def __init__(self, statements: List[StatementType]) -> None:
+        self.statements = statements
+
+class IfElseStatement:
     """Node that represents an if-else-statement"""
     condition: ExpressionType
     if_body: StatementType
     else_body: StatementType
 
-class PrintStatement(NamedTuple):
+    def __init__(self, condition: ExpressionType, if_body: StatementType, else_body: StatementType) -> None:
+        self.condition = condition
+        self.if_body = if_body
+        self.else_body = else_body
+
+class PrintStatement:
     """Node that represents a print statement"""
     expression: ExpressionType
 
-class BooleanLiteral(NamedTuple):
+    def __init__(self, expression: ExpressionType) -> None:
+        self.expression = expression
+
+class BooleanLiteral:
     """Leaf node that holds a single boolean value"""
     
     value: bool
 
-class IntegerLiteral(NamedTuple):
+    def __init__(self, value: bool) -> None:
+        self.value = value
+
+class IntegerLiteral:
     """Leaf node that holds a single integer"""
 
     value: int
 
-class StringLiteral(NamedTuple):
+    def __init__(self, value: int) -> None:
+        self.value = value
+
+class StringLiteral:
     """Leaf node that holds a string"""
     
     value: str
 
-class BinaryOp(NamedTuple):
+    def __init__(self, value: str) -> None:
+        self.value = value
+
+class BinaryOp:
     """Node that represents a binary operation"""
 
     left: ExpressionType
     operator: Operator
     right: ExpressionType
 
-class GetAttrExpression(NamedTuple):
+    def __init__(self, left: ExpressionType, operator: Operator, right: ExpressionType) -> None:
+        self.left = left
+        self.operator = operator
+        self.right = right
+
+class GetAttrExpression:
     """Node that represents accessing an attribute from an object"""
 
     obj: str
     name: str
 
-class VariableNameExpression(NamedTuple):
+    def __init__(self, obj: str, name: str) -> None:
+        self.obj = obj
+        self.name = name
+
+class VariableNameExpression:
     """Node that represents reading the value from a variable"""
 
     name: str
 
-class AssignmentStatement(NamedTuple):
+    def __init__(self, name: str) -> None:
+        self.name = name
+
+class AssignmentStatement:
     """Node that represents assigning a value to a variable"""
 
     name: str
     rvalue: ExpressionType
 
+    def __init__(self, name: str, rvalue: ExpressionType) -> None:
+        self.name = name
+        self.rvalue = rvalue
+
 # This is a bit different to a normal assignment, as it affects
 # DB tables and not just local variables
-class SetAttrStatement(NamedTuple):
+class SetAttrStatement:
     """Node that represents setting the attribute of an entity"""
 
     obj: str
     name: str
     rvalue: ExpressionType
 
-class OutputStatement(NamedTuple):
+    def __init__(self, obj: str, name: str, rvalue: ExpressionType) -> None:
+        self.obj = obj
+        self.name = name
+        self.rvalue = rvalue
+
+class OutputStatement:
     """Node that represents sending data to a physical output"""
     # TODO: allow sending other kinds of resources, such as audio or text stored elsewhere, not just text embedded in the action
     # TODO: allow combining text with values (string concatenation or interpolation), so we can send stuff like "The player's name is ${player.name}"
 
     output: str
     resource: ExpressionType
+
+    def __init__(self, name: str, resource: ExpressionType) -> None:
+        self.name = name
+        self.resource = resource
