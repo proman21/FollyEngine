@@ -144,4 +144,3 @@ class Property(object):
 
     def to_schema_dictionary(self):
         return {self._name: self._schema_property.to_schema_dictionary()}
-

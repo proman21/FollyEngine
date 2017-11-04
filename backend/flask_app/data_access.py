@@ -216,10 +216,10 @@ class Database(object):
 
     def get_action_by_id(self, action_id: int):
         return Action.query.get(action_id)
-	
+
     def get_events_by_scene(self, scene_id: int):
         return Event.query.filter(Event.sceneID == scene_id).all()
-    
+
     def get_all_events(self):
         return Event.query.all()
 
@@ -248,9 +248,9 @@ class Database(object):
 
     def get_actions_per_event(self, eventID: int):
         return EventActions.query.filter(EventActions.eventID == eventID).all()
-		
+
     def get_event_action_by_id(self, id: int):
         return EventActions.query.get(id)
 
     def get_all_event_actions(self):
-       return EventActions.query.all()
+        return EventActions.query.all()

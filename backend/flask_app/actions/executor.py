@@ -41,6 +41,7 @@ from .nodes import (
 from .visitor import Visitor
 from .. import data_access
 
+
 class Logger:
     _INDENT_WIDTH = 4
 
@@ -59,10 +60,13 @@ class Logger:
         self.indent -= 1
         return False
 
+
 # Some globals and a decorator to make it easy to
 # print a pretty trace of the program execution
 logger = Logger()
 log = logger.log
+
+
 def logging(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
@@ -70,6 +74,7 @@ def logging(f):
             return f(*args, **kwargs)
 
     return wrapper
+
 
 class Executor(Visitor):
     def __init__(self, db: data_access.Database):
@@ -137,7 +142,6 @@ class Executor(Visitor):
         url = 'http://{}'.format(ip_address)
         print("Sending output to {}: {}".format(url, resource))
         r = requests.post(url, data={'key': resource})
-
 
     @logging
     def visit_statement(self, node: nodes.StatementType):

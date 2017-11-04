@@ -346,7 +346,7 @@ class PhysicalDevice(db.Model):
         {}
     )
 
-    def __init__(self, id: int,  model_id: int, ip: str, purpose: str=None):
+    def __init__(self, id: int, model_id: int, ip: str, purpose: str=None):
         self.id = id
         self.ip = ip
         self.model_id = model_id
@@ -439,7 +439,6 @@ class Action(db.Model):
     name = db.Column(db.String(length=255))
     ast = db.Column(db.Text, nullable=False)
 
-
     wants_entity_id = db.Column(db.Integer, db.ForeignKey(VirtualEntity.id))
     wants_entity = db.relationship(VirtualEntity)
 
@@ -451,10 +450,12 @@ class Action(db.Model):
     # def validate_ast(self, key, ast):
     #     pass # TODO
 
+
 @unique
 class EventTypes(Enum):
     time = "Time"
     scan = "Scan"
+
 
 class Event(db.Model):
 
@@ -473,12 +474,12 @@ class Event(db.Model):
             [Scene.id],
             onupdate="CASCADE", ondelete="CASCADE",
             name='scene_events_trigger'),
-		db.ForeignKeyConstraint(
+        db.ForeignKeyConstraint(
             [deviceID],
             [PhysicalDevice.id],
             onupdate="CASCADE", ondelete="SET NULL",
             name='trigger_scanner'),
-		db.ForeignKeyConstraint(
+        db.ForeignKeyConstraint(
             [tagID],
             [VirtualEntity.id],
             onupdate="CASCADE", ondelete="SET NULL",
@@ -488,6 +489,7 @@ class Event(db.Model):
 
     def __repr__(self):
         return "<(id=%s, model_id=%s, ip=%s, purpose=%s)>" % (self.id, self.sceneID, self.name, self.type)
+
 
 class EventActions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -500,7 +502,7 @@ class EventActions(db.Model):
             [Event.id],
             onupdate="CASCADE", ondelete="CASCADE",
             name='eventAction_event'),
-		db.ForeignKeyConstraint(
+        db.ForeignKeyConstraint(
             [actionID],
             [Action.id],
             onupdate="CASCADE", ondelete="CASCADE",
@@ -550,4 +552,3 @@ def instance_entity_before_update(mapper, connection, target: InstanceEntity):
 def instance_entity_load(target: InstanceEntity, context):
     d = json.loads(target.json_values)
     target.set_properties(d)
-

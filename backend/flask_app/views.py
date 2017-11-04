@@ -52,7 +52,7 @@ def api_devices():
     elif flask.request.method == 'POST':
         new_device = json.loads(flask.request.get_data(as_text=True))
 
-        id= new_device.get('id')
+        id = new_device.get('id')
 
         # model_id = 1 # FIXME
         model_id = new_device.get('model_id')
@@ -233,7 +233,7 @@ def api_scene_by_id(scene_id):
         db.commit()
 
         return '', 201
-    
+
     elif flask.request.method == 'DELETE':
         db = data_access.Database()
         scene = db.get_scene_by_id(scene_id)
@@ -254,7 +254,7 @@ def api_actions():
 
         serialisable_actions = []
         for action in actions:
-            ast = json.loads(action.ast);
+            ast = json.loads(action.ast)
             serialisable_actions.append({
                 'id': action.id,
                 'name': action.name,
@@ -290,7 +290,7 @@ def api_action_by_id(action_id):
         if action is None:
             flask.abort(404)
 
-        ast = json.loads(action.ast);
+        ast = json.loads(action.ast)
         serialisable_action = {
             'id': action.id,
             'name': action.name,
@@ -558,7 +558,8 @@ def execute_action(action, tag_id):
     # FIXME: inserting an extra node here isn't very nice.
     #        We need a better way to pass the input in.
     from .actions import nodes
-    node.statements.insert(0,
+    node.statements.insert(
+        0,
         nodes.AssignmentStatement(
             name="__INPUT__",
             rvalue=nodes.StringLiteral(value=str(instance.id)),
@@ -570,13 +571,13 @@ def execute_action(action, tag_id):
     executor = Executor(db=db)
     executor.visit_statement(node)
 
-	
+
 @app.route('/api/events/<int:scene_id>', methods=['GET'])
 def events_by_scene_id(scene_id):
     if flask.request.method == 'GET':
         db = data_access.Database()
         events = db.get_events_by_scene(scene_id)
-        
+
         serialisable_events = []
         for event in events:
             t = event.type
@@ -595,10 +596,10 @@ def events_by_scene_id(scene_id):
 
 @app.route('/api/events/', methods=['GET'])
 def all_events():
-    if flask.request.method =='GET':
+    if flask.request.method == 'GET':
         db = data_access.Database()
         events = db.get_all_events()
-        
+
         serialisable_events = []
         for event in events:
             t = event.type
@@ -612,10 +613,9 @@ def all_events():
                 'time': event.time,
                 'device_id': event.deviceID,
             })
-			
+
         return flask.jsonify(serialisable_events)
-		
-	
+
 
 @app.route('/api/event/<int:event_id>/', methods=['PUT', 'GET', 'DELETE'])
 def event_by_id(event_id):
@@ -638,7 +638,7 @@ def event_by_id(event_id):
         }
 
         return flask.jsonify(serialisable_event)
-		
+
     elif flask.request.method == 'PUT':
         db = data_access.Database()
         event = db.get_event_by_id(event_id)
@@ -651,7 +651,7 @@ def event_by_id(event_id):
         if event_name == None:
             flask.abort(400)
         event_type = updated_event.get('type')
-        event_time =  updated_event.get('time')
+        event_time = updated_event.get('time')
         event_device = updated_event.get('device_id')
 
         event.name = event_name
@@ -667,7 +667,7 @@ def event_by_id(event_id):
         db.commit()
 
         return '', 201
-	
+
     elif flask.request.method == 'DELETE':
         db = data_access.Database()
         event = db.get_event_by_id(event_id)
@@ -678,9 +678,10 @@ def event_by_id(event_id):
 
         return '', 204
 
+
 @app.route('/api/newEvent/<int:scene_id>/', methods=['GET', 'POST'])
 def newEvent(scene_id):
-    if flask.request.method =='GET':
+    if flask.request.method == 'GET':
         db = data_access.Database()
         events = db.get_all_events()
 
@@ -700,28 +701,29 @@ def newEvent(scene_id):
 
         return flask.jsonify(serialisable_events)
 
-    elif flask.request.method =='POST':
+    elif flask.request.method == 'POST':
         db = data_access.Database()
-        event = model.Event(sceneID = scene_id, name = 'new event')
+        event = model.Event(sceneID=scene_id, name='new event')
         db.add_event(event)
 
         return flask.redirect(flask.url_for('event_by_id', event_id=event.id), code=303)
+
 
 @app.route('/api/eventAction/', methods=['POST', 'GET'])
 def linkAction():
     if flask.request.method == 'POST':
         link = json.loads(flask.request.get_data(as_text=True))
         db = data_access.Database()
-    
+
         action_id = link.get('action_id')
-        print("actionid");
-        print(action_id);
+        print("actionid")
+        print(action_id)
         if action_id == None:
             flask.abort(400)
 
         event_id = link.get('event_id')
-        print("eventid");
-        print(event_id);
+        print("eventid")
+        print(event_id)
         if event_id == None:
             flask.abort(400)
 
@@ -743,7 +745,8 @@ def linkAction():
                 'action_id': eventAction.actionID,
             })
         return flask.jsonify(serialisable_eventActions)
-	
+
+
 @app.route('/api/eventAction/<int:eventAction_id>/', methods=['GET', 'DELETE'])
 def eventAction(eventAction_id):
     if flask.request.method == 'GET':

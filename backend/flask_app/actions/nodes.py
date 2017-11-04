@@ -1,15 +1,15 @@
 # Copyright (c) 2017 Ned Hoy <nedhoy@gmail.com>
-# 
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -47,6 +47,7 @@ NodeType = Union[
     'ExpressionType',
 ]
 
+
 class Operator(enum.Enum):
     """Enumeration of possible binary operations"""
     ADD = enum.auto()
@@ -62,12 +63,14 @@ class Operator(enum.Enum):
     LOGICAL_OR = enum.auto()
     LOGICAL_AND = enum.auto()
 
+
 class CompoundStatement:
     """Node that represents a sequence of other statements"""
     statements: List[StatementType]
 
     def __init__(self, statements: List[StatementType]) -> None:
         self.statements = statements
+
 
 class IfElseStatement:
     """Node that represents an if-else-statement"""
@@ -80,6 +83,7 @@ class IfElseStatement:
         self.if_body = if_body
         self.else_body = else_body
 
+
 class PrintStatement:
     """Node that represents a print statement"""
     expression: ExpressionType
@@ -87,13 +91,15 @@ class PrintStatement:
     def __init__(self, expression: ExpressionType) -> None:
         self.expression = expression
 
+
 class BooleanLiteral:
     """Leaf node that holds a single boolean value"""
-    
+
     value: bool
 
     def __init__(self, value: bool) -> None:
         self.value = value
+
 
 class IntegerLiteral:
     """Leaf node that holds a single integer"""
@@ -103,13 +109,15 @@ class IntegerLiteral:
     def __init__(self, value: int) -> None:
         self.value = value
 
+
 class StringLiteral:
     """Leaf node that holds a string"""
-    
+
     value: str
 
     def __init__(self, value: str) -> None:
         self.value = value
+
 
 class BinaryOp:
     """Node that represents a binary operation"""
@@ -123,6 +131,7 @@ class BinaryOp:
         self.operator = operator
         self.right = right
 
+
 class GetAttrExpression:
     """Node that represents accessing an attribute from an object"""
 
@@ -133,6 +142,7 @@ class GetAttrExpression:
         self.obj = obj
         self.name = name
 
+
 class VariableNameExpression:
     """Node that represents reading the value from a variable"""
 
@@ -140,6 +150,7 @@ class VariableNameExpression:
 
     def __init__(self, name: str) -> None:
         self.name = name
+
 
 class AssignmentStatement:
     """Node that represents assigning a value to a variable"""
@@ -150,6 +161,7 @@ class AssignmentStatement:
     def __init__(self, name: str, rvalue: ExpressionType) -> None:
         self.name = name
         self.rvalue = rvalue
+
 
 # This is a bit different to a normal assignment, as it affects
 # DB tables and not just local variables
@@ -164,6 +176,7 @@ class SetAttrStatement:
         self.obj = obj
         self.name = name
         self.rvalue = rvalue
+
 
 class OutputStatement:
     """Node that represents sending data to a physical output"""
