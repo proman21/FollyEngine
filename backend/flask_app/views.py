@@ -94,7 +94,7 @@ def api_ping_devices():
     if flask.request.method == 'GET':
         print('here we ping')
 
-        r = requests.post('http://192.168.0.101:8080', data={'key': 'This is what I want you to say'})
+        requests.post('http://192.168.0.101:8080', data={'key': 'This is what I want you to say'})
 
         return '', 200
 

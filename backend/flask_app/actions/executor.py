@@ -141,7 +141,7 @@ class Executor(Visitor):
         # FIXME: this should be done async
         url = 'http://{}'.format(ip_address)
         print("Sending output to {}: {}".format(url, resource))
-        r = requests.post(url, data={'key': resource})
+        requests.post(url, data={'key': resource})
 
     @logging
     def visit_statement(self, node: nodes.StatementType):
