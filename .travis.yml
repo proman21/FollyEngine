@@ -5,5 +5,7 @@ before_install:
     - cd backend
 install:
     - pip install .
+    - pip install flake8
 script:
     - python setup.py test
+    - flake8 flask_app
