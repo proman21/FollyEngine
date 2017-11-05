@@ -186,6 +186,6 @@ class OutputStatement:
     output: str
     resource: ExpressionType
 
-    def __init__(self, name: str, resource: ExpressionType) -> None:
-        self.name = name
+    def __init__(self, output: str, resource: ExpressionType) -> None:
+        self.output = output
         self.resource = resource
