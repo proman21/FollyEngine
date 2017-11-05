@@ -91,7 +91,7 @@ class Executor(Visitor):
 
     def visit_if_else_statement(self, node: IfElseStatement):
         condition_value = self.visit_expression(node.condition)
-        if condition_value == True:
+        if condition_value is True:
             log("If Branch")
             self.visit_statement(node.if_body)
         else:

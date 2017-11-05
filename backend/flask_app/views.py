@@ -56,15 +56,15 @@ def api_devices():
 
         # model_id = 1 # FIXME
         model_id = new_device.get('model_id')
-        # if model_id == None:
+        # if model_id is None:
         #     flask.abort(400)
 
         ip = new_device.get('ip')
-        if ip == None:
+        if ip is None:
             flask.abort(400)
 
         purpose = new_device.get('purpose')
-        # if purpose == None:
+        # if purpose is None:
         #     flask.abort(400)
 
         device = model.PhysicalDevice(
@@ -128,15 +128,15 @@ def api_device_by_id(device_id):
 
         #model_id = 1 # FIXME
         model_id = updated_device.get('model_id')
-        # if model_id == None:
+        # if model_id is None:
         #     flask.abort(400)
 
         ip = updated_device.get('ip')
-        if ip == None:
+        if ip is None:
             flask.abort(400)
 
         purpose = updated_device.get('purpose')
-        if purpose == None:
+        if purpose is None:
             flask.abort(400)
 
         # Note: we don't want to be able to change the device ID
@@ -181,11 +181,11 @@ def api_scenes():
         new_scene = json.loads(flask.request.get_data(as_text=True))
 
         scene_name = new_scene.get('name')
-        # if scene_name == None:
+        # if scene_name is None:
         #     flask.abort(400)
 
         scene_description = new_scene.get('description')
-        # if scene_description == None:
+        # if scene_description is None:
         #     flask.abort(400)
 
         scene = model.Scene(name=scene_name, description=scene_description)
@@ -221,11 +221,11 @@ def api_scene_by_id(scene_id):
         updated_scene = json.loads(flask.request.get_data(as_text=True))
 
         scene_name = updated_scene.get('name')
-        # if scene_name == None:
+        # if scene_name is None:
         #     flask.abort(400)
 
         scene_description = updated_scene.get('description')
-        # if scene_description == None:
+        # if scene_description is None:
         #     flask.abort(400)
 
         scene.name = scene_name
@@ -267,11 +267,11 @@ def api_actions():
         new_action = json.loads(flask.request.get_data(as_text=True))
 
         action_name = new_action.get('name')
-        # if action_name == None:
+        # if action_name is None:
         #     flask.abort(400)
 
         action_ast = new_action.get('ast')
-        if action_ast == None:
+        if action_ast is None:
             flask.abort(400)
 
         action = model.Action(name=action_name, ast=action_ast)
@@ -308,11 +308,11 @@ def api_action_by_id(action_id):
         updated_action = json.loads(flask.request.get_data(as_text=True))
 
         action_name = updated_action.get('name')
-        if action_name == None:
+        if action_name is None:
             flask.abort(400)
 
         action_ast = updated_action.get('ast')
-        if action_ast == None:
+        if action_ast is None:
             flask.abort(400)
 
         action.name = action_name
@@ -648,7 +648,7 @@ def event_by_id(event_id):
         updated_event = json.loads(flask.request.get_data(as_text=True))
 
         event_name = updated_event.get('name')
-        if event_name == None:
+        if event_name is None:
             flask.abort(400)
         event_type = updated_event.get('type')
         event_time = updated_event.get('time')
@@ -661,7 +661,7 @@ def event_by_id(event_id):
         elif(event_type == "Scan"):
             event.type = model.EventTypes.scan
         event.time = event_time
-        if (event_device != None):
+        if (event_device is not None):
             event.deviceID = int(event_device)
 
         db.commit()
@@ -718,13 +718,13 @@ def linkAction():
         action_id = link.get('action_id')
         print("actionid")
         print(action_id)
-        if action_id == None:
+        if action_id is None:
             flask.abort(400)
 
         event_id = link.get('event_id')
         print("eventid")
         print(event_id)
-        if event_id == None:
+        if event_id is None:
             flask.abort(400)
 
         eventAction = model.EventActions(eventID=event_id, actionID=action_id)
