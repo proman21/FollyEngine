@@ -35,4 +35,4 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = flask_sqlalchemy.SQLAlchemy(app)
 
 # this has to go *after* the creating the app object
-from . import views
+from . import views # noqa: E402 F401
