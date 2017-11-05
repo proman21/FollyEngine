@@ -110,7 +110,7 @@ def api_device_by_id(device_id):
 
         serialisable_device = {
             'id': device.id,
-            'model_id': device.model_id, #FIXME
+            'model_id': device.model_id,
             'ip': device.ip,
             'purpose': device.purpose,
         }
@@ -126,7 +126,6 @@ def api_device_by_id(device_id):
 
         updated_device = json.loads(flask.request.get_data(as_text=True))
 
-        #model_id = 1 # FIXME
         model_id = updated_device.get('model_id')
         # if model_id is None:
         #     flask.abort(400)
