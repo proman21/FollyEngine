@@ -18,7 +18,20 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from . model import *
+from . import db
+from .model import (
+    Action,
+    DeviceInput,
+    DeviceModel,
+    DeviceOutput,
+    Event,
+    EventActions,
+    InstanceEntity,
+    PhysicalDevice,
+    Scene,
+    VirtualEntity,
+)
+from .schema import Property
 
 
 # Database wrapper.
