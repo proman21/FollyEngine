@@ -25,7 +25,6 @@ Visitors for the Abstract Syntax Tree.
 from abc import ABCMeta, abstractmethod
 from typing import (
     Generic,
-    List,
     TypeVar,
 )
 

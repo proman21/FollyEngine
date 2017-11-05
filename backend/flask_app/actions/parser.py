@@ -22,8 +22,6 @@
 Parse JSON representation of the Abstract Syntax Tree into nodes.
 """
 
-import json
-
 from . import nodes
 from .nodes import (
     CompoundStatement,

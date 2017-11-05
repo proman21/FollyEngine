@@ -19,7 +19,6 @@
 # SOFTWARE.
 
 from functools import wraps
-from typing import List
 
 import requests
 
