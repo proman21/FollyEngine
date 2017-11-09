@@ -176,10 +176,10 @@ export async function newAction(scene) {
 		method: 'POST',
 		body: JSON.stringify({
 			name: null,
-			ast: JSON.stringify({
+			ast: {
 				't': 'CompoundStatement',
 				'statements': [],
-			}),
+			},
 		})
 	});
 

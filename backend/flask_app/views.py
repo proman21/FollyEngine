@@ -273,7 +273,7 @@ def api_actions():
         if action_ast is None:
             flask.abort(400)
 
-        action = model.Action(name=action_name, ast=action_ast)
+        action = model.Action(name=action_name, ast=json.dumps(action_ast))
 
         db = data_access.Database()
         db.add_action(action)

@@ -275,7 +275,7 @@ class ActionTest(Test):
 
         data = {
             'name': 'Action 1',
-            'ast': json.dumps(ast),
+            'ast': ast,
         }
         response = self.test_client.post('/api/actions/', data=json.dumps(data))
         self.assertEqual(response.status_code, 303)
@@ -303,18 +303,15 @@ class ActionTest(Test):
     def test_action_put_404(self):
         """Test put fails for unknown action id"""
 
-        ast_str = """
-        {
-            "t": "CompoundStatement",
-            "statements": [
-            ]
+        ast = {
+            't': 'CompoundStatement',
+            'statements': []
         }
-        """
 
         updated_action = {
             'id': 100,
             'name': 'Action with New Name',
-            'act': ast_str,
+            'act': ast,
         }
         response = self.test_client.put('/api/actions/100', data=json.dumps(updated_action));
         self.assertEqual(response.status_code, 404)
@@ -322,18 +319,15 @@ class ActionTest(Test):
     def test_update_action(self):
         """Test that actions can be updated"""
 
-        ast_str = """
-        {
+        ast = {
             "t": "CompoundStatement",
-            "statements": [
-            ]
+            "statements": []
         }
-        """
 
         # Add a new action
         data = {
             'name': 'Action 1',
-            'ast': ast_str,
+            'ast': ast,
         }
         response = self.test_client.post('/api/actions/', data=json.dumps(data))
         self.assertEqual(response.status_code, 303)
@@ -343,7 +337,7 @@ class ActionTest(Test):
         updated_action = {
             'id': 1,
             'name': 'Action with New Name',
-            'ast': ast_str
+            'ast': ast
         }
         response = self.test_client.put('/api/actions/1', data=json.dumps(updated_action));
         self.assertEqual(response.status_code, 201)
@@ -357,18 +351,15 @@ class ActionTest(Test):
     def test_delete_action(self):
         """Test that actions can be deleted"""
 
-        ast_str = """
-        {
+        ast = {
             "t": "CompoundStatement",
-            "statements": [
-            ]
+            "statements": []
         }
-        """
 
         # Add a new action
         data = {
             'name': 'Action 1',
-            'ast': ast_str
+            'ast': ast
         }
 
         response = self.test_client.post('/api/actions/', data=json.dumps(data))
