@@ -343,5 +343,4 @@ export async function newInstance(entityId) {
 	const get_response = await fetch(response_location.pathname);
 
 	return get_response.json();
-	//return "even greater success!";
 }

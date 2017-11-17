@@ -38,6 +38,18 @@ const entityStore = {
 			Vue.set(state.entities, entity.id, entity);
 		},
 
+		setInstance(state, { instance }) {
+			const entity_id = instance.virtual_entity_id;
+
+			// FIXME: this works but it's a bit ugly because we need to update
+			// a deeply nested object. Normalizing the data would help.
+			const entity = state.entities[entity_id];
+			const newInstances = Object.assign({}, entity.instances, { [instance.id]: instance });
+			const newEntity = Object.assign({}, entity, { instances: newInstances });
+
+			Vue.set(state.entities, entity_id, newEntity);
+		},
+
 		deleteEntity(state, { entity }) {
 			delete state.entities[entity.id];
 		},
@@ -80,7 +92,11 @@ const entityStore = {
 		},
 
 		async newInstance({ commit, dispatch }, { entityId }) {
-			return await api.newInstance(entityId);
+			const instance = await api.newInstance(entityId);
+
+			commit('setInstance', { instance });
+
+			return instance;
 		},
 	},
 

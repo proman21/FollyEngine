@@ -281,9 +281,13 @@ class InstanceEntity(db.Model):
 
         return properties
 
-    # NOTE: Skipping parent info for now.
     def to_dictionary(self):
-        return {"type": "instance_entity", "id": self.id, "tag": self.tag}
+        return {
+            "type": "instance_entity",
+            "id": self.id,
+            "tag": self.tag,
+            "virtual_entity_id": self.virtual_entity_id,
+        }
 
     def update_json_values(self):
         self.json_values = json.dumps(self.properties, indent=4)
