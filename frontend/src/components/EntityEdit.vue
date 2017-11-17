@@ -99,22 +99,13 @@
         <br />
 		<div class="row">
 			<div class="col-md-6">
-                <!-- REFERENCE: https://stackoverflow.com/questions/44741931/access-value-and-key-in-vuejs-from-a-json-string -->
                 <table class="entity_components">
                     <caption>Attributes</caption>
                     <tr>
-                        <th>
-                            <label for="tbx_property_name">Name</label>
-                        </th>
-                        <th>
-                            <label for="ddl_property_class">Class</label>
-                        </th>
-                        <th>
-                            <label for="ddl_property_type">Type</label>
-                        </th>
-                        <th>
-                            &nbsp;
-                        </th>
+                        <th>Name</th>
+                        <th>Class</th>
+                        <th>Type</th>
+                        <th>&nbsp;</th>
                     </tr>
                     <tr v-for="(value, key) in properties">
                         <td>
@@ -132,20 +123,26 @@
                     </tr>
                     <tr>
                         <td>
-          					<input id="tbx_property_name" ref="tbx_property_name" title="Property name" type="text" />
+                            <input title="Property name" type="text" v-model="newProperty.propName">
                         </td>
                         <td>
-                            <select id="ddl_property_class" ref="ddl_property_class" title="Property class" name="property_class" size="1">
-                                <option value="" selected="selected">Select class</option>
+                            <select title="Property class" v-model="newProperty.classVal" v-on:change="changeClass">
+                                <option value="" disabled>Select class</option>
+                                <option v-for="option in classOptions" v-bind:value="option">
+                                    {{ option }}
+                                </option>
                             </select>
                         </td>
                         <td>
-                            <select id="ddl_property_type" ref="ddl_property_type" title="Property type" name="property_type" size="1">
-                                <option value="" selected="selected">Please select class first</option>
+                            <select title="Property type" v-model="newProperty.typeVal" v-bind:disabled="!isClassSelected">
+                                <option value="" disabled>Select type</option>
+                                <option v-for="option in typeOptions" v-bind:value="option">
+                                    {{ option }}
+                                </option>
                             </select>
                         </td>
                         <td>
-                            <button class="hyperlink_button component_button add_component" v-on:click="addProperty()">+</button>
+                            <button class="hyperlink_button component_button add_component" v-on:click="addProperty">+</button>
                         </td>
                     </tr>
                 </table>
@@ -169,35 +166,15 @@
         "String": ["string"]
     };
 
-    // REFERENCE: http://jsfiddle.net/mplungjan/65Q9L/
-    let loadVEPropertyInputs = (ddlClass, ddlType) => {
-        for (let cls in propertyObject) {
-            ddlClass.options[ddlClass.options.length] = new Option(cls, cls);
-        }
-
-        ddlClass.onchange = function () {
-            ddlType.length = 1; // remove all options bar first
-
-            if (this.selectedIndex < 1) return; // done
-
-            propertyObject[this.value].forEach(function (type) {
-                ddlType.options[ddlType.options.length] = new Option(type, type);
-            });
-        };
-
-        ddlClass.onchange(); // reset in case page is reloaded
-    };
-
-    let resetVEPropertyInputs = (tbxName, ddlClass, ddlType) => {
-        $(tbxName).val("");
-        $(ddlClass).prop('selectedIndex', 0);
-        $(ddlType).prop('selectedIndex', 0);
-    };
-
 	export default {
 		props: ['id'],
 
 		data: () => ({
+			newProperty: {
+				propName: "",
+				classVal: "",
+				typeVal: "",
+			},
 		}),
 
 		components: {
@@ -210,11 +187,13 @@
 				this.$router.push({ path: '/entities' });
 			},
 
+			changeClass() {
+				// Reset the type value when the class changes
+				this.newProperty.typeVal = "";
+			},
+
             addProperty() {
-			    // jQuery > JS DOM nav lol.
-			    let propName = $(this.$refs.tbx_property_name).val();
-			    let classVal = $(this.$refs.ddl_property_class).val();
-			    let typeVal = $(this.$refs.ddl_property_type).val();
+				const { propName, classVal, typeVal } = this.newProperty;
 
 			    // Should probably send some sort of feedback :P
 			    if (typeVal === '' || classVal === '' || $.trim(propName) === '') {
@@ -232,7 +211,10 @@
 
 			    this.$store.dispatch('updateEntity', { entity });
 
-                resetVEPropertyInputs(this.$refs.tbx_property_name, this.$refs.ddl_property_class, this.$refs.ddl_property_type);
+				// Reset
+				this.newProperty.propName = "";
+				this.newProperty.classVal = "";
+				this.newProperty.typeVal = "";
             },
 
             removeProperty(key, value){
@@ -248,24 +230,29 @@
             },
 		},
 
-        // NOTE@s344878: Mounted + nextTick guarantees view has been fully rendered.
-        // https://vuejs.org/v2/api/#mounted
-        mounted: function () {
-		    this.$nextTick(function () {
-                loadVEPropertyInputs(this.$refs.ddl_property_class, this.$refs.ddl_property_type);
-            });
-			var heightmain = $('.maincontent').height();
-			$('.lists').height(heightmain);
-        },
-
 		computed: {
 			entity() {
 				return this.$store.getters.entityById(this.$props.id);
 			},
 
-            childCount() {
-			    return this.entity.children.length;
-            },
+			classOptions() {
+				return Object.keys(propertyObject);
+			},
+
+			isClassSelected() {
+				return this.newProperty.classVal !== '';
+			},
+
+			typeOptions() {
+				const { classVal } = this.newProperty;
+
+				const types = propertyObject[classVal];
+				if (types === undefined) {
+					return [];
+				}
+
+				return types;
+			},
 
 			//
 			// This is tedious but recommended, see https://vuex.vuejs.org/en/forms.html.
