@@ -85,14 +85,6 @@
                             <button class="hyperlink_button component_button remove_component" v-on:click="removeInstance()">x</button>
                         </td>
                     </tr>
-                    <!--<tr>-->
-                        <!--<td>-->
-          					<!--<button class="hyperlink_button component_button add_component" v-on:click="addInstance()">+</button>-->
-                        <!--</td>-->
-                        <!--<td colspan="3">-->
-                            <!--&nbsp;-->
-                        <!--</td>-->
-                    <!--</tr>-->
                 </table>
 			</div>
 		</div>
