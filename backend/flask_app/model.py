@@ -287,6 +287,7 @@ class InstanceEntity(db.Model):
             "id": self.id,
             "tag": self.tag,
             "virtual_entity_id": self.virtual_entity_id,
+            "properties": self.get_properties(),
         }
 
     def update_json_values(self):

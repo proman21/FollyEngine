@@ -33,7 +33,7 @@
 						<h4>Current Entities</h4>
 						<ul>
 							<li v-for="entity in entities" v-bind:key="entity.id">
-								<router-link :to="{ name: 'entities', params: { id: entity.id } }" @click.native="disableInstancing">
+								<router-link :to="{ name: 'entities', params: { id: entity.id } }">
 									{{ entity.title }}
 								</router-link>
 								<div>
@@ -52,16 +52,10 @@
 						<br />
 					</div>
 				</div>
-				<div class="col-md-10 inner-section" v-if="!instancing">
+				<div class="col-md-10 inner-section">
 					<router-view>
 						<!-- Child route is rendered here -->
 					</router-view>
-				</div>
-				<div class="col-md-10 inner-section" v-else>
-					<div>
-						<h2>Instance Entity for [INSERT VUE VAR]</h2>
-						<!--<entity-edit :id="id"></entity-edit>-->
-					</div>
 				</div>
 			</div>
 		</div>
@@ -76,7 +70,6 @@
 
 		data: () => ({
 			loading: true,
-			instancing: false
 		}),
 
 		components: {
@@ -94,18 +87,13 @@
 
 			newInstance(entityId) {
 			    console.log("NEW INSTANCE -- PASSED IN VE ID: " + entityId);
-				this.instancing = true;
 
 				this.$store.dispatch('newInstance', { entityId })
 					.then(instance => {
-			        	//this.$router.push({ name: 'events', params: {id: sceneId, eventId: evt.id}})
+			        	this.$router.push({ name: 'instance', params: { id: instance.id } });
 					    console.log(instance);
 					})
 					.catch(console.log)
-			},
-
-			disableInstancing: function() {
-			    this.instancing = false;
 			},
 		},
 
@@ -121,6 +109,7 @@
 
 		async created() {
 			await this.$store.dispatch('fetchEntities');
+			await this.$store.dispatch('fetchInstances');
 			this.loading = false;
 		}
 	}

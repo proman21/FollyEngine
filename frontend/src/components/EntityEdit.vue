@@ -71,18 +71,20 @@
 							&nbsp;
 						</th>
 					</tr>
-					<tr v-for="(value, key) in instances">
+					<tr v-for="instance in instances" v-bind:key="instance.id">
 						<td>
-							{{ value.id }}
+							{{ instance.id }}
 						</td>
 						<td>
-							tag: {{ value.tag}}
+							tag: {{ instance.tag}}
 						</td>
 						<td>
-							<button class="hyperlink_button component_button edit_component" v-on:click="editInstance()">e</button>
+							<router-link :to="{ name: 'instance', params: { id: instance.id } }" tag="button" class="hyperlink_button edit_component">
+								edit
+							</router-link>
 						</td>
 						<td>
-							<button class="hyperlink_button component_button remove_component" v-on:click="removeInstance()">x</button>
+							<button class="hyperlink_button remove_component" v-on:click="removeInstance()">x</button>
 						</td>
 					</tr>
 				</table>
@@ -110,7 +112,7 @@
 							{{ value.type }}
 						</td>
 						<td>
-							<button class="hyperlink_button component_button remove_component" v-on:click="removeProperty(key, value)">x</button>
+							<button class="hyperlink_button remove_component" v-on:click="removeProperty(key, value)">x</button>
 						</td>
 					</tr>
 					<tr>
@@ -134,7 +136,7 @@
 							</select>
 						</td>
 						<td>
-							<button class="hyperlink_button component_button add_component" v-on:click="addProperty">+</button>
+							<button class="hyperlink_button add_component" v-on:click="addProperty">+</button>
 						</td>
 					</tr>
 				</table>
@@ -333,10 +335,6 @@
 
 	.entity_components tr:last-child td {
 		text-align: left;
-	}
-
-	.component_button {
-
 	}
 
 	.remove_component {

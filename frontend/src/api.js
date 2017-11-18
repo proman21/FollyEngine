@@ -326,6 +326,12 @@ export async function deleteEntity(entity) {
 	return fetch(request);
 }
 
+export async function getInstances() {
+	const url = `${URL_BASE}/instances/`;
+
+	return fetchJson(url);
+}
+
 export async function newInstance(entityId) {
     const url = `${URL_BASE}/instances/`;
 

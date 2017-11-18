@@ -34,6 +34,7 @@ import Devices from './components/Devices.vue';
 import DeviceEdit from './components/DeviceEdit.vue';
 import Entities from './components/Entities.vue';
 import EntityEdit from './components/EntityEdit.vue';
+import InstanceEdit from './components/InstanceEdit.vue';
 import SceneEdit from './components/SceneEdit.vue';
 import EventEdit from './components/EventEdit.vue';
 
@@ -97,6 +98,14 @@ const routes = [
 				path: '/entities/:id',
 				name: 'entities',
 				component: EntityEdit,
+				props: (route) => ({
+					id: parseInt(route.params.id),
+				}),
+			},
+			{
+				path: '/instances/:id',
+				name: 'instance',
+				component: InstanceEdit,
 				props: (route) => ({
 					id: parseInt(route.params.id),
 				}),

@@ -433,9 +433,19 @@ def api_entity_by_id(entity_id):
         return '', 204
 
 
-@app.route('/api/instances/', methods=['POST'])
+@app.route('/api/instances/', methods=['GET', 'POST'])
 def api_instances():
-    if flask.request.method == 'POST':
+    if flask.request.method == 'GET':
+        db = data_access.Database()
+        instances = db.get_all_instances()
+
+        serialisable_instances = []
+        for instance in instances:
+            serialisable_instances.append(instance.to_dictionary())
+
+        return flask.jsonify(serialisable_instances)
+
+    elif flask.request.method == 'POST':
         new_instance = json.loads(flask.request.get_data(as_text=True))
 
         virtual_entity_id = new_instance.get('virtual_entity_id')

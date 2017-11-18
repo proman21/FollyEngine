@@ -27,6 +27,7 @@ import * as api from '../api.js';
 const entityStore = {
 	state: {
 		entities: {},
+		instances: {},
 	},
 
 	mutations: {
@@ -38,6 +39,10 @@ const entityStore = {
 			Vue.set(state.entities, entity.id, entity);
 		},
 
+		updateInstances(state, { instances }) {
+			state.instances = instances;
+		},
+
 		setInstance(state, { instance }) {
 			const entity_id = instance.virtual_entity_id;
 
@@ -47,7 +52,11 @@ const entityStore = {
 			const newInstances = Object.assign({}, entity.instances, { [instance.id]: instance });
 			const newEntity = Object.assign({}, entity, { instances: newInstances });
 
+			// Update parent entity's instance record
 			Vue.set(state.entities, entity_id, newEntity);
+
+			// Update instances
+			Vue.set(state.instances, instance.id, instance);
 		},
 
 		deleteEntity(state, { entity }) {
@@ -65,6 +74,17 @@ const entityStore = {
 			}
 
 			commit('updateEntities', { entities: normalized_entities });
+		},
+
+		async fetchInstances({ commit }) {
+			const instances = await api.getInstances();
+
+			const normalized_instances = {};
+			for (let instance of instances) {
+				normalized_instances[instance.id] = instance;
+			}
+
+			commit('updateInstances', { instances: normalized_instances });
 		},
 
 		// NOTE: Out of curiosity, why not asynchronous?
@@ -103,6 +123,10 @@ const entityStore = {
 	getters: {
 		entityById: state => id => {
 			return state.entities[id];
+		},
+
+		instanceById: state => id => {
+			return state.instances[id];
 		},
 	}
 };
