@@ -53,13 +53,9 @@
 					</div>
 				</div>
 				<div class="col-md-10 inner-section" v-if="!instancing">
-					<div v-if="id !== undefined">
-						<h2>Virtual Entity</h2>
-						<entity-edit :id="id"></entity-edit>
-					</div>
-					<div v-else>
-						<h4> No entity selected</h4>
-					</div>
+					<router-view>
+						<!-- Child route is rendered here -->
+					</router-view>
 				</div>
 				<div class="col-md-10 inner-section" v-else>
 					<div>

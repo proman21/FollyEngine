@@ -22,7 +22,7 @@
 
 <template>
 	<div>
-		<br>
+		<h2>Virtual Entity</h2>
 		<div class="row infopanel">
 			<div class="col-md-6">
 				<label for="tbx_id">Id</label>

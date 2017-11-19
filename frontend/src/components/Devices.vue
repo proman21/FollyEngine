@@ -43,13 +43,9 @@
 					</div>
 				</div>
 				<div class="col-md-10 inner-section">
-					<div v-if="id !== undefined">
-						<h2>Edit {{ device.type }}</h2>
-						<device-edit :id="id"></device-edit>
-					</div>
-					<div v-else>
-						<h4>No device selected</h4>
-					</div>
+					<router-view>
+						<!-- Child route is rendered here -->
+					</router-view>
 				</div>
 			</div>
 		</div>

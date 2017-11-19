@@ -31,9 +31,10 @@ import App from './components/App.vue';
 import Actions from './components/Actions.vue';
 import Scenes from './components/Scenes.vue';
 import Devices from './components/Devices.vue';
+import DeviceEdit from './components/DeviceEdit.vue';
 import Entities from './components/Entities.vue';
+import EntityEdit from './components/EntityEdit.vue';
 import SceneEdit from './components/SceneEdit.vue';
-import Events from './components/EventEdit.vue';
 
 const routes = [
 	{ path: '/', redirect: '/scenes' }, // default route
@@ -46,43 +47,59 @@ const routes = [
 			id: parseInt(route.params.id),
 		}),
 	},
-	{ path: '/scenes', component: Scenes },
 	{
-		path: '/scenes/:id',
-		name: 'scenes',
+		path: '/scenes',
 		component: Scenes,
-		props: (route) => ({
-			id: parseInt(route.params.id),
-		}),
-		
 		children: [
-		{
-			path: '/scenes/:id/event/:eventId',
-			name: 'events',
-			component: Scenes,
-			props: (route) => ({
-				eventId: parseInt(route.params.eventId),
-			}),
-		}
+			{
+				path: '/scenes/:id',
+				name: 'scenes',
+				component: SceneEdit,
+				props: (route) => ({
+					id: parseInt(route.params.id),
+				}),
+			},
+			{
+				path: '/scenes/:id/event/:eventId',
+				name: 'events',
+				component: SceneEdit,
+				props: (route) => ({
+					id: parseInt(route.params.id),
+					eventId: parseInt(route.params.eventId),
+				}),
+			},
 		],
 	},
-	{ path: '/devices', component: Devices },
 	{
-		path: '/devices/:id',
-		name: 'devices',
+		path: '/devices',
 		component: Devices,
-		props: (route) => ({
-			id: parseInt(route.params.id),
-		}),
+		children: [
+			{
+				path: '/devices/:id',
+				name: 'devices',
+				component: DeviceEdit,
+				props: (route) => ({
+					id: parseInt(route.params.id),
+				}),
+			},
+		],
 	},
-	{ path: '/entities', component: Entities },
 	{
-		path: '/entities/:id',
-		name: 'entities',
+		path: '/entities',
 		component: Entities,
 		props: (route) => ({
 			id: parseInt(route.params.id),
 		}),
+		children: [
+			{
+				path: '/entities/:id',
+				name: 'entities',
+				component: EntityEdit,
+				props: (route) => ({
+					id: parseInt(route.params.id),
+				}),
+			},
+		],
 	},
 ];
 

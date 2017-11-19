@@ -22,7 +22,7 @@
 
 <template>
 <div>
-	<br>
+	<h2>Edit Device {{ device.id }}</h2>
 	<div class="row infopanel">
             <div class="col-md-6">
 					<label for="id">Id</label>

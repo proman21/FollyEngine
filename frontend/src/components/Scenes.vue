@@ -44,13 +44,9 @@
 				</div>
 				<div class="col-md-10 inner-section">
 					<div class="innercontent">
-						<div v-if="id !== undefined">
-							<h2>Edit {{ scene.name }}</h2>
-							<scene-edit :id="id" :eventId="$route.params.eventId"></scene-edit>
-						</div>
-						<div v-else>
-							<h4> No scene selected</h4>
-						</div>
+						<router-view>
+							<!-- Child route is rendered here -->
+						</router-view>
 					</div>
 				</div>
 			</div>

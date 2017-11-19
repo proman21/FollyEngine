@@ -23,6 +23,7 @@
 <template>
 <!-- Whole template has to be wrapped in a div -->
 <div>
+	<h2>Edit {{ scene.name }}</h2>
 	<div class="row">
 	<div class="col-md-6">
         <div class="row infopanel">
