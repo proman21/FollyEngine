@@ -22,85 +22,91 @@
 
 
 <template>
-<!-- Whole template has to be wrapped in a div -->
-<div>
-	<div class="row infopanel">
-		<div class="col-md-6">
-			<label for="id">Id</label>
-			<div class="textbox">
-				<input name="id" type="text" v-bind:value="evt.id" disabled>
+	<div>
+		<div v-if="loading">
+			Loading...
+		</div>
+
+		<div v-else>
+			<h3>Event Editor for {{ evt.name }}</h3>
+			<div class="row infopanel">
+				<div class="col-md-6">
+					<label for="id">Id</label>
+					<div class="textbox">
+						<input name="id" type="text" v-bind:value="evt.id" disabled>
+					</div>
+				</div>
+			</div>
+			<div class="row infopanel">
+				<div class="col-md-6">
+					<label for="name">Name</label>
+					<div class="textbox">
+						<input name="name" type="text" v-model="name">
+					</div>
+				</div>
+			</div>
+
+			<div class="row infopanel">
+				<div class="col-md-6">
+
+					<label for="AvailableActions">Type of Event</label>
+					<div class="textbox">
+						<select name="availableActions" id="actiondrop1" v-model="type">
+							<option value="Time">Time</option>
+							<option value="Scan">Scanner</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<div class="row infopanel">
+				<div class="col-md-6">
+					<div v-if="evt.type == 'Time'">
+						<label for="time">Time</label>
+						<input name="time" type="datetime-local" v-model="time"> <br>
+					</div>
+					<div v-if="evt.type == 'Scan'">
+						<label for="device_id">Device ID</label>
+						<select name="device_id" v-model="device_id">
+							<option v-for="device in devices" v-bind:value="device.id">
+							{{device.id}}: {{device.purpose}} ({{device.ip}})
+							</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+
+
+
+
+			<div class="row infopanel">
+				<div class="col-md-6">
+					<h2>Nonlinked Actions</h2>
+					click to link
+					<ul>
+						<li v-for="action in nonlinkedActions" v-bind:key="action.id" v-on:click="linkAction(action)">
+							{{ action.name }}
+						</li>
+					</ul>
+				</div>
+				<div class="col-md-6">
+					<h2>Linked Actions</h2>
+					click to unlink
+					<ul>
+						<li v-for="action in linkedActions" v-bind:key="action.id" v-on:click="unlinkAction(action)">
+							{{ action.name }}
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="row infopanel">
+				<div class="col-md-1">
+					<button class="btn btn-primary" v-on:click="deleteEvent()">Delete Event</button>
+				</div>
 			</div>
 		</div>
 	</div>
-	<div class="row infopanel">
-		<div class="col-md-6">
-			<label for="name">Name</label>
-			<div class="textbox">
-				<input name="name" type="text" v-model="name">
-			</div>
-		</div>
-	</div>
-		
-	<div class="row infopanel">
-		<div class="col-md-6">
-			
-			<label for="AvailableActions">Type of Event</label>
-			<div class="textbox">
-				<select name="availableActions" id="actiondrop1" v-model="type">
-					<option value="Time">Time</option>
-					<option value="Scan">Scanner</option>
-				</select>
-			</div>
-		</div>
-	</div>
-	
-	<div class="row infopanel">
-		<div class="col-md-6">
-			<div v-if="evt.type == 'Time'">
-				<label for="time">Time</label>
-				<input name="time" type="datetime-local" v-model="time"> <br>
-			</div>
-			<div v-if="evt.type == 'Scan'">
-				<label for="device_id">Device ID</label>
-				<select name="device_id" v-model="device_id">
-					<option v-for="device in devices" v-bind:value="device.id">
-						{{device.id}}: {{device.purpose}} ({{device.ip}})
-					</option>
-				</select>
-			</div>
-		</div>
-	</div>
-		
-		
-		
-	
-	
-	<div class="row infopanel">
-		<div class="col-md-6">
-			<h2>Nonlinked Actions</h2>
-			click to link
-			<ul>
-				<li v-for="action in nonlinkedActions" v-bind:key="action.id" v-on:click="linkAction(action)">
-					{{ action.name }}
-				</li>
-			</ul>
-		</div>
-		<div class="col-md-6">
-			<h2>Linked Actions</h2>
-			click to unlink
-			<ul>
-				<li v-for="action in linkedActions" v-bind:key="action.id" v-on:click="unlinkAction(action)">
-					{{ action.name }}
-				</li>
-			</ul>
-		</div>
-	</div>
-	<div class="row infopanel">
-		<div class="col-md-1">
-			<button class="btn btn-primary" v-on:click="deleteEvent()">Delete Event</button>
-		</div>
-	</div>
-</div>
 </template>
 
 <script>
@@ -109,6 +115,7 @@
 		props: ['id', 'eventId', 'actionId'],
 
 		data: () => ({
+			loading: true,
 		}),
 
 		components: {
@@ -255,9 +262,10 @@
 		},
 
 		async created() {
-		    this.$store.dispatch('fetchEventActions');
-			this.$store.dispatch('fetchActions');
-			this.$store.dispatch('fetchDevices');
+		    await this.$store.dispatch('fetchEventActions');
+			await this.$store.dispatch('fetchActions');
+			await this.$store.dispatch('fetchDevices');
+			this.loading = false;
 		},
 	}
 </script>
