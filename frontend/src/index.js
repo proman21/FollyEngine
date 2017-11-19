@@ -35,6 +35,7 @@ import DeviceEdit from './components/DeviceEdit.vue';
 import Entities from './components/Entities.vue';
 import EntityEdit from './components/EntityEdit.vue';
 import SceneEdit from './components/SceneEdit.vue';
+import EventEdit from './components/EventEdit.vue';
 
 const routes = [
 	{ path: '/', redirect: '/scenes' }, // default route
@@ -58,15 +59,16 @@ const routes = [
 				props: (route) => ({
 					id: parseInt(route.params.id),
 				}),
-			},
-			{
-				path: '/scenes/:id/event/:eventId',
-				name: 'events',
-				component: SceneEdit,
-				props: (route) => ({
-					id: parseInt(route.params.id),
-					eventId: parseInt(route.params.eventId),
-				}),
+				children: [
+					{
+						path: '/scenes/:id/event/:eventId',
+						name: 'events',
+						component: EventEdit,
+						props: (route) => ({
+							eventId: parseInt(route.params.eventId),
+						}),
+					},
+				],
 			},
 		],
 	},

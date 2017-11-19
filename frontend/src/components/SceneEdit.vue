@@ -79,13 +79,9 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class = "innercontent">
-				<div v-if="eventId !== undefined">
-					<h3>Event Editor for {{ evt.name }}</h3>
-					<event-edit :eventId="eventId"></event-edit>
-				</div>
-				<div v-else>
-					No event selected :(
-				</div>
+				<router-view>
+					<!-- Child route is rendered here -->
+				</router-view>
 			</div>
 		</div>
 	</div>
