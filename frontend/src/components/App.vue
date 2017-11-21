@@ -23,13 +23,6 @@
 <template>
       <div class="site-wrapper">
          <div class="site-wrapper-inner">
-            <div class = "cover-container">
-               <div class="inner">
-                  <a href="index.html">
-                  <img src="img/realengine.png" alt="Real Engine" style="width:670px;height:80px;">
-                  </a>
-               </div>
-            </div>
             <div class="topnav">
                <ul class = "main-menu">
 					<li><router-link to="/scenes">Scenes</router-link></li>

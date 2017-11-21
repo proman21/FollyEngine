@@ -82,11 +82,6 @@ body {
   display: table-cell;
   vertical-align: top;
 }
-.cover-container {
-  margin-right: auto;
-  margin-left: auto;
-}
-
 
 .inner {
   padding: 30px;
@@ -519,15 +514,9 @@ div.infopanel{
 
   .masthead,
   .mastfoot,
-  .cover-container {
-    width: 100%; /
-  }
 }
 
 @media (min-width: 992px) {
   .masthead,
   .mastfoot,
-  .cover-container {
-    width: 700px;
-  }
 }
