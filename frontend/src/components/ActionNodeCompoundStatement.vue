@@ -22,7 +22,7 @@
 
 <template>
 	<div>
-		<div v-for="{index, statement} in statements">
+		<div v-for="(statement, index) in statement.statements">
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<div class="dropdown">
@@ -186,12 +186,6 @@
 
 				const statement = Object.assign({}, this.$props.statement, { statements });
 				this.$emit('change', statement);
-			},
-		},
-
-		computed: {
-			statements: function() {
-				return this.$props.statement.statements.map((statement, index) => ({ statement, index }));
 			},
 		},
 	}
