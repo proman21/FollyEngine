@@ -31,7 +31,7 @@
 							<span class="caret"></span>
 						</button>
 						<ul class="dropdown-menu">
-							<li><a href="#" v-on:click.prevent="remove(index)">Delete Statement</a></li>
+							<li><a class="dropdown-item" href="#" v-on:click.prevent="remove(index)">Delete Statement</a></li>
 						</ul>
 					</div>
 				</div>
