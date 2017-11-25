@@ -175,11 +175,6 @@
 			
 		},
 		
-		mounted: function() {
-			var heightmain = $('.maincontent').height();
-			$('.lists').height(heightmain);
-		},
-		
 		async created() {
 			await this.$store.dispatch('fetchEvents');
 			this.loading = false;

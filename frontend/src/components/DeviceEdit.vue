@@ -113,11 +113,6 @@
 				},
 			},
 		},
-		
-		mounted: function() {
-			var heightmain = $('.maincontent').height();
-			$('.lists').height(heightmain);
-		},
 	}
 </script>
 
