@@ -302,21 +302,6 @@
 </script>
 
 <style scoped>
-	#entity-edit-wrapper {
-		display: grid;
-		grid-template-columns: 10em 1fr;
-	}
-
-	label {
-		grid-column-start: 1;
-		grid-column-end: 2;
-	}
-
-	input {
-		grid-column-start: 2;
-		grid-column-end: 3;
-	}
-
 	.entity_components td, .entity_components th {
 		padding: 5px 5px 5px 5px;
 	}

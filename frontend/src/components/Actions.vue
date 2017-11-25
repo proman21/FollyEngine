@@ -143,8 +143,4 @@
 </script>
 
 <style>
-	#action-view-wrapper {
-		display: grid;
-		grid-template-columns: 1fr 3fr;
-	}
 </style>
