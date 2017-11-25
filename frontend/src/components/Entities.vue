@@ -40,12 +40,6 @@
 									<button class="btn btn-xs">Add child</button>
 									<button class="btn btn-xs" v-if="entity.children.length == 0" v-on:click="newInstance(entity.id)">Add instance</button>
 								</div>
-								<!--Tree View-->
-								<!--<ul>-->
-									<!--<li v-for="child in entity.children">-->
-										<!--{{ child.title }}-->
-									<!--</li>-->
-								<!--</ul>-->
 							</li>
 						</ul>
 						<button class="btn btn-primary" v-on:click="newEntity">New Entity</button>
