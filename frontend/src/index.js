@@ -24,6 +24,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 import 'bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import store from './store.js';
 
