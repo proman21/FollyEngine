@@ -79,12 +79,12 @@
 							tag: {{ instance.tag}}
 						</td>
 						<td>
-							<router-link :to="{ name: 'instance', params: { id: instance.id } }" tag="button" class="hyperlink_button edit_component">
+							<router-link :to="{ name: 'instance', params: { id: instance.id } }" class="btn btn-default">
 								edit
 							</router-link>
 						</td>
 						<td>
-							<button class="hyperlink_button remove_component" v-on:click="removeInstance()">x</button>
+							<button class="btn btn-danger btn-sm" v-on:click="removeInstance()">x</button>
 						</td>
 					</tr>
 				</table>
@@ -112,7 +112,7 @@
 							{{ value.type }}
 						</td>
 						<td>
-							<button class="hyperlink_button remove_component" v-on:click="removeProperty(key, value)">x</button>
+							<button class="btn btn-danger btn-sm" v-on:click="removeProperty(key, value)">x</button>
 						</td>
 					</tr>
 					<tr>
@@ -136,7 +136,7 @@
 							</select>
 						</td>
 						<td>
-							<button class="hyperlink_button add_component" v-on:click="addProperty">+</button>
+							<button class="btn btn-primary" v-on:click="addProperty">Add Attribute</button>
 						</td>
 					</tr>
 				</table>
@@ -317,35 +317,11 @@
 		grid-column-end: 3;
 	}
 
-	/* REFERENCE: https://stackoverflow.com/questions/1367409/how-to-make-button-look-like-a-link */
-	.hyperlink_button {
-		background: none!important;
-		color: inherit;
-		border: none;
-		padding: 0!important;
-		font: inherit;
-		cursor: pointer;
-		font-size: 150%;
-		font-weight: bold;
-	}
-
 	.entity_components td, .entity_components th {
 		padding: 5px 5px 5px 5px;
 	}
 
 	.entity_components tr:last-child td {
 		text-align: left;
-	}
-
-	.remove_component {
-		color: red;
-	}
-
-	.add_component {
-		color: green;
-	}
-
-	.edit_component {
-		color: blue;
 	}
 </style>
