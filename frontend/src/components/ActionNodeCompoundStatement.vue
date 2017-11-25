@@ -23,8 +23,8 @@
 <template>
 	<div>
 		<div v-for="(statement, index) in statement.statements">
-			<div class="panel panel-default">
-				<div class="panel-heading">
+			<div class="card">
+				<div class="card-header">
 					<div class="dropdown">
 						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
 							{{ headers[statement.t] }}
@@ -35,7 +35,7 @@
 						</ul>
 					</div>
 				</div>
-				<div class="panel-body">
+				<div class="card-body">
 					<statement-node v-bind:statement="statement" v-on:change="changed(index, $event)"></statement-node>
 				</div>
 			</div>

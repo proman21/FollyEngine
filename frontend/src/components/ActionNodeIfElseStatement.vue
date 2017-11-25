@@ -22,27 +22,27 @@
 
 <template>
 	<div>
-		<div class="panel panel-info">
-			<div class="panel-heading">
+		<div class="card">
+			<div class="card-header">
 				<label>If</label>
 			</div>
-			<div class="panel-body">
+			<div class="card-body">
 				<expression-node v-bind:expression="statement.condition" v-on:change="conditionChanged"></expression-node>
 			</div>
 		</div>
-		<div class="panel panel-info">
-			<div class="panel-heading">
+		<div class="card">
+			<div class="card-header">
 				<label>Then</label>
 			</div>
-			<div class="panel-body">
+			<div class="card-body">
 				<statement-node v-bind:statement="statement.if_body" v-on:change="ifChanged"></statement-node>
 			</div>
 		</div>
-		<div class="panel panel-info">
-			<div class="panel-heading">
+		<div class="card">
+			<div class="card-header">
 				<label>Else</label>
 			</div>
-			<div class="panel-body">
+			<div class="card-body">
 				<statement-node v-bind:statement="statement.else_body" v-on:change="elseChanged"></statement-node>
 			</div>
 		</div>
