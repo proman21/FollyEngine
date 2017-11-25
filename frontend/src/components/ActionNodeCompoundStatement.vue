@@ -26,7 +26,7 @@
 			<div class="card">
 				<div class="card-header">
 					<div class="dropdown">
-						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+						<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
 							{{ headers[statement.t] }}
 							<span class="caret"></span>
 						</button>

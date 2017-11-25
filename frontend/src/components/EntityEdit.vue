@@ -79,7 +79,7 @@
 							tag: {{ instance.tag}}
 						</td>
 						<td>
-							<router-link :to="{ name: 'instance', params: { id: instance.id } }" class="btn btn-default">
+							<router-link :to="{ name: 'instance', params: { id: instance.id } }" class="btn btn-secondary">
 								edit
 							</router-link>
 						</td>
