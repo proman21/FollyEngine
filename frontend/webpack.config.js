@@ -8,7 +8,8 @@ module.exports = {
     plugins: [
         new webpack.ProvidePlugin({
             $: "jquery",
-            jQuery: "jquery"
+            jQuery: "jquery",
+			Popper: ['popper.js', 'default'],
         })
     ],
 	output: {
@@ -20,6 +21,10 @@ module.exports = {
 			{
 				test: /\.vue$/,
 				loader: 'vue-loader'
+			},
+			{
+				test: /\.css$/,
+				loader: 'css-loader'
 			}
 		]
 	}
