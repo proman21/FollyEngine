@@ -21,47 +21,47 @@
 -->
 
 <template>
-<div>
-	<h2>Edit Device {{ device.id }}</h2>
-	<div class="row infopanel">
-            <div class="col-md-6">
-					<label for="id">Id</label>
-					<div class="textbox">
-						<input name="id" type="text" v-bind:value="device.id" disabled>
-					</div>
-			</div>
-	</div>
-	<div class="row infopanel">
+	<div>
+		<h2>Edit Device {{ device.id }}</h2>
+		<div class="row infopanel">
 			<div class="col-md-6">
-					<label for="model_id">Model Id</label>
-					<div class="textbox">
-						<input name="model_id" type="text" v-bind:value="device.model_id" disabled>
-					</div>
+				<label for="id">Id</label>
+				<div class="textbox">
+					<input name="id" type="text" v-bind:value="device.id" disabled>
+				</div>
 			</div>
-	</div>
-	<div class="row infopanel">
-		<div class="col-md-6">
+		</div>
+		<div class="row infopanel">
+			<div class="col-md-6">
+				<label for="model_id">Model Id</label>
+				<div class="textbox">
+					<input name="model_id" type="text" v-bind:value="device.model_id" disabled>
+				</div>
+			</div>
+		</div>
+		<div class="row infopanel">
+			<div class="col-md-6">
 				<label for="ip">IP Address</label>
 				<div class="textbox">
 					<input name="ip" type="text" v-model="ip">
 				</div>
+			</div>
 		</div>
-	</div>
-	<div class="row infopanel">
-		<div class="col-md-6">
+		<div class="row infopanel">
+			<div class="col-md-6">
 				<label for="purpose">Purpose</label>
 				<div class="textbox">
 					<input name="purpose" type="text" v-model="purpose">
 				</div>
+			</div>
 		</div>
-	</div>
-	<div class="row infopanel">
-		<div class="col-md-1">
-			<button class="btn btn-primary" v-on:click="deleteDevice()">Delete</button>
+		<div class="row infopanel">
+			<div class="col-md-1">
+				<button class="btn btn-primary" v-on:click="deleteDevice()">Delete</button>
+			</div>
 		</div>
+		<br />
 	</div>
-	<br />
-</div>
 </template>
 
 <script>

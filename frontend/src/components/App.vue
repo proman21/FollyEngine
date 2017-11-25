@@ -21,23 +21,23 @@
 -->
 
 <template>
-      <div class="site-wrapper">
-         <div class="site-wrapper-inner">
-            <div class="topnav">
-               <ul class = "main-menu">
+	<div class="site-wrapper">
+		<div class="site-wrapper-inner">
+			<div class="topnav">
+				<ul class = "main-menu">
 					<li><router-link to="/scenes">Scenes</router-link></li>
 					<li><router-link to="/devices">Devices</router-link></li>
 					<li><router-link to="/entities">Entities</router-link></li>
 					<li><router-link to="/actions">Actions</router-link></li>
-               </ul>
-            </div>
+				</ul>
+			</div>
 			<div>
 				<router-view>
 					<!-- Current route is rendered here -->
 				</router-view>
 			</div>
-		 </div>
-	  </div>
+		</div>
+	</div>
 </template>
 
 <script>
