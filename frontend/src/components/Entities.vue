@@ -37,8 +37,8 @@
 									{{ entity.title }}
 								</router-link>
 								<div>
-									<button class="btn btn-xs">Add child</button>
-									<button class="btn btn-xs" v-if="entity.children.length == 0" v-on:click="newInstance(entity.id)">Add instance</button>
+									<button class="btn btn-sm">Add child</button>
+									<button class="btn btn-sm" v-if="entity.children.length == 0" v-on:click="newInstance(entity.id)">Add instance</button>
 								</div>
 							</li>
 						</ul>
