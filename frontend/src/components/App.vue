@@ -21,21 +21,17 @@
 -->
 
 <template>
-	<div class="site-wrapper">
-		<div class="site-wrapper-inner">
-			<div class="topnav">
-				<ul class = "main-menu">
-					<li><router-link to="/scenes">Scenes</router-link></li>
-					<li><router-link to="/devices">Devices</router-link></li>
-					<li><router-link to="/entities">Entities</router-link></li>
-					<li><router-link to="/actions">Actions</router-link></li>
-				</ul>
-			</div>
-			<div>
-				<router-view>
-					<!-- Current route is rendered here -->
-				</router-view>
-			</div>
+	<div class="wrapper">
+		<nav class="nav nav-tabs">
+			<router-link to="/scenes" class="nav-link" active-class="active">Scenes</router-link>
+			<router-link to="/devices" class="nav-link" active-class="active">Devices</router-link>
+			<router-link to="/entities" class="nav-link" active-class="active">Entities</router-link>
+			<router-link to="/actions" class="nav-link" active-class="active">Actions</router-link>
+		</nav>
+		<div>
+			<router-view>
+				<!-- Current route is rendered here -->
+			</router-view>
 		</div>
 	</div>
 </template>
