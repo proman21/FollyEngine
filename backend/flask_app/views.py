@@ -506,7 +506,7 @@ def api_instance_by_id(instance_id):
         for name, value in instance_properties.items():
             try:
                 instance.set_property_value(name, value)
-            except:
+            except Exception:
                 flask.abort(400)
 
         db.commit()
