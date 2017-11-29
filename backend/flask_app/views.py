@@ -490,7 +490,28 @@ def api_instance_by_id(instance_id):
         return flask.jsonify(serialisable_instance)
 
     elif flask.request.method == 'PUT':
-        pass
+        db = data_access.Database()
+
+        instance = db.get_instance_entity(instance_id)
+        if instance is None:
+            flask.abort(404)
+
+        updated_instance = json.loads(flask.request.get_data(as_text=True))
+
+        instance_tag = updated_instance.get('tag')
+
+        instance_properties = updated_instance.get('properties')
+
+        instance.tag = instance_tag
+        for name, value in instance_properties.items():
+            try:
+                instance.set_property_value(name, value)
+            except:
+                flask.abort(400)
+
+        db.commit()
+
+        return '', 201
 
     elif flask.request.method == 'DELETE':
         pass

@@ -282,12 +282,19 @@ class InstanceEntity(db.Model):
         return properties
 
     def to_dictionary(self):
+        schema = self.get_virtual_entity_properties(self.virtual_entity)
+
+        serializable_schema = {}
+        for prop in schema.values():
+            serializable_schema.update(prop.to_schema_dictionary())
+
         return {
             "type": "instance_entity",
             "id": self.id,
             "tag": self.tag,
             "virtual_entity_id": self.virtual_entity_id,
             "properties": self.get_properties(),
+            "schema": serializable_schema,
         }
 
     def update_json_values(self):

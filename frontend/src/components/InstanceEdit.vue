@@ -48,7 +48,34 @@
 				</tr>
 				<tr v-for="(value, name) in instance.properties">
 					<td>{{ name }}</td>
-					<td>{{ value }}</td>
+					<td>
+						<input
+							v-if="instance.schema[name].class == 'Numeric' && instance.schema[name].type == 'integer'"
+							type="number"
+							v-bind:value="value"
+							v-on:input="changeProperty(name, parseInt($event.target.value))"
+						>
+						<input
+							v-else-if="instance.schema[name].class == 'Numeric' && instance.schema[name].type == 'number'"
+							type="number"
+							step="any"
+							v-bind:value="value"
+							v-on:input="changeProperty(name, parseFloat($event.target.value))"
+						>
+						<input
+							v-else-if="instance.schema[name].class == 'String'"
+							type="text"
+							v-bind:value="value"
+							v-on:input="changeProperty(name, $event.target.value)"
+						>
+						<input
+							v-else-if="instance.schema[name].class == 'Boolean'"
+							type="checkbox"
+							v-bind:checked="value"
+							v-on:input="changeProperty(name, $event.target.checked)"
+						>
+						<span v-else v-bind:value="string">Error: unknown attribute type</span>
+					</td>
 				</tr>
 			</table>
 		</div>
@@ -66,6 +93,16 @@
 		},
 
 		methods: {
+			changeProperty(name, value) {
+				console.log(name, value);
+
+				console.log("previous", JSON.stringify(this.instance.properties));
+				const properties = Object.assign({}, this.instance.properties, { [name]: value });
+				console.log("next", JSON.stringify(properties));
+				const instance = Object.assign({}, this.instance, { properties });
+
+				this.$store.dispatch('updateInstance', { instance });
+			},
 		},
 
 		computed: {

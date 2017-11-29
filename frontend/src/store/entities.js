@@ -118,6 +118,12 @@ const entityStore = {
 
 			return instance;
 		},
+
+		async updateInstance({ commit }, { instance }) {
+			commit('setInstance', { instance });
+
+			await api.putInstance(instance);
+		},
 	},
 
 	getters: {

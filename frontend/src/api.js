@@ -350,3 +350,15 @@ export async function newInstance(entityId) {
 
 	return get_response.json();
 }
+
+export async function putInstance(instance) {
+	const id = instance.id;
+	const url = `${URL_BASE}/instances/${id}`;
+
+	const request = new Request(url, {
+		method: 'PUT',
+		body: JSON.stringify(instance),
+	});
+
+	return fetch(request);
+}
