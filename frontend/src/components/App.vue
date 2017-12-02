@@ -28,11 +28,9 @@
 			<router-link to="/entities" class="nav-link" active-class="active">Entities</router-link>
 			<router-link to="/actions" class="nav-link" active-class="active">Actions</router-link>
 		</nav>
-		<div>
-			<router-view>
-				<!-- Current route is rendered here -->
-			</router-view>
-		</div>
+		<router-view>
+			<!-- Current route is rendered here -->
+		</router-view>
 	</div>
 </template>
 

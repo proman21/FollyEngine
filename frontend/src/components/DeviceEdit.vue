@@ -23,35 +23,23 @@
 <template>
 	<div>
 		<h2>Edit Device {{ device.id }}</h2>
-		<div class="row">
-			<div class="col-md-6">
-				<label for="id">Id</label>
-				<input name="id" type="text" v-bind:value="device.id" disabled>
-			</div>
+		<div>
+			<label for="id">Id</label>
+			<input name="id" type="text" v-bind:value="device.id" disabled>
 		</div>
-		<div class="row">
-			<div class="col-md-6">
-				<label for="model_id">Model Id</label>
-				<input name="model_id" type="text" v-bind:value="device.model_id" disabled>
-			</div>
+		<div>
+			<label for="model_id">Model Id</label>
+			<input name="model_id" type="text" v-bind:value="device.model_id" disabled>
 		</div>
-		<div class="row">
-			<div class="col-md-6">
-				<label for="ip">IP Address</label>
-				<input name="ip" type="text" v-model="ip">
-			</div>
+		<div>
+			<label for="ip">IP Address</label>
+			<input name="ip" type="text" v-model="ip">
 		</div>
-		<div class="row">
-			<div class="col-md-6">
-				<label for="purpose">Purpose</label>
-				<input name="purpose" type="text" v-model="purpose">
-			</div>
+		<div>
+			<label for="purpose">Purpose</label>
+			<input name="purpose" type="text" v-model="purpose">
 		</div>
-		<div class="row">
-			<div class="col-md-1">
-				<button class="btn btn-primary" v-on:click="deleteDevice()">Delete</button>
-			</div>
-		</div>
+		<button class="btn btn-primary" v-on:click="deleteDevice()">Delete</button>
 	</div>
 </template>
 

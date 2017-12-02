@@ -22,22 +22,20 @@
 
 <template>
 	<div>
-		<div v-for="(statement, index) in statement.statements">
-			<div class="card">
-				<div class="card-header">
-					<div class="dropdown">
-						<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-							{{ headers[statement.t] }}
-							<span class="caret"></span>
-						</button>
-						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="#" v-on:click.prevent="remove(index)">Delete Statement</a></li>
-						</ul>
-					</div>
+		<div v-for="(statement, index) in statement.statements" class="card">
+			<div class="card-header">
+				<div class="dropdown">
+					<button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+						{{ headers[statement.t] }}
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a class="dropdown-item" href="#" v-on:click.prevent="remove(index)">Delete Statement</a></li>
+					</ul>
 				</div>
-				<div class="card-body">
-					<statement-node v-bind:statement="statement" v-on:change="changed(index, $event)"></statement-node>
-				</div>
+			</div>
+			<div class="card-body">
+				<statement-node v-bind:statement="statement" v-on:change="changed(index, $event)"></statement-node>
 			</div>
 		</div>
 		<div class="dropdown">

@@ -25,60 +25,35 @@
 		<h2>Edit {{ scene.name }}</h2>
 		<div class="row">
 			<div class="col-md-6">
-				<div class="row">
-					<div class="col-md-12">
-						<label for="id">Id</label>
-						<input name="id" type="text" v-bind:value="scene.id" disabled>
-					</div>
+				<div>
+					<label for="id">Id</label>
+					<input name="id" type="text" v-bind:value="scene.id" disabled>
 				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<label for="name">Name</label>
-						<input name="name" type="text" v-model="name">
-					</div>
+				<div>
+					<label for="name">Name</label>
+					<input name="name" type="text" v-model="name">
 				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<label for="description">Description</label>
-						<textarea rows="3" cols="40" id = "scenename" name="description" v-model="description" />
-					</div>
+				<div>
+					<label for="description">Description</label>
+					<textarea rows="3" cols="40" id = "scenename" name="description" v-model="description" />
 				</div>
-				<div class="row">
-					<div class="col-md-1">
-						<button class="btn btn-primary" v-on:click="deleteScene()">Delete Scene</button>
-					</div>
-				</div>
-
+				<button class="btn btn-primary" v-on:click="deleteScene()">Delete Scene</button>
 			</div>
-			<!-- events part to do -->
 
 			<div class="col-md-6">
-				<div class="row">
-					<div class="col-md-12">
-						<div class = "subbox" style="height: 260px">
-							<ul class = "action-menu">
-								<li v-for="evt in events" v-bind:key="evt.id">
-									<router-link :to="{ name: 'events', params: { id: evt.scene_id, eventId: evt.id } }">
-										{{ evt.name }}
-									</router-link>
-								</li>
-							</ul>
-							<button class="btn btn-primary" v-on:click="newEvent">New Event</button>
-						</div>
-					</div>
-				</div>
+				<ul class = "action-menu">
+					<li v-for="evt in events" v-bind:key="evt.id">
+						<router-link :to="{ name: 'events', params: { id: evt.scene_id, eventId: evt.id } }">
+							{{ evt.name }}
+						</router-link>
+					</li>
+				</ul>
+				<button class="btn btn-primary" v-on:click="newEvent">New Event</button>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-md-12">
-				<div class = "innercontent">
-					<router-view>
-						<!-- Child route is rendered here -->
-					</router-view>
-				</div>
-			</div>
-		</div>
-
+		<router-view>
+			<!-- Child route is rendered here -->
+		</router-view>
 	</div>
 </template>
 

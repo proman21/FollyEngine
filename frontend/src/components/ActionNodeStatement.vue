@@ -21,16 +21,14 @@
 -->
 
 <template>
-	<div>
-		<compound-statement v-if="statement.t === 'CompoundStatement'" v-bind:statement="statement" v-on:change="changed"></compound-statement>
-		<print-statement v-else-if="statement.t === 'PrintStatement'" v-bind:statement="statement" v-on:change="changed"></print-statement>
-		<assignment-statement v-else-if="statement.t === 'AssignmentStatement'" v-bind:statement="statement" v-on:change="changed"></assignment-statement>
-		<if-else-statement v-else-if="statement.t === 'IfElseStatement'" v-bind:statement="statement" v-on:change="changed"></if-else-statement>
-		<output-statement v-else-if="statement.t === 'OutputStatement'" v-bind:statement="statement" v-on:change="changed"></output-statement>
-		<set-attr-statement v-else-if="statement.t === 'SetAttrStatement'" v-bind:statement="statement" v-on:change="changed"></set-attr-statement>
-		<div v-else>
-			Unknown statement type '{{statement.t}}'
-		</div>
+	<compound-statement v-if="statement.t === 'CompoundStatement'" v-bind:statement="statement" v-on:change="changed"></compound-statement>
+	<print-statement v-else-if="statement.t === 'PrintStatement'" v-bind:statement="statement" v-on:change="changed"></print-statement>
+	<assignment-statement v-else-if="statement.t === 'AssignmentStatement'" v-bind:statement="statement" v-on:change="changed"></assignment-statement>
+	<if-else-statement v-else-if="statement.t === 'IfElseStatement'" v-bind:statement="statement" v-on:change="changed"></if-else-statement>
+	<output-statement v-else-if="statement.t === 'OutputStatement'" v-bind:statement="statement" v-on:change="changed"></output-statement>
+	<set-attr-statement v-else-if="statement.t === 'SetAttrStatement'" v-bind:statement="statement" v-on:change="changed"></set-attr-statement>
+	<div v-else>
+		Unknown statement type '{{statement.t}}'
 	</div>
 </template>
 

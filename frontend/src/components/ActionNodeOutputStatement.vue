@@ -22,21 +22,17 @@
 
 <template>
 	<div>
-		<div class="row">
-			<div class="col-md-12">
-				<label for="output">Device ID</label>
-				<select name="output" v-model="output">
-					<option v-for="device in devices" v-bind:value="device.id">
-						{{device.id}}: {{device.purpose}} ({{device.ip}})
-					</option>
-				</select>
-			</div>
+		<div>
+			<label for="output">Device ID</label>
+			<select name="output" v-model="output">
+				<option v-for="device in devices" v-bind:value="device.id">
+					{{device.id}}: {{device.purpose}} ({{device.ip}})
+				</option>
+			</select>
 		</div>
-		<div class="row">
-			<div class="col-md-12">
-				<label for="resource">Text</label>
-				<expression-node v-bind:expression="statement.resource" v-on:change="resourceChanged"></expression-node>
-			</div>
+		<div>
+			<label for="resource">Text</label>
+			<expression-node v-bind:expression="statement.resource" v-on:change="resourceChanged"></expression-node>
 		</div>
 	</div>
 </template>

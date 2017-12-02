@@ -23,118 +23,106 @@
 <template>
 	<div>
 		<h2>Virtual Entity</h2>
-		<div class="row">
-			<div class="col-md-6">
-				<label for="tbx_id">Id</label>
-				<input id="tbx_id" name="id" type="text" v-bind:value="entity.id" disabled>
-			</div>
-			<div class="col-md-6">
-				<label for="tbx_parent_id">Parent Id</label>
-				<input id="tbx_parent_id" name="parent_id" type="text" v-bind:value="entity.parent_id" disabled>
-			</div>
+		<div>
+			<label for="tbx_id">Id</label>
+			<input id="tbx_id" name="id" type="text" v-bind:value="entity.id" disabled>
 		</div>
-		<div class="row">
-			<div class="col-md-6">
-				<label for="tbx_title">Title</label>
-				<input id="tbx_title" name="title" type="text" v-model="title">
-			</div>
+		<div>
+			<label for="tbx_parent_id">Parent Id</label>
+			<input id="tbx_parent_id" name="parent_id" type="text" v-bind:value="entity.parent_id" disabled>
 		</div>
-		<div class="row">
-			<div class="col-md-12">
-				<label for="tbx_description">Description</label>
-				<textarea id="tbx_description" rows="3" cols="40" name="description" v-model="description"></textarea>
-			</div>
+		<div>
+			<label for="tbx_title">Title</label>
+			<input id="tbx_title" name="title" type="text" v-model="title">
 		</div>
-		<div class="row">
-			<div class="col-md-12">
-				<table class="entity_components">
-					<caption>Instances</caption>
-					<tr>
-						<th>
-							<label>ID</label>
-						</th>
-						<th>
-							<label>Tag</label>
-						</th>
-						<th colspan="2">
-							&nbsp;
-						</th>
-					</tr>
-					<tr v-for="instance in instances" v-bind:key="instance.id">
-						<td>
-							{{ instance.id }}
-						</td>
-						<td>
-							tag: {{ instance.tag}}
-						</td>
-						<td>
-							<router-link :to="{ name: 'instance', params: { id: instance.id } }" class="btn btn-secondary">
-								edit
-							</router-link>
-						</td>
-						<td>
-							<button class="btn btn-danger btn-sm" v-on:click="removeInstance()">x</button>
-						</td>
-					</tr>
-				</table>
-			</div>
+		<div>
+			<label for="tbx_description">Description</label>
+			<textarea id="tbx_description" rows="3" cols="40" name="description" v-model="description"></textarea>
 		</div>
-		<div class="row">
-			<div class="col-md-6">
-				<table class="entity_components">
-					<caption>Attributes</caption>
-					<tr>
-						<th>Name</th>
-						<th>Class</th>
-						<th>Type</th>
-						<th>&nbsp;</th>
-					</tr>
-					<tr v-for="(value, key) in properties">
-						<td>
-							{{ key }}
-						</td>
-						<td>
-							{{ value.class }}
-						</td>
-						<td>
-							{{ value.type }}
-						</td>
-						<td>
-							<button class="btn btn-danger btn-sm" v-on:click="removeProperty(key, value)">x</button>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<input title="Property name" type="text" v-model="newProperty.propName">
-						</td>
-						<td>
-							<select title="Property class" v-model="newProperty.classVal" v-on:change="changeClass">
-								<option value="" disabled>Select class</option>
-								<option v-for="option in classOptions" v-bind:value="option">
-								{{ option }}
-								</option>
-							</select>
-						</td>
-						<td>
-							<select title="Property type" v-model="newProperty.typeVal" v-bind:disabled="!isClassSelected">
-								<option value="" disabled>Select type</option>
-								<option v-for="option in typeOptions" v-bind:value="option">
-								{{ option }}
-								</option>
-							</select>
-						</td>
-						<td>
-							<button class="btn btn-primary" v-on:click="addProperty">Add Attribute</button>
-						</td>
-					</tr>
-				</table>
-			</div>
+		<div>
+			<table class="entity_components">
+				<caption>Instances</caption>
+				<tr>
+					<th>
+						<label>ID</label>
+					</th>
+					<th>
+						<label>Tag</label>
+					</th>
+					<th colspan="2">
+						&nbsp;
+					</th>
+				</tr>
+				<tr v-for="instance in instances" v-bind:key="instance.id">
+					<td>
+						{{ instance.id }}
+					</td>
+					<td>
+						tag: {{ instance.tag}}
+					</td>
+					<td>
+						<router-link :to="{ name: 'instance', params: { id: instance.id } }" class="btn btn-secondary">
+							edit
+						</router-link>
+					</td>
+					<td>
+						<button class="btn btn-danger btn-sm" v-on:click="removeInstance()">x</button>
+					</td>
+				</tr>
+			</table>
 		</div>
-		<div class="row">
-			<div class="col-md-12">
-				<!--<button class="btn btn-primary" v-on:click="updateEntity()">Update</button>-->
-				<button class="btn btn-primary" v-on:click="deleteEntity()">Delete</button>
-			</div>
+		<div>
+			<table class="entity_components">
+				<caption>Attributes</caption>
+				<tr>
+					<th>Name</th>
+					<th>Class</th>
+					<th>Type</th>
+					<th>&nbsp;</th>
+				</tr>
+				<tr v-for="(value, key) in properties">
+					<td>
+						{{ key }}
+					</td>
+					<td>
+						{{ value.class }}
+					</td>
+					<td>
+						{{ value.type }}
+					</td>
+					<td>
+						<button class="btn btn-danger btn-sm" v-on:click="removeProperty(key, value)">x</button>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input title="Property name" type="text" v-model="newProperty.propName">
+					</td>
+					<td>
+						<select title="Property class" v-model="newProperty.classVal" v-on:change="changeClass">
+							<option value="" disabled>Select class</option>
+							<option v-for="option in classOptions" v-bind:value="option">
+							{{ option }}
+							</option>
+						</select>
+					</td>
+					<td>
+						<select title="Property type" v-model="newProperty.typeVal" v-bind:disabled="!isClassSelected">
+							<option value="" disabled>Select type</option>
+							<option v-for="option in typeOptions" v-bind:value="option">
+							{{ option }}
+							</option>
+						</select>
+					</td>
+					<td>
+						<button class="btn btn-primary" v-on:click="addProperty">Add Attribute</button>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div>
+			<!--<button class="btn btn-primary" v-on:click="updateEntity()">Update</button>-->
+			<button class="btn btn-primary" v-on:click="deleteEntity()">Delete</button>
 		</div>
 	</div>
 </template>

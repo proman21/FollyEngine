@@ -37,16 +37,14 @@
 			</ul>
 		</div>
 
-		<div>
-			<boolean-literal v-if="expression.t === 'BooleanLiteral'" v-bind:expression="expression" v-on:change="changed"></boolean-literal>
-			<integer-literal v-else-if="expression.t === 'IntegerLiteral'" v-bind:expression="expression" v-on:change="changed"></integer-literal>
-			<string-literal v-else-if="expression.t === 'StringLiteral'" v-bind:expression="expression" v-on:change="changed"></string-literal>
-			<binary-op v-else-if="expression.t === 'BinaryOp'" v-bind:expression="expression" v-on:change="changed"></binary-op>
-			<get-attr-expression v-else-if="expression.t === 'GetAttrExpression'" v-bind:expression="expression" v-on:change="changed"></get-attr-expression>
-			<variable-name-expression v-else-if="expression.t === 'VariableNameExpression'" v-bind:expression="expression" v-on:change="changed"></variable-name-expression>
-			<div v-else>
-				Unknown expression type '{{expression.t}}'
-			</div>
+		<boolean-literal v-if="expression.t === 'BooleanLiteral'" v-bind:expression="expression" v-on:change="changed"></boolean-literal>
+		<integer-literal v-else-if="expression.t === 'IntegerLiteral'" v-bind:expression="expression" v-on:change="changed"></integer-literal>
+		<string-literal v-else-if="expression.t === 'StringLiteral'" v-bind:expression="expression" v-on:change="changed"></string-literal>
+		<binary-op v-else-if="expression.t === 'BinaryOp'" v-bind:expression="expression" v-on:change="changed"></binary-op>
+		<get-attr-expression v-else-if="expression.t === 'GetAttrExpression'" v-bind:expression="expression" v-on:change="changed"></get-attr-expression>
+		<variable-name-expression v-else-if="expression.t === 'VariableNameExpression'" v-bind:expression="expression" v-on:change="changed"></variable-name-expression>
+		<div v-else>
+			Unknown expression type '{{expression.t}}'
 		</div>
 	</div>
 </template>
