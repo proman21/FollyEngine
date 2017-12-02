@@ -60,7 +60,6 @@
 				<button class="btn btn-primary" v-on:click="deleteDevice()">Delete</button>
 			</div>
 		</div>
-		<br />
 	</div>
 </template>
 

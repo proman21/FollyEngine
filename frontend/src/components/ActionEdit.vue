@@ -52,7 +52,6 @@
 				</div>
 			</div>
 		</div>
-		<br />
 		<div class="row infopanel">
 			<div class="col-md-1">
 				<div>
@@ -60,7 +59,6 @@
 				</div>
 			</div>
 		</div>
-		<br />
 	</div>
 </template>
 

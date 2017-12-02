@@ -37,7 +37,6 @@
 				</div>
 			</div>
 		</div>
-		<br />
 		<div class="row infopanel">
 			<div class="col-md-6">
 				<label for="tbx_title">Title</label>
@@ -46,7 +45,6 @@
 				</div>
 			</div>
 		</div>
-		<br />
 		<div class="row infopanel">
 			<div class="col-md-12">
 				<label for="tbx_description">Description</label>
@@ -55,7 +53,6 @@
 				</div>
 			</div>
 		</div>
-		<br />
 		<div class="row infopanel">
 			<div class="col-md-12">
 				<table class="entity_components">
@@ -90,7 +87,6 @@
 				</table>
 			</div>
 		</div>
-		<br />
 		<div class="row">
 			<div class="col-md-6">
 				<table class="entity_components">
@@ -142,14 +138,12 @@
 				</table>
 			</div>
 		</div>
-		<br />
 		<div class="row infopanel">
 			<div class="col-md-12">
 				<!--<button class="btn btn-primary" v-on:click="updateEntity()">Update</button>-->
 				<button class="btn btn-primary" v-on:click="deleteEntity()">Delete</button>
 			</div>
 		</div>
-		<br />
 	</div>
 </template>
 

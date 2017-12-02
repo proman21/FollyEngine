@@ -63,7 +63,7 @@
 				<div class="col-md-6">
 					<div v-if="evt.type == 'Time'">
 						<label for="time">Time</label>
-						<input name="time" type="datetime-local" v-model="time"> <br>
+						<input name="time" type="datetime-local" v-model="time">
 					</div>
 					<div v-if="evt.type == 'Scan'">
 						<label for="device_id">Device ID</label>
