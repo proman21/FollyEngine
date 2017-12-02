@@ -21,38 +21,34 @@
 -->
 
 <template>
-	<div class="maincontent" id="entities">
-		<div v-if="loading">
-			Loading...
-		</div>
+	<div v-if="loading">
+		Loading...
+	</div>
 
-		<div v-else>
-			<div class="row">
-				<div class="col-md-2">
-					<div class="lists">
-						<h4>Current Entities</h4>
-						<ul>
-							<li v-for="entity in entities" v-bind:key="entity.id">
-								<router-link :to="{ name: 'entities', params: { id: entity.id } }">
-									{{ entity.title }}
-								</router-link>
-								<div>
-									<button class="btn btn-sm">Add child</button>
-									<button class="btn btn-sm" v-if="entity.children.length == 0" v-on:click="newInstance(entity.id)">Add instance</button>
-								</div>
-							</li>
-						</ul>
-						<button class="btn btn-primary" v-on:click="newEntity">New Entity</button>
-						<br />
-					</div>
-				</div>
-				<div class="col-md-10 inner-section">
-					<router-view>
-						<!-- Child route is rendered here -->
-					</router-view>
-				</div>
-			</div>
+	<div v-else class="row">
+		<div class="col-md-2">
+			<h4>Entities</h4>
+			<nav>
+				<ul class="nav flex-column">
+					<li v-for="entity in entities" v-bind:key="entity.id" class="nav-item row">
+						<div class="dropdown col-sm-auto">
+							<button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-toggle="dropdown"></button>
+							<div class="dropdown-menu">
+								<button class="dropdown-item">Add child</button>
+								<button class="dropdown-item" v-if="entity.children.length == 0" v-on:click="newInstance(entity.id)">Add instance</button>
+							</div>
+						</div>
+						<router-link :to="{ name: 'entities', params: { id: entity.id } }" class="nav-link col-sm">
+							{{ entity.title }}
+						</router-link>
+					</li>
+				</ul>
+				<button class="btn btn-primary" v-on:click="newEntity">New Entity</button>
+			</nav>
 		</div>
+		<router-view class="col-md-10">
+			<!-- Child route is rendered here -->
+		</router-view>
 	</div>
 </template>
 

@@ -21,37 +21,30 @@
 -->
 
 <template>
-    <div class="maincontent" id="scenes">
-		<div v-if="loading">
-			Loading...
-		</div>
+	<div v-if="loading">
+		Loading...
+	</div>
 
-		<div v-else>
-			<div class="row">
-				<div class="col-md-2">
-					<div class="lists">
-						<h4>Current Scenes</h4>
-						<ul class="side-menu-scene">
-							<li v-for="scene in scenes" v-bind:key="scene.id">
-								<router-link :to="{ name: 'scenes', params: { id: scene.id } }">
-									({{ scene.id }}) {{ scene.name }}
-								</router-link>
-							</li>
-						</ul>
-						<button class="btn btn-primary" v-on:click="newScene">New Scene</button>
-						<br />
-					</div>
-				</div>
-				<div class="col-md-10 inner-section">
-					<div class="innercontent">
-						<router-view>
-							<!-- Child route is rendered here -->
-						</router-view>
-					</div>
-				</div>
-			</div>
+	<div v-else class="row">
+		<div class="col-md-2">
+			<h4>Scenes</h4>
+			<nav class="nav nav-pills flex-column">
+				<router-link
+					v-for="scene in scenes"
+					v-bind:key="scene.id"
+					v-bind:to="{ name: 'scenes', params: { id: scene.id } }"
+					active-class="active"
+					class="nav-link"
+				>
+					({{ scene.id }}) {{ scene.name }}
+				</router-link>
+			</nav>
+			<button class="btn btn-primary" v-on:click="newScene">New Scene</button>
 		</div>
-    </div>
+		<router-view class="col-md-10">
+			<!-- Child route is rendered here -->
+		</router-view>
+	</div>
 </template>
 
 <script>

@@ -21,36 +21,27 @@
 -->
 
 <template>
-	<div class="maincontent" id="actions">
-		<div v-if="loading">
-			Loading...
-		</div>
+	<div v-if="loading">
+		Loading...
+	</div>
 
-		<div v-else>
-			<div class="row">
-				<div class="col-md-2">
-					<div class="lists">
-						<h4>Actions</h4>
-						<ul>
-							<li v-for="action in actions" v-bind:key="action.id">
-								<router-link :to="{ name: 'actions', params: { id: action.id } }">
-									({{ action.id }}) {{ action.name }}
-								</router-link>
-							</li>
-						</ul>
-					<button class="btn btn-primary" v-on:click="newAction">New Action</button>
-					<br />
-					</div>
-				</div>
-				<div class="col-md-10 inner-section">
-					<div v-if="id !== undefined">
-						<h2>Edit {{ action.name }}</h2>
-						<action-edit :id="id" :ast="ast" v-on:change="changed" v-on:save="save"></action-edit>
-					</div>
-					<div v-else>
-						<h4>No action selected</h4>
-					</div>
-				</div>
+	<div v-else class="row">
+		<div class="col-md-2">
+			<h4>Actions</h4>
+			<nav class="nav flex-column">
+				<router-link v-for="action in actions" v-bind:key="action.id" v-bind:to="{ name: 'actions', params: { id: action.id } }" class="nav-link">
+					({{ action.id }}) {{ action.name }}
+				</router-link>
+			</nav>
+			<button class="btn btn-primary" v-on:click="newAction">New Action</button>
+		</div>
+		<div class="col-md-10">
+			<div v-if="id !== undefined">
+				<h2>Edit {{ action.name }}</h2>
+				<action-edit :id="id" :ast="ast" v-on:change="changed" v-on:save="save"></action-edit>
+			</div>
+			<div v-else>
+				<h4>No action selected</h4>
 			</div>
 		</div>
 	</div>

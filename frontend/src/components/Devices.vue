@@ -21,34 +21,23 @@
 -->
 
 <template>
-	<div class="maincontent" id="devices">
-		<div v-if="loading">
-			Loading...
-		</div>
+	<div v-if="loading">
+		Loading...
+	</div>
 
-		<div v-else>
-			<div class="row">
-				<div class="col-md-2">
-					<div class="lists">
-						<h4>Current Devices</h4>
-						<ul>
-							<li v-for="device in devices" v-bind:key="device.id">
-								<router-link :to="{ name: 'devices', params: { id: device.id } }">
-									({{ device.id }}) {{ device.ip }} -- {{ device.purpose }}
-							</router-link>
-							</li>
-						</ul>
-						<button class="btn btn-primary" v-on:click="pingDevices">Ping Devices</button>
-						<br />
-					</div>
-				</div>
-				<div class="col-md-10 inner-section">
-					<router-view>
-						<!-- Child route is rendered here -->
-					</router-view>
-				</div>
-			</div>
+	<div v-else class="row">
+		<div class="col-md-2">
+			<h4>Devices</h4>
+			<nav class="nav flex-column">
+				<router-link v-for="device in devices" v-bind:key="device.id" v-bind:to="{ name: 'devices', params: { id: device.id } }" class="nav-link">
+					({{ device.id }}) {{ device.ip }} -- {{ device.purpose }}
+				</router-link>
+			</nav>
+			<button class="btn btn-primary" v-on:click="pingDevices">Ping Devices</button>
 		</div>
+		<router-view class="col-md-10">
+			<!-- Child route is rendered here -->
+		</router-view>
 	</div>
 </template>
 
