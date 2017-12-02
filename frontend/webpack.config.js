@@ -5,13 +5,13 @@ var webpack = require("webpack");
 module.exports = {
 	entry: './src/index.js',
 	devtool: 'eval-source-map',
-    plugins: [
-        new webpack.ProvidePlugin({
-            $: "jquery",
-            jQuery: "jquery",
+	plugins: [
+		new webpack.ProvidePlugin({
+			$: "jquery",
+			jQuery: "jquery",
 			Popper: ['popper.js', 'default'],
-        })
-    ],
+		})
+	],
 	output: {
 		path: path.resolve(__dirname, 'dist'),
 		filename: 'bundle.js'
