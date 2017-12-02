@@ -158,4 +158,7 @@
 </script>
 
 <style scoped>
+	.expression {
+		display: flex;
+	}
 </style>
