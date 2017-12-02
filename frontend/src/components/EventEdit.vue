@@ -32,17 +32,13 @@
 			<div class="row">
 				<div class="col-md-6">
 					<label for="id">Id</label>
-					<div class="textbox">
-						<input name="id" type="text" v-bind:value="evt.id" disabled>
-					</div>
+					<input name="id" type="text" v-bind:value="evt.id" disabled>
 				</div>
 			</div>
 			<div class="row">
 				<div class="col-md-6">
 					<label for="name">Name</label>
-					<div class="textbox">
-						<input name="name" type="text" v-model="name">
-					</div>
+					<input name="name" type="text" v-model="name">
 				</div>
 			</div>
 
@@ -50,12 +46,10 @@
 				<div class="col-md-6">
 
 					<label for="AvailableActions">Type of Event</label>
-					<div class="textbox">
-						<select name="availableActions" id="actiondrop1" v-model="type">
-							<option value="Time">Time</option>
-							<option value="Scan">Scanner</option>
-						</select>
-					</div>
+					<select name="availableActions" id="actiondrop1" v-model="type">
+						<option value="Time">Time</option>
+						<option value="Scan">Scanner</option>
+					</select>
 				</div>
 			</div>
 

@@ -26,33 +26,25 @@
 		<div class="row">
 			<div class="col-md-6">
 				<label for="id">Id</label>
-				<div class="textbox">
-					<input name="id" type="text" v-bind:value="device.id" disabled>
-				</div>
+				<input name="id" type="text" v-bind:value="device.id" disabled>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-6">
 				<label for="model_id">Model Id</label>
-				<div class="textbox">
-					<input name="model_id" type="text" v-bind:value="device.model_id" disabled>
-				</div>
+				<input name="model_id" type="text" v-bind:value="device.model_id" disabled>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-6">
 				<label for="ip">IP Address</label>
-				<div class="textbox">
-					<input name="ip" type="text" v-model="ip">
-				</div>
+				<input name="ip" type="text" v-model="ip">
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-6">
 				<label for="purpose">Purpose</label>
-				<div class="textbox">
-					<input name="purpose" type="text" v-model="purpose">
-				</div>
+				<input name="purpose" type="text" v-model="purpose">
 			</div>
 		</div>
 		<div class="row">

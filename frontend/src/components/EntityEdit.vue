@@ -26,31 +26,23 @@
 		<div class="row">
 			<div class="col-md-6">
 				<label for="tbx_id">Id</label>
-				<div class="textbox">
-					<input id="tbx_id" name="id" type="text" v-bind:value="entity.id" disabled>
-				</div>
+				<input id="tbx_id" name="id" type="text" v-bind:value="entity.id" disabled>
 			</div>
 			<div class="col-md-6">
 				<label for="tbx_parent_id">Parent Id</label>
-				<div class="textbox">
-					<input id="tbx_parent_id" name="parent_id" type="text" v-bind:value="entity.parent_id" disabled>
-				</div>
+				<input id="tbx_parent_id" name="parent_id" type="text" v-bind:value="entity.parent_id" disabled>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-6">
 				<label for="tbx_title">Title</label>
-				<div class="textbox">
-					<input id="tbx_title" name="title" type="text" v-model="title">
-				</div>
+				<input id="tbx_title" name="title" type="text" v-model="title">
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-12">
 				<label for="tbx_description">Description</label>
-				<div class="textbox">
-					<textarea id="tbx_description" rows="3" cols="40" name="description" v-model="description"></textarea>
-				</div>
+				<textarea id="tbx_description" rows="3" cols="40" name="description" v-model="description"></textarea>
 			</div>
 		</div>
 		<div class="row">

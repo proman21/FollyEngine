@@ -28,25 +28,19 @@
 				<div class="row">
 					<div class="col-md-12">
 						<label for="id">Id</label>
-						<div class="textbox">
-							<input name="id" type="text" v-bind:value="scene.id" disabled>
-						</div>
+						<input name="id" type="text" v-bind:value="scene.id" disabled>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-12">
 						<label for="name">Name</label>
-						<div class="textbox">
-							<input name="name" type="text" v-model="name">
-						</div>
+						<input name="name" type="text" v-model="name">
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-md-12">
 						<label for="description">Description</label>
-						<div class="textbox">
-							<textarea rows="3" cols="40" id = "scenename" name="description" v-model="description" />
-						</div>
+						<textarea rows="3" cols="40" id = "scenename" name="description" v-model="description" />
 					</div>
 				</div>
 				<div class="row">
