@@ -23,7 +23,7 @@
 <template>
 	<div>
 		<div class="row infopanel">
-            <div class="col-md-6">
+			<div class="col-md-6">
 				<label for="id">Id</label>
 				<input name="id" type="text" v-bind:value="action.id" disabled>
 			</div>
@@ -33,7 +33,7 @@
 			</div>
 		</div>
 		<div class="row infopanel">
-            <div class="col-md-12">
+			<div class="col-md-12">
 				<statement-node v-bind:statement="ast" v-on:change="changed"></statement-node>
 			</div>
 		</div>
