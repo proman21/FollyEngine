@@ -28,8 +28,14 @@
 	<div v-else class="row">
 		<div class="col-md-2">
 			<h4>Actions</h4>
-			<nav class="nav flex-column">
-				<router-link v-for="action in actions" v-bind:key="action.id" v-bind:to="{ name: 'actions', params: { id: action.id } }" class="nav-link">
+			<nav class="nav nav-pills flex-column">
+				<router-link
+					v-for="action in actions"
+					v-bind:key="action.id"
+					v-bind:to="{ name: 'actions', params: { id: action.id } }"
+					active-class="active"
+					class="nav-link"
+				>
 					({{ action.id }}) {{ action.name }}
 				</router-link>
 			</nav>

@@ -29,7 +29,7 @@
 		<div class="col-md-2">
 			<h4>Entities</h4>
 			<nav>
-				<ul class="nav flex-column">
+				<ul class="nav nav-pills flex-column">
 					<li v-for="entity in entities" v-bind:key="entity.id" class="nav-item row">
 						<div class="dropdown col-sm-auto">
 							<button type="button" class="btn btn-secondary dropdown-toggle btn-sm" data-toggle="dropdown"></button>
@@ -38,7 +38,11 @@
 								<button class="dropdown-item" v-if="entity.children.length == 0" v-on:click="newInstance(entity.id)">Add instance</button>
 							</div>
 						</div>
-						<router-link :to="{ name: 'entities', params: { id: entity.id } }" class="nav-link col-sm">
+						<router-link
+							v-bind:to="{ name: 'entities', params: { id: entity.id } }"
+							active-class="active"
+							class="nav-link col-sm"
+						>
 							{{ entity.title }}
 						</router-link>
 					</li>
