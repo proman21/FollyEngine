@@ -22,7 +22,7 @@
 
 <template>
 	<div>
-		<div class="row infopanel">
+		<div class="row">
 			<div class="col-md-4">
 				<label for="id">Id</label>
 				<input name="id" type="text" v-bind:value="action.id" disabled>
@@ -40,19 +40,19 @@
 				</select>
 			</div>
 		</div>
-		<div class="row infopanel">
+		<div class="row">
 			<div class="col-md-12">
 				<statement-node v-bind:statement="ast" v-on:change="changed"></statement-node>
 			</div>
 		</div>
-		<div class="row infopanel">
+		<div class="row">
 			<div class="col-md-1">
 				<div>
 					<button class="btn btn-primary" v-on:click="save">Save</button>
 				</div>
 			</div>
 		</div>
-		<div class="row infopanel">
+		<div class="row">
 			<div class="col-md-1">
 				<div>
 					<button class="btn btn-primary" v-on:click="deleteAction()">Delete</button>

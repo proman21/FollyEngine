@@ -25,7 +25,7 @@
 		<h2>Edit {{ scene.name }}</h2>
 		<div class="row">
 			<div class="col-md-6">
-				<div class="row infopanel">
+				<div class="row">
 					<div class="col-md-12">
 						<label for="id">Id</label>
 						<div class="textbox">
@@ -33,7 +33,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="row infopanel">
+				<div class="row">
 					<div class="col-md-12">
 						<label for="name">Name</label>
 						<div class="textbox">
@@ -41,7 +41,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="row infopanel">
+				<div class="row">
 					<div class="col-md-12">
 						<label for="description">Description</label>
 						<div class="textbox">
@@ -49,7 +49,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="row infopanel">
+				<div class="row">
 					<div class="col-md-1">
 						<button class="btn btn-primary" v-on:click="deleteScene()">Delete Scene</button>
 					</div>
@@ -59,7 +59,7 @@
 			<!-- events part to do -->
 
 			<div class="col-md-6">
-				<div class="row infopanel">
+				<div class="row">
 					<div class="col-md-12">
 						<div class = "subbox" style="height: 260px">
 							<ul class = "action-menu">

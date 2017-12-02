@@ -29,7 +29,7 @@
 
 		<div v-else>
 			<h3>Event Editor for {{ evt.name }}</h3>
-			<div class="row infopanel">
+			<div class="row">
 				<div class="col-md-6">
 					<label for="id">Id</label>
 					<div class="textbox">
@@ -37,7 +37,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="row infopanel">
+			<div class="row">
 				<div class="col-md-6">
 					<label for="name">Name</label>
 					<div class="textbox">
@@ -46,7 +46,7 @@
 				</div>
 			</div>
 
-			<div class="row infopanel">
+			<div class="row">
 				<div class="col-md-6">
 
 					<label for="AvailableActions">Type of Event</label>
@@ -59,7 +59,7 @@
 				</div>
 			</div>
 
-			<div class="row infopanel">
+			<div class="row">
 				<div class="col-md-6">
 					<div v-if="evt.type == 'Time'">
 						<label for="time">Time</label>
@@ -80,7 +80,7 @@
 
 
 
-			<div class="row infopanel">
+			<div class="row">
 				<div class="col-md-6">
 					<h2>Nonlinked Actions</h2>
 					click to link
@@ -100,7 +100,7 @@
 					</ul>
 				</div>
 			</div>
-			<div class="row infopanel">
+			<div class="row">
 				<div class="col-md-1">
 					<button class="btn btn-primary" v-on:click="deleteEvent()">Delete Event</button>
 				</div>

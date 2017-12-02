@@ -23,7 +23,7 @@
 <template>
 	<div>
 		<h2>Virtual Entity</h2>
-		<div class="row infopanel">
+		<div class="row">
 			<div class="col-md-6">
 				<label for="tbx_id">Id</label>
 				<div class="textbox">
@@ -37,7 +37,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row infopanel">
+		<div class="row">
 			<div class="col-md-6">
 				<label for="tbx_title">Title</label>
 				<div class="textbox">
@@ -45,7 +45,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row infopanel">
+		<div class="row">
 			<div class="col-md-12">
 				<label for="tbx_description">Description</label>
 				<div class="textbox">
@@ -53,7 +53,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row infopanel">
+		<div class="row">
 			<div class="col-md-12">
 				<table class="entity_components">
 					<caption>Instances</caption>
@@ -138,7 +138,7 @@
 				</table>
 			</div>
 		</div>
-		<div class="row infopanel">
+		<div class="row">
 			<div class="col-md-12">
 				<!--<button class="btn btn-primary" v-on:click="updateEntity()">Update</button>-->
 				<button class="btn btn-primary" v-on:click="deleteEntity()">Delete</button>

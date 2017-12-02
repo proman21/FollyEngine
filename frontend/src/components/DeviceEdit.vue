@@ -23,7 +23,7 @@
 <template>
 	<div>
 		<h2>Edit Device {{ device.id }}</h2>
-		<div class="row infopanel">
+		<div class="row">
 			<div class="col-md-6">
 				<label for="id">Id</label>
 				<div class="textbox">
@@ -31,7 +31,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row infopanel">
+		<div class="row">
 			<div class="col-md-6">
 				<label for="model_id">Model Id</label>
 				<div class="textbox">
@@ -39,7 +39,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row infopanel">
+		<div class="row">
 			<div class="col-md-6">
 				<label for="ip">IP Address</label>
 				<div class="textbox">
@@ -47,7 +47,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row infopanel">
+		<div class="row">
 			<div class="col-md-6">
 				<label for="purpose">Purpose</label>
 				<div class="textbox">
@@ -55,7 +55,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row infopanel">
+		<div class="row">
 			<div class="col-md-1">
 				<button class="btn btn-primary" v-on:click="deleteDevice()">Delete</button>
 			</div>

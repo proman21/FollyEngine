@@ -22,7 +22,7 @@
 
 <template>
 	<div>
-		<div class="row infopanel">
+		<div class="row">
 			<div class="col-md-12">
 				<label for="output">Device ID</label>
 				<select name="output" v-model="output">
@@ -32,7 +32,7 @@
 				</select>
 			</div>
 		</div>
-		<div class="row infopanel">
+		<div class="row">
 			<div class="col-md-12">
 				<label for="resource">Text</label>
 				<expression-node v-bind:expression="statement.resource" v-on:change="resourceChanged"></expression-node>
