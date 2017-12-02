@@ -33,11 +33,11 @@
 		</div>
 		<div>
 			<label for="tag">Tag</label>
-			<input name="tag" type="text" v-bind:value="instance.tag">
+			<input name="tag" type="text" v-model="tag">
 		</div>
 		<div>
 			<label for="type">Type</label>
-			<input name="type" type="text" v-bind:value="instance.type">
+			<input name="type" type="text" v-bind:value="instance.type" disabled>
 		</div>
 		<div>
 			<h3>Properties</h3>
@@ -112,6 +112,17 @@
 
 			entity() {
 				return this.$store.getters.entityById(this.instance.virtual_entity_id);
+			},
+
+			tag: {
+				get: function() {
+					return this.instance.tag;
+				},
+
+				set: function(tag) {
+					const instance = Object.assign({}, this.instance, { tag });
+					this.$store.dispatch('updateInstance', { instance });
+				},
 			},
 		},
 	}
