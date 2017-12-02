@@ -100,7 +100,7 @@
 				console.log("Actions :: @save", this.ast);
 
 				// Update action over api
-				const action = { id: this.action.id, name: this.action.name, ast: this.ast };
+				const action = Object.assign({}, this.action, { ast: this.ast });
 				this.$store.dispatch('updateAction', { action });
 			},
 		},
@@ -135,6 +135,7 @@
 		async created() {
 			await this.$store.dispatch('fetchActions');
 			await this.$store.dispatch('fetchDevices'); // ensure store is populated with the devices
+			await this.$store.dispatch('fetchEntities'); // ensure store is populated with the entities
 			this.loading = false;
 		},
 	}

@@ -290,6 +290,7 @@ class ActionTest(Test):
                 'id': 1,
                 'name': 'Action 1',
                 'ast': ast,
+                'wants_entity_id': None,
             },
         ]
         self.assertEqual(actions, expected)
@@ -337,7 +338,8 @@ class ActionTest(Test):
         updated_action = {
             'id': 1,
             'name': 'Action with New Name',
-            'ast': ast
+            'ast': ast,
+            'wants_entity_id': None,
         }
         response = self.test_client.put('/api/actions/1', data=json.dumps(updated_action));
         self.assertEqual(response.status_code, 201)

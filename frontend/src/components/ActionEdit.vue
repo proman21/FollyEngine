@@ -23,13 +23,21 @@
 <template>
 	<div>
 		<div class="row infopanel">
-			<div class="col-md-6">
+			<div class="col-md-4">
 				<label for="id">Id</label>
 				<input name="id" type="text" v-bind:value="action.id" disabled>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-4">
 				<label for="name">Name</label>
 				<input name="name" type="text" v-model="name">
+			</div>
+			<div class="col-md-4">
+				<label for="entity">Entity</label>
+				<select name="entity" v-model="entity">
+					<option v-for="entity in entities" v-bind:value="entity.id">
+						{{entity.id}}: {{entity.title}}
+					</option>
+				</select>
 			</div>
 		</div>
 		<div class="row infopanel">
@@ -87,6 +95,10 @@
 				return this.$store.getters.actionById(this.$props.id);
 			},
 
+			entities() {
+				return this.$store.state.entities.entities;
+			},
+
 			//
 			// This is tedious but recommended, see https://vuex.vuejs.org/en/forms.html.
 			//
@@ -97,7 +109,18 @@
 				},
 
 				set: function(name) {
-					const action = { id: this.action.id, name: name, ast: this.action.ast };
+					const action = Object.assign({}, this.action, { name });
+					this.$store.dispatch('updateAction', { action });
+				},
+			},
+
+			entity: {
+				get: function() {
+					return this.action.wants_entity_id;
+				},
+
+				set: function(wants_entity_id) {
+					const action = Object.assign({}, this.action, { wants_entity_id });
 					this.$store.dispatch('updateAction', { action });
 				},
 			},

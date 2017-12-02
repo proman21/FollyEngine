@@ -258,6 +258,7 @@ def api_actions():
                 'id': action.id,
                 'name': action.name,
                 'ast': ast,
+                'wants_entity_id': action.wants_entity_id,
             })
 
         return flask.jsonify(serialisable_actions)
@@ -273,7 +274,21 @@ def api_actions():
         if action_ast is None:
             flask.abort(400)
 
-        action = model.Action(name=action_name, ast=json.dumps(action_ast))
+        action_wants_entity_id = new_action.get('wants_entity_id')
+
+        if action_wants_entity_id is not None:
+            db = data_access.Database()
+            entity = db.get_virtual_entity_by_id(action_wants_entity_id)
+            if entity is None:
+                flask.abort(400)
+        else:
+            entity = None
+
+        action = model.Action(
+            name=action_name,
+            ast=json.dumps(action_ast),
+            wants_entity=entity,
+        )
 
         db = data_access.Database()
         db.add_action(action)
@@ -294,6 +309,7 @@ def api_action_by_id(action_id):
             'id': action.id,
             'name': action.name,
             'ast': ast,
+            'wants_entity_id': action.wants_entity_id,
         }
 
         return flask.jsonify(serialisable_action)
@@ -314,8 +330,17 @@ def api_action_by_id(action_id):
         if action_ast is None:
             flask.abort(400)
 
+        action_wants_entity_id = updated_action.get('wants_entity_id')
+        if action_wants_entity_id is not None:
+            entity = db.get_virtual_entity_by_id(action_wants_entity_id)
+            if entity is None:
+                flask.abort(400)
+        else:
+            entity = None
+
         action.name = action_name
         action.ast = json.dumps(action_ast)
+        action.wants_entity = entity
         db.commit()
 
         return '', 201
