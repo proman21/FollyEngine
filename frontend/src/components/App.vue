@@ -51,4 +51,22 @@
 </script>
 
 <style>
+html, body {
+	height: 100%;
+	margin: 0px;
+}
+
+.wrapper {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+
+.wrapper > nav {
+	flex: 0 0 auto;
+}
+
+.wrapper > div {
+	flex: 0 0 auto;
+}
 </style>
