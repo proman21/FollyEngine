@@ -56,7 +56,7 @@ class VirtualEntity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(length=100), nullable=False, unique=True)
     parent_id = db.Column(db.Integer, db.ForeignKey("tb_virtual_entity.id", onupdate="CASCADE", ondelete="CASCADE"))
-    description = db.Column(db.String(length=255), nullable=True)
+    description = db.Column(db.String(length=255))
     # TODO: Review attribute_schema nullable property; too strict?
     json_schema = db.Column(db.Text, nullable=False)
     # !IMPORTANT: Remember that this relationship also gives you (implicit) access to the parent via VE.parent.
@@ -185,7 +185,7 @@ class InstanceEntity(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     virtual_entity_id = db.Column(db.Integer, db.ForeignKey(VirtualEntity.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
-    tag = db.Column(db.String, unique=True, nullable=True)
+    tag = db.Column(db.String, unique=True)
     json_values = db.Column(db.Text, nullable=False)
     virtual_entity = db.relationship("VirtualEntity", back_populates="instances")
 
@@ -302,8 +302,8 @@ class DeviceModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(length=255), nullable=False)
     type = db.Column(db.Enum(DeviceTypes), nullable=False)
-    part_name = db.Column(db.String(length=255), nullable=True)
-    description = db.Column(db.String(length=255), nullable=True)
+    part_name = db.Column(db.String(length=255))
+    description = db.Column(db.String(length=255))
     physical_devices = db.relationship("PhysicalDevice", back_populates="model")
 
     def __init__(self, name: str, type: DeviceTypes, part_name: str=None, description: str=None):
@@ -328,7 +328,7 @@ class PhysicalDevice(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     model_id = db.Column(db.Integer, db.ForeignKey(DeviceModel.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     ip = db.Column(db.Text(length=2083), nullable=False, unique=True)
-    purpose = db.Column(db.String(length=255), nullable=True)
+    purpose = db.Column(db.String(length=255))
     model = db.relationship("DeviceModel", back_populates="physical_devices")
     device_outputs = db.relationship("DeviceOutput", back_populates="device")
     device_inputs = db.relationship("DeviceInput", back_populates="device")
@@ -360,8 +360,8 @@ class DeviceOutput(db.Model):
     device_id = db.Column(db.Integer, db.ForeignKey(PhysicalDevice.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     type = db.Column(db.Enum(OutputTypes), nullable=False)
     # TO DO: Resolve --> what is name? Enum(OutputTypes) can replace?
-    name = db.Column(db.String(length=50), nullable=True)
-    description = db.Column(db.String(length=255), nullable=True)
+    name = db.Column(db.String(length=50))
+    description = db.Column(db.String(length=255))
     device = db.relationship("PhysicalDevice", back_populates="device_outputs")
 
     def __init__(self, device_id: int, type: OutputTypes, name: str=None, description: str=None):
@@ -392,8 +392,8 @@ class DeviceInput(db.Model):
     device_id = db.Column(db.Integer, db.ForeignKey(PhysicalDevice.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     type = db.Column(db.Enum(InputTypes), nullable=False)
     # TO DO: Resolve --> what is name? Enum(InputTypes) can replace?
-    name = db.Column(db.String(length=50), nullable=True)
-    description = db.Column(db.String(length=255), nullable=True)
+    name = db.Column(db.String(length=50))
+    description = db.Column(db.String(length=255))
     device = db.relationship("PhysicalDevice", back_populates="device_inputs")
 
     def __init__(self, device_id: int, type: InputTypes, name: str=None, description: str=None):
@@ -439,7 +439,7 @@ class Event(db.Model):
     scene_id = db.Column(db.Integer, db.ForeignKey(Scene.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     name = db.Column(db.String(length=255))
     type = db.Column(db.Enum(EventTypes))
-    time = db.Column(db.String(length=255), nullable=True)
+    time = db.Column(db.String(length=255))
     device_id = db.Column(db.Integer, db.ForeignKey(PhysicalDevice.id, onupdate="CASCADE", ondelete="SET NULL"))
     tag_id = db.Column(db.Integer, db.ForeignKey(VirtualEntity.id, onupdate="CASCADE", ondelete="SET NULL"))
 
