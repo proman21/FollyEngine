@@ -42,7 +42,7 @@ class Scene(db.Model):
     description = db.Column(db.String(length=255))
 
     def __repr__(self):
-        return f'<Scene {self.name!r}>'
+        return '<Scene(id={}, name={!r})>'.format(self.id, self.name)
 
 
 # VirtualEntity is self-referential.
@@ -74,8 +74,14 @@ class VirtualEntity(db.Model):
         self.properties = {}
 
     def __repr__(self):
-        return "<VirtualEntity(id=%s, title=%s, parent_id=%s, description=%s, has_properties=%s, instances=%s)>\n" %\
-               (self.id, self.title, self.parent_id, self.description, self.has_properties(), self.instances)
+        return "<VirtualEntity(id={}, title={!r}, parent_id={}, description={!r}, has_properties={}, instances={})>".format(
+            self.id,
+            self.title,
+            self.parent_id,
+            self.description,
+            self.has_properties(),
+            self.instances
+        )
 
     def get_child_count(self):
         return len(self.children)
@@ -201,8 +207,12 @@ class InstanceEntity(db.Model):
         self.set_property_defaults(virtual_entity)
 
     def __repr__(self):
-        return "<InstanceEntity(id=%s, virtual_entity_id=%s, tag=%s, json_values=%s)>\n\t" %\
-               (self.id, self.virtual_entity_id, self.tag, self.json_values)
+        return "<InstanceEntity(id={}, virtual_entity_id={}, tag={!r}, json_values={})>".format(
+            self.id,
+            self.virtual_entity_id,
+            self.tag,
+            self.json_values
+        )
 
     # Should only be called by a connected VE.
     def __add_property__(self, property: Property):
@@ -303,8 +313,13 @@ class DeviceModel(db.Model):
         self.description = description
 
     def __repr__(self):
-        return "<(id=%s, name=%s, type=%s, part_name=%s, description=%s)>" %\
-               (self.id, self.name, self.type.value, self.part_name, self.description)
+        return "<DeviceModel(id={}, name={!r}, type={!r}, part_name={!r}, description={!r})>".format(
+            self.id,
+            self.name,
+            self.type.value,
+            self.part_name,
+            self.description
+        )
 
 
 class PhysicalDevice(db.Model):
@@ -325,7 +340,12 @@ class PhysicalDevice(db.Model):
         self.purpose = purpose
 
     def __repr__(self):
-        return "<(id=%s, model_id=%s, ip=%s, purpose=%s)>" % (self.id, self.model_id, self.ip, self.purpose)
+        return "<PhysicalDevice(id={}, model_id={}, ip={!r}, purpose={!r})>".format(
+            self.id,
+            self.model_id,
+            self.ip,
+            self.purpose
+        )
 
 
 @unique
@@ -351,8 +371,13 @@ class DeviceOutput(db.Model):
         self.description = description
 
     def __repr__(self):
-        return "<(id=%s, device_id=%s, type=%s, name=%s, description=%s)>" %\
-               (self.id, self.device_id, self.type.value, self.name, self.description)
+        return "<DeviceOutput(id={}, device_id={}, type={!r}, name={!r}, description={!r})>".format(
+            self.id,
+            self.device_id,
+            self.type.value,
+            self.name,
+            self.description
+        )
 
 
 @unique
@@ -378,8 +403,13 @@ class DeviceInput(db.Model):
         self.description = description
 
     def __repr__(self):
-        return "<(id=%s, device_id=%s, type=%s, name=%s, description=%s)>" %\
-               (self.id, self.device_id, self.type.value, self.name, self.description)
+        return "<DeviceInput(id={}, device_id={}, type={!r}, name={!r}, description={!r})>".format(
+            self.id,
+            self.device_id,
+            self.type.value,
+            self.name,
+            self.description
+        )
 
 
 class Action(db.Model):
@@ -391,6 +421,9 @@ class Action(db.Model):
 
     wants_entity_id = db.Column(db.Integer, db.ForeignKey(VirtualEntity.id))
     wants_entity = db.relationship(VirtualEntity)
+
+    def __repr__(self):
+        return "<Action(id={}, name={!r}, wants_entity_id={})>".format(self.id, self.name, self.wants_entity_id)
 
 
 @unique
@@ -411,7 +444,15 @@ class Event(db.Model):
     tag_id = db.Column(db.Integer, db.ForeignKey(VirtualEntity.id, onupdate="CASCADE", ondelete="SET NULL"))
 
     def __repr__(self):
-        return "<(id=%s, model_id=%s, ip=%s, purpose=%s)>" % (self.id, self.scene_id, self.name, self.type)
+        return "<Event(id={}, scene_id={}, name={!r}, type={!r}), time={!r}, device_id={}, tag_id={})>".format(
+            self.id,
+            self.scene_id,
+            self.name,
+            self.type.value,
+            self.time,
+            self.device_id,
+            self.tag_id
+        )
 
 
 class EventActions(db.Model):
@@ -422,7 +463,7 @@ class EventActions(db.Model):
     action_id = db.Column(db.Integer, db.ForeignKey(Action.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
 
     def __repr__(self):
-        return "<(id=%s, event_id=%s, action_id=%s)>" % (self.id, self.event_id, self.action_id)
+        return "<EventActions(id={}, event_id={}, action_id={})>".format(self.id, self.event_id, self.action_id)
 
 
 # REGION: EVENTS
