@@ -145,6 +145,58 @@ class DeviceTest(DatabaseTest):
 
         return devices
 
+    def get_outputs(self, devices):
+        scanner_device, emics_device = devices
+
+        outputs = [
+            model.DeviceOutput(
+                device_id=emics_device.id,
+                type=model.OutputTypes.Text2Speech,
+                name="emics",
+                description="output description 1",
+            ),
+        ]
+
+        return outputs
+
+    def get_inputs(self, devices):
+        scanner_device, emics_device = devices
+
+        inputs = [
+            model.DeviceInput(
+                device_id=scanner_device.id,
+                type=model.InputTypes.Rfid,
+                name="rfid",
+                description="input description 1",
+            ),
+        ]
+
+        return inputs
+
+    def get_virtual_outputs(self, outputs):
+        emics_output, = outputs
+
+        virtual_outputs = [
+            model.VirtualOutput(
+                name="Speaker",
+                device_output_id=emics_output.id
+            ),
+        ]
+
+        return virtual_outputs
+
+    def get_virtual_inputs(self, inputs):
+        scanner_input, = inputs
+
+        virtual_inputs = [
+            model.VirtualInput(
+                name="Scanner",
+                device_input_id=scanner_input.id
+            ),
+        ]
+
+        return virtual_inputs
+
     def test_models(self):
         """Test that models can be added to the database"""
 
@@ -197,21 +249,13 @@ class DeviceTest(DatabaseTest):
 
         # Define the physical devices
         devices = self.get_devices(device_models)
-        scanner_device, emics_device = devices
 
         # Add the physical devices to the database
         for device in devices:
             self.db.add_device(device)
 
         # Define the outputs
-        outputs = [
-            model.DeviceOutput(
-                device_id=emics_device.id,
-                type=model.OutputTypes.Text2Speech,
-                name="emics",
-                description="output description 1",
-            ),
-        ]
+        outputs = self.get_outputs(devices)
 
         # Add the outputs to the database
         for output in outputs:
@@ -235,21 +279,13 @@ class DeviceTest(DatabaseTest):
 
         # Define the physical devices
         devices = self.get_devices(device_models)
-        scanner_device, emics_device = devices
 
         # Add the physical devices to the database
         for device in devices:
             self.db.add_device(device)
 
         # Define the inputs
-        inputs = [
-            model.DeviceInput(
-                device_id=scanner_device.id,
-                type=model.InputTypes.Rfid,
-                name="rfid",
-                description="input description 1",
-            ),
-        ]
+        inputs = self.get_inputs(devices)
 
         # Add the inputs to the database
         for input in inputs:
@@ -260,6 +296,76 @@ class DeviceTest(DatabaseTest):
         self.assertEqual(len(db_inputs), len(inputs))
         for i, input in enumerate(inputs):
             self.assertEqual(db_inputs[i], input)
+
+    def test_virtual_outputs(self):
+        """Test that virtual outputs can be added to the database"""
+
+        # Define the device models
+        device_models = self.get_models()
+
+        # Add the device models to the database
+        for device_model in device_models:
+            self.db.add_model(device_model)
+
+        # Define the physical devices
+        devices = self.get_devices(device_models)
+
+        # Add the physical devices to the database
+        for device in devices:
+            self.db.add_device(device)
+
+        # Define the outputs
+        outputs = self.get_outputs(devices)
+
+        # Add the outputs to the database
+        for output in outputs:
+            self.db.add_output(output)
+
+        # Define the virtual outputs
+        virtual_outputs = self.get_virtual_outputs(outputs)
+
+        # Add the virtual outputs to the database
+        for virtual_output in virtual_outputs:
+            self.db.add_virtual_output(virtual_output)
+
+        # Check the virtual outputs were added
+        db_virtual_outputs = self.db.get_all_virtual_outputs()
+        self.assertEqual(db_virtual_outputs, virtual_outputs)
+
+    def test_virtual_inputs(self):
+        """Test that virtual inputs can be added to the database"""
+
+        # Define the device models
+        device_models = self.get_models()
+
+        # Add the device models to the database
+        for device_model in device_models:
+            self.db.add_model(device_model)
+
+        # Define the physical devices
+        devices = self.get_devices(device_models)
+
+        # Add the physical devices to the database
+        for device in devices:
+            self.db.add_device(device)
+
+        # Define the inputs
+        inputs = self.get_inputs(devices)
+
+        # Add the inputs to the database
+        for input in inputs:
+            self.db.add_input(input)
+
+        # Define the virtual inputs
+        virtual_inputs = self.get_virtual_inputs(inputs)
+
+        # Add the virtual inputs to the database
+        for virtual_input in virtual_inputs:
+            self.db.add_virtual_input(virtual_input)
+
+        # Check the virtual inputs were added
+        db_virtual_inputs = self.db.get_all_virtual_inputs()
+        self.assertEqual(db_virtual_inputs, virtual_inputs)
 
     def test_delete_device(self):
         """Test deleting devices"""

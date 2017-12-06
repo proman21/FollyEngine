@@ -30,6 +30,8 @@ from .model import (
     PhysicalDevice,
     Scene,
     VirtualEntity,
+    VirtualInput,
+    VirtualOutput,
 )
 from .schema import Property
 
@@ -114,6 +116,24 @@ class Database(object):
     def add_input(self, input: DeviceInput):
         self._db.session.add(input)
         self._db.session.commit()
+
+    def add_virtual_output(self, virtual_output: VirtualOutput):
+        self._db.session.add(virtual_output)
+
+    def get_all_virtual_outputs(self):
+        return VirtualOutput.query.all()
+
+    def get_virtual_output_by_id(self, id: int):
+        return VirtualOutput.query.get(id)
+
+    def add_virtual_input(self, virtual_input: VirtualInput):
+        self._db.session.add(virtual_input)
+
+    def get_all_virtual_inputs(self):
+        return VirtualInput.query.all()
+
+    def get_virtual_input_by_id(self, id: int):
+        return VirtualInput.query.get(id)
 
     def get_all_virtual_entities(self):
         return VirtualEntity.query.all()

@@ -412,6 +412,30 @@ class DeviceInput(db.Model):
         )
 
 
+class VirtualOutput(db.Model):
+    __tablename__ = 'tb_virtual_output'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(length=255))
+    device_output_id = db.Column(db.Integer, db.ForeignKey(DeviceOutput.id, onupdate="CASCADE", ondelete="SET NULL"))
+    device_output = db.relationship(DeviceOutput)
+
+    def __repr__(self):
+        return "<VirtualOutput(id={}, name={!r}, device_output_id={})>".format(self.id, self.name, self.device_output_id)
+
+
+class VirtualInput(db.Model):
+    __tablename__ = 'tb_virtual_input'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(length=255))
+    device_input_id = db.Column(db.Integer, db.ForeignKey(DeviceInput.id, onupdate="CASCADE", ondelete="SET NULL"))
+    device_input = db.relationship(DeviceInput)
+
+    def __repr__(self):
+        return "<VirtualInput(id={}, name={!r}, device_input_id={})>".format(self.id, self.name, self.device_input_id)
+
+
 class Action(db.Model):
     __tablename__ = 'tb_action'
 
