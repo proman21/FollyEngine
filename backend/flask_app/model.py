@@ -51,7 +51,7 @@ class Scene(db.Model):
 # DONE: Remove inheritance component from VE.
 class VirtualEntity(db.Model):
     # TODO: use title as primary key, no need for surrogate id?
-    id = db.Column(db.Integer, nullable=False, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(length=100), nullable=False, unique=True)
     parent_id = db.Column(db.Integer, nullable=True)
     description = db.Column(db.String(length=255), nullable=True)
@@ -66,9 +66,6 @@ class VirtualEntity(db.Model):
 
     __tablename__ = 'tb_virtual_entity'
     __table_args__ = (
-        db.PrimaryKeyConstraint(
-            id,
-            name='pk_virtual_entity'),
         db.ForeignKeyConstraint(
             [parent_id],
             [id],
@@ -186,7 +183,7 @@ class VirtualEntity(db.Model):
 
 # InstanceEntity
 class InstanceEntity(db.Model):
-    id = db.Column(db.Integer, nullable=False, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True)
     virtual_entity_id = db.Column(db.Integer, nullable=False)
     tag = db.Column(db.String, unique=True, nullable=True)
     # DONE: Set nullable to false.
@@ -195,9 +192,6 @@ class InstanceEntity(db.Model):
 
     __tablename__ = 'tb_entity_instance'
     __table_args__ = (
-        db.PrimaryKeyConstraint(
-            id,
-            name='pk_entity_instance'),
         db.ForeignKeyConstraint(
             [virtual_entity_id],
             [VirtualEntity.id],
@@ -310,7 +304,7 @@ class DeviceTypes(Enum):
 
 # Pre-populate database for the time being. Create a new (front end) page eventually.
 class DeviceModel(db.Model):
-    id = db.Column(db.Integer, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(length=255), nullable=False)
     type = db.Column(db.Enum(DeviceTypes), nullable=False)
     part_name = db.Column(db.String(length=255), nullable=True)
@@ -318,12 +312,6 @@ class DeviceModel(db.Model):
     physical_devices = db.relationship("PhysicalDevice", back_populates="model")
 
     __tablename__ = 'tb_device_model'
-    __table_args__ = (
-        db.PrimaryKeyConstraint(
-            id,
-            name='pk_device_model'),
-        {}
-    )
 
     def __init__(self, name: str, type: DeviceTypes, part_name: str=None, description: str=None):
         self.name = name
@@ -337,7 +325,7 @@ class DeviceModel(db.Model):
 
 
 class PhysicalDevice(db.Model):
-    id = db.Column(db.Integer, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
     model_id = db.Column(db.Integer, nullable=False)
     ip = db.Column(db.Text(length=2083), nullable=False, unique=True)
     purpose = db.Column(db.String(length=255), nullable=True)
@@ -347,9 +335,6 @@ class PhysicalDevice(db.Model):
 
     __tablename__ = 'tb_physical_device'
     __table_args__ = (
-        db.PrimaryKeyConstraint(
-            id,
-            name='pk_physical_device'),
         db.ForeignKeyConstraint(
             [model_id],
             [DeviceModel.id],
@@ -374,7 +359,7 @@ class OutputTypes(Enum):
 
 
 class DeviceOutput(db.Model):
-    id = db.Column(db.Integer, nullable=False, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True)
     device_id = db.Column(db.Integer, nullable=False)
     type = db.Column(db.Enum(OutputTypes), nullable=False)
     # TO DO: Resolve --> what is name? Enum(OutputTypes) can replace?
@@ -384,9 +369,6 @@ class DeviceOutput(db.Model):
 
     __tablename__ = 'tb_device_output'
     __table_args__ = (
-        db.PrimaryKeyConstraint(
-            id,
-            name='pk_device_output'),
         db.ForeignKeyConstraint(
             [device_id],
             [PhysicalDevice.id],
@@ -412,7 +394,7 @@ class InputTypes(Enum):
 
 
 class DeviceInput(db.Model):
-    id = db.Column(db.Integer, nullable=False, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True)
     device_id = db.Column(db.Integer, nullable=False)
     type = db.Column(db.Enum(InputTypes), nullable=False)
     # TO DO: Resolve --> what is name? Enum(InputTypes) can replace?
@@ -422,9 +404,6 @@ class DeviceInput(db.Model):
 
     __tablename__ = 'tb_device_input'
     __table_args__ = (
-        db.PrimaryKeyConstraint(
-            id,
-            name='pk_device_input'),
         db.ForeignKeyConstraint(
             [device_id],
             [PhysicalDevice.id],
