@@ -411,26 +411,26 @@ class Event(db.Model):
     __tablename__ = 'tb_events'
 
     id = db.Column(db.Integer, primary_key=True)
-    sceneID = db.Column(db.Integer, db.ForeignKey(Scene.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+    scene_id = db.Column(db.Integer, db.ForeignKey(Scene.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     name = db.Column(db.String(length=255))
     type = db.Column(db.Enum(EventTypes))
     time = db.Column(db.String(length=255), nullable=True)
-    deviceID = db.Column(db.Integer, db.ForeignKey(PhysicalDevice.id, onupdate="CASCADE", ondelete="SET NULL"))
-    tagID = db.Column(db.Integer, db.ForeignKey(VirtualEntity.id, onupdate="CASCADE", ondelete="SET NULL"))
+    device_id = db.Column(db.Integer, db.ForeignKey(PhysicalDevice.id, onupdate="CASCADE", ondelete="SET NULL"))
+    tag_id = db.Column(db.Integer, db.ForeignKey(VirtualEntity.id, onupdate="CASCADE", ondelete="SET NULL"))
 
     def __repr__(self):
-        return "<(id=%s, model_id=%s, ip=%s, purpose=%s)>" % (self.id, self.sceneID, self.name, self.type)
+        return "<(id=%s, model_id=%s, ip=%s, purpose=%s)>" % (self.id, self.scene_id, self.name, self.type)
 
 
 class EventActions(db.Model):
     __tablename__ = 'tb_event_actions'
 
     id = db.Column(db.Integer, primary_key=True)
-    eventID = db.Column(db.Integer, db.ForeignKey(Event.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
-    actionID = db.Column(db.Integer, db.ForeignKey(Action.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+    event_id = db.Column(db.Integer, db.ForeignKey(Event.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+    action_id = db.Column(db.Integer, db.ForeignKey(Action.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
 
     def __repr__(self):
-        return "<(id=%s, eventID=%s, actionID=%s)>" % (self.id, self.eventID, self.actionID)
+        return "<(id=%s, event_id=%s, action_id=%s)>" % (self.id, self.event_id, self.action_id)
 
 
 # REGION: EVENTS

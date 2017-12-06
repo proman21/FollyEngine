@@ -229,14 +229,14 @@ class Database(object):
         return Action.query.get(action_id)
 
     def get_events_by_scene(self, scene_id: int):
-        return Event.query.filter(Event.sceneID == scene_id).all()
+        return Event.query.filter(Event.scene_id == scene_id).all()
 
     def get_all_events(self):
         return Event.query.all()
 
     def get_event_by_device(self, device_id: int):
         # There is a unique event for each device (or no event)
-        return Event.query.filter(Event.deviceID == device_id).first()
+        return Event.query.filter(Event.device_id == device_id).first()
 
     def get_event_by_id(self, event_id: int):
         return Event.query.get(event_id)
@@ -257,8 +257,8 @@ class Database(object):
         self._db.session.delete(eventAction)
         self._db.session.commit()
 
-    def get_actions_per_event(self, eventID: int):
-        return EventActions.query.filter(EventActions.eventID == eventID).all()
+    def get_actions_per_event(self, event_id: int):
+        return EventActions.query.filter(EventActions.event_id == event_id).all()
 
     def get_event_action_by_id(self, id: int):
         return EventActions.query.get(id)

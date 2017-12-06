@@ -490,15 +490,15 @@ def add_events(db, *, actions, devices, scenes):
     events = [
         model.Event(
             name="Event 1",
-            sceneID=scenes[0].id, # FIXME: why do we need this again?
+            scene_id=scenes[0].id, # FIXME: why do we need this again?
             type=model.EventTypes.scan,
-            deviceID=devices[0].id,
+            device_id=devices[0].id,
         ),
         model.Event(
             name="Event 2",
-            sceneID=scenes[0].id,
+            scene_id=scenes[0].id,
             type=model.EventTypes.scan,
-            deviceID=devices[1].id,
+            device_id=devices[1].id,
         ),
     ]
 
@@ -507,14 +507,14 @@ def add_events(db, *, actions, devices, scenes):
 
     event_actions_list = [
         # Player 1 action
-        model.EventActions(eventID=events[0].id, actionID=actions[0].id),
+        model.EventActions(event_id=events[0].id, action_id=actions[0].id),
 
         # Player 2 action
-        model.EventActions(eventID=events[1].id, actionID=actions[1].id),
+        model.EventActions(event_id=events[1].id, action_id=actions[1].id),
 
         # Allow scanning the greeting tag on either device
-        model.EventActions(eventID=events[0].id, actionID=actions[2].id),
-        model.EventActions(eventID=events[1].id, actionID=actions[2].id),
+        model.EventActions(event_id=events[0].id, action_id=actions[2].id),
+        model.EventActions(event_id=events[1].id, action_id=actions[2].id),
     ]
 
     for event_actions in event_actions_list:

@@ -553,7 +553,7 @@ def api_tags():
             flask.abort(400)
         device_id = int(device_id) # FIXME: should be sent as an int
 
-        tag_id = message.get('tagID')
+        tag_id = message.get('tag_id')
         if tag_id is None:
             flask.abort(400)
 
@@ -583,7 +583,7 @@ def execute_actions(device_id, tag_id):
     # TODO: Errors in one action shouldn't prevent the other from running, so
     # catch and print/log any errors but continue executing the next actions.
     for event_action in event_actions:
-        action = db.get_action_by_id(event_action.actionID)
+        action = db.get_action_by_id(event_action.action_id)
         print("Retrieved action", action)
         try:
             execute_action(action, tag_id)
@@ -640,11 +640,11 @@ def events_by_scene_id(scene_id):
                 t = event.type.value
             serialisable_events.append({
                 'id': event.id,
-                'scene_id': event.sceneID,
+                'scene_id': event.scene_id,
                 'name': event.name,
                 'type': t,
                 'time': event.time,
-                'device_id': event.deviceID,
+                'device_id': event.device_id,
             })
         return flask.jsonify(serialisable_events)
 
@@ -662,11 +662,11 @@ def all_events():
                 t = event.type.value
             serialisable_events.append({
                 'id': event.id,
-                'scene_id': event.sceneID,
+                'scene_id': event.scene_id,
                 'name': event.name,
                 'type': t,
                 'time': event.time,
-                'device_id': event.deviceID,
+                'device_id': event.device_id,
             })
 
         return flask.jsonify(serialisable_events)
@@ -685,11 +685,11 @@ def event_by_id(event_id):
             t = event.type.value
         serialisable_event = {
             'id': event.id,
-            'scene_id': event.sceneID,
+            'scene_id': event.scene_id,
             'name': event.name,
             'type': t,
             'time': event.time,
-            'device_id': event.deviceID,
+            'device_id': event.device_id,
         }
 
         return flask.jsonify(serialisable_event)
@@ -717,7 +717,7 @@ def event_by_id(event_id):
             event.type = model.EventTypes.scan
         event.time = event_time
         if (event_device is not None):
-            event.deviceID = int(event_device)
+            event.device_id = int(event_device)
 
         db.commit()
 
@@ -747,18 +747,18 @@ def newEvent(scene_id):
                 t = event.type.value
             serialisable_events.append({
                 'id': event.id,
-                'scene_id': event.sceneID,
+                'scene_id': event.scene_id,
                 'name': event.name,
                 'type': t,
                 'time': event.time,
-                'device_id': event.deviceID,
+                'device_id': event.device_id,
             })
 
         return flask.jsonify(serialisable_events)
 
     elif flask.request.method == 'POST':
         db = data_access.Database()
-        event = model.Event(sceneID=scene_id, name='new event')
+        event = model.Event(scene_id=scene_id, name='new event')
         db.add_event(event)
 
         return flask.redirect(flask.url_for('event_by_id', event_id=event.id), code=303)
@@ -782,7 +782,7 @@ def linkAction():
         if event_id is None:
             flask.abort(400)
 
-        eventAction = model.EventActions(eventID=event_id, actionID=action_id)
+        eventAction = model.EventActions(event_id=event_id, action_id=action_id)
 
         db = data_access.Database()
         db.add_event_action(eventAction)
@@ -796,8 +796,8 @@ def linkAction():
         for eventAction in eventActions:
             serialisable_eventActions.append({
                 'id': eventAction.id,
-                'event_id': eventAction.eventID,
-                'action_id': eventAction.actionID,
+                'event_id': eventAction.event_id,
+                'action_id': eventAction.action_id,
             })
         return flask.jsonify(serialisable_eventActions)
 
@@ -813,8 +813,8 @@ def eventAction(eventAction_id):
 
         serialisable_eventAction = {
             'id': eventAction.id,
-            'event_id': eventAction.eventID,
-            'action_id': eventAction.actionID,
+            'event_id': eventAction.event_id,
+            'action_id': eventAction.action_id,
         }
 
         return flask.jsonify(serialisable_eventAction)
