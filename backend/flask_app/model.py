@@ -392,14 +392,6 @@ class Action(db.Model):
     wants_entity_id = db.Column(db.Integer, db.ForeignKey(VirtualEntity.id))
     wants_entity = db.relationship(VirtualEntity)
 
-    # def __init__(self, name, ast):
-    #     self.name = name
-    #     self.ast = unparser.to_json(ast)
-
-    # @validates('ast')
-    # def validate_ast(self, key, ast):
-    #     pass # TODO
-
 
 @unique
 class EventTypes(Enum):
