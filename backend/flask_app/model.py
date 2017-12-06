@@ -330,8 +330,8 @@ class PhysicalDevice(db.Model):
     ip = db.Column(db.Text(length=2083), nullable=False, unique=True)
     purpose = db.Column(db.String(length=255))
     model = db.relationship("DeviceModel", back_populates="physical_devices")
-    device_outputs = db.relationship("DeviceOutput", back_populates="device")
-    device_inputs = db.relationship("DeviceInput", back_populates="device")
+    device_outputs = db.relationship("DeviceOutput", back_populates="device", passive_deletes=True)
+    device_inputs = db.relationship("DeviceInput", back_populates="device", passive_deletes=True)
 
     def __init__(self, id: int, model_id: int, ip: str, purpose: str=None):
         self.id = id

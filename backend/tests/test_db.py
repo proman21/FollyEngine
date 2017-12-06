@@ -379,11 +379,24 @@ class DeviceTest(DatabaseTest):
 
         # Define the physical devices
         devices = self.get_devices(device_models)
-        scanner_device, emics_device = devices
 
         # Add the physical devices to the database
         for device in devices:
             self.db.add_device(device)
+
+        # Define the outputs
+        outputs = self.get_outputs(devices)
+
+        # Add the outputs to the database
+        for output in outputs:
+            self.db.add_output(output)
+
+        # Define the inputs
+        inputs = self.get_inputs(devices)
+
+        # Add the inputs to the database
+        for input in inputs:
+            self.db.add_input(input)
 
         # Delete the device
         deleted_device = devices.pop()
