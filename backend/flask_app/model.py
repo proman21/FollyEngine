@@ -53,7 +53,7 @@ class VirtualEntity(db.Model):
     # TODO: use title as primary key, no need for surrogate id?
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(length=100), nullable=False, unique=True)
-    parent_id = db.Column(db.Integer, nullable=True)
+    parent_id = db.Column(db.Integer, db.ForeignKey("tb_virtual_entity.id", onupdate="CASCADE", ondelete="CASCADE"))
     description = db.Column(db.String(length=255), nullable=True)
     # TODO: Review attribute_schema nullable property; too strict?
     json_schema = db.Column(db.Text, nullable=False)
@@ -65,14 +65,6 @@ class VirtualEntity(db.Model):
     instances = db.relationship("InstanceEntity", back_populates="virtual_entity")
 
     __tablename__ = 'tb_virtual_entity'
-    __table_args__ = (
-        db.ForeignKeyConstraint(
-            [parent_id],
-            [id],
-            onupdate="CASCADE", ondelete="CASCADE",
-            name='fk_virtual_entity_subentities'),
-        {}
-    )
 
     # Not always called, hence the DB related events (see below [REGION: EVENTS]).
     def __init__(self, title: str, parent_id: int=None, description: str=None):
@@ -184,21 +176,12 @@ class VirtualEntity(db.Model):
 # InstanceEntity
 class InstanceEntity(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    virtual_entity_id = db.Column(db.Integer, nullable=False)
+    virtual_entity_id = db.Column(db.Integer, db.ForeignKey(VirtualEntity.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     tag = db.Column(db.String, unique=True, nullable=True)
-    # DONE: Set nullable to false.
     json_values = db.Column(db.Text, nullable=False)
     virtual_entity = db.relationship("VirtualEntity", back_populates="instances")
 
     __tablename__ = 'tb_entity_instance'
-    __table_args__ = (
-        db.ForeignKeyConstraint(
-            [virtual_entity_id],
-            [VirtualEntity.id],
-            onupdate="CASCADE", ondelete="CASCADE",
-            name='fk_virtual_entity_instance'),
-        {}
-    )
 
     def __init__(self, virtual_entity: VirtualEntity, tag: str=None):
         if not virtual_entity:
@@ -326,7 +309,7 @@ class DeviceModel(db.Model):
 
 class PhysicalDevice(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    model_id = db.Column(db.Integer, nullable=False)
+    model_id = db.Column(db.Integer, db.ForeignKey(DeviceModel.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     ip = db.Column(db.Text(length=2083), nullable=False, unique=True)
     purpose = db.Column(db.String(length=255), nullable=True)
     model = db.relationship("DeviceModel", back_populates="physical_devices")
@@ -334,14 +317,6 @@ class PhysicalDevice(db.Model):
     device_inputs = db.relationship("DeviceInput", back_populates="device")
 
     __tablename__ = 'tb_physical_device'
-    __table_args__ = (
-        db.ForeignKeyConstraint(
-            [model_id],
-            [DeviceModel.id],
-            onupdate="CASCADE", ondelete="CASCADE",
-            name='fk_device_model'),
-        {}
-    )
 
     def __init__(self, id: int, model_id: int, ip: str, purpose: str=None):
         self.id = id
@@ -360,7 +335,7 @@ class OutputTypes(Enum):
 
 class DeviceOutput(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    device_id = db.Column(db.Integer, nullable=False)
+    device_id = db.Column(db.Integer, db.ForeignKey(PhysicalDevice.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     type = db.Column(db.Enum(OutputTypes), nullable=False)
     # TO DO: Resolve --> what is name? Enum(OutputTypes) can replace?
     name = db.Column(db.String(length=50), nullable=True)
@@ -368,14 +343,6 @@ class DeviceOutput(db.Model):
     device = db.relationship("PhysicalDevice", back_populates="device_outputs")
 
     __tablename__ = 'tb_device_output'
-    __table_args__ = (
-        db.ForeignKeyConstraint(
-            [device_id],
-            [PhysicalDevice.id],
-            onupdate="CASCADE", ondelete="CASCADE",
-            name='fk_output_device'),
-        {}
-    )
 
     def __init__(self, device_id: int, type: OutputTypes, name: str=None, description: str=None):
         self.device_id = device_id
@@ -395,7 +362,7 @@ class InputTypes(Enum):
 
 class DeviceInput(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    device_id = db.Column(db.Integer, nullable=False)
+    device_id = db.Column(db.Integer, db.ForeignKey(PhysicalDevice.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     type = db.Column(db.Enum(InputTypes), nullable=False)
     # TO DO: Resolve --> what is name? Enum(InputTypes) can replace?
     name = db.Column(db.String(length=50), nullable=True)
@@ -403,14 +370,6 @@ class DeviceInput(db.Model):
     device = db.relationship("PhysicalDevice", back_populates="device_inputs")
 
     __tablename__ = 'tb_device_input'
-    __table_args__ = (
-        db.ForeignKeyConstraint(
-            [device_id],
-            [PhysicalDevice.id],
-            onupdate="CASCADE", ondelete="CASCADE",
-            name='fk_input_device'),
-        {}
-    )
 
     def __init__(self, device_id: int, type: InputTypes, name: str=None, description: str=None):
         self.device_id = device_id
@@ -451,32 +410,14 @@ class EventTypes(Enum):
 class Event(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
-    sceneID = db.Column(db.Integer, nullable=False)
+    sceneID = db.Column(db.Integer, db.ForeignKey(Scene.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     name = db.Column(db.String(length=255))
     type = db.Column(db.Enum(EventTypes))
     time = db.Column(db.String(length=255), nullable=True)
-    deviceID = db.Column(db.Integer, nullable=True)
-    tagID = db.Column(db.Integer, nullable=True)
+    deviceID = db.Column(db.Integer, db.ForeignKey(PhysicalDevice.id, onupdate="CASCADE", ondelete="SET NULL"))
+    tagID = db.Column(db.Integer, db.ForeignKey(VirtualEntity.id, onupdate="CASCADE", ondelete="SET NULL"))
 
     __tablename__ = 'tb_events'
-    __table_args__ = (
-        db.ForeignKeyConstraint(
-            [sceneID],
-            [Scene.id],
-            onupdate="CASCADE", ondelete="CASCADE",
-            name='scene_events_trigger'),
-        db.ForeignKeyConstraint(
-            [deviceID],
-            [PhysicalDevice.id],
-            onupdate="CASCADE", ondelete="SET NULL",
-            name='trigger_scanner'),
-        db.ForeignKeyConstraint(
-            [tagID],
-            [VirtualEntity.id],
-            onupdate="CASCADE", ondelete="SET NULL",
-            name='trigger_rfid_tag'),
-        {}
-    )
 
     def __repr__(self):
         return "<(id=%s, model_id=%s, ip=%s, purpose=%s)>" % (self.id, self.sceneID, self.name, self.type)
@@ -484,22 +425,9 @@ class Event(db.Model):
 
 class EventActions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    eventID = db.Column(db.Integer, nullable=False)
-    actionID = db.Column(db.Integer, nullable=False)
+    eventID = db.Column(db.Integer, db.ForeignKey(Event.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
+    actionID = db.Column(db.Integer, db.ForeignKey(Action.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     __tablename__ = 'tb_event_actions'
-    __table_args__ = (
-        db.ForeignKeyConstraint(
-            [eventID],
-            [Event.id],
-            onupdate="CASCADE", ondelete="CASCADE",
-            name='eventAction_event'),
-        db.ForeignKeyConstraint(
-            [actionID],
-            [Action.id],
-            onupdate="CASCADE", ondelete="CASCADE",
-            name='eventAction_action'),
-        {}
-    )
 
     def __repr__(self):
         return "<(id=%s, eventID=%s, actionID=%s)>" % (self.id, self.eventID, self.actionID)
