@@ -50,6 +50,8 @@ class Scene(db.Model):
 # Note: Currently all VEs can have properties (attributes) but only leaf VEs can have instances (InstanceEntities).
 # DONE: Remove inheritance component from VE.
 class VirtualEntity(db.Model):
+    __tablename__ = 'tb_virtual_entity'
+
     # TODO: use title as primary key, no need for surrogate id?
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(length=100), nullable=False, unique=True)
@@ -63,8 +65,6 @@ class VirtualEntity(db.Model):
     # NOTE: back_populates vs backref --> explicit vs implicit.
     # There is some redundancy here, but on the flip side it is extensible.
     instances = db.relationship("InstanceEntity", back_populates="virtual_entity")
-
-    __tablename__ = 'tb_virtual_entity'
 
     # Not always called, hence the DB related events (see below [REGION: EVENTS]).
     def __init__(self, title: str, parent_id: int=None, description: str=None):
@@ -175,13 +175,13 @@ class VirtualEntity(db.Model):
 
 # InstanceEntity
 class InstanceEntity(db.Model):
+    __tablename__ = 'tb_entity_instance'
+
     id = db.Column(db.Integer, primary_key=True)
     virtual_entity_id = db.Column(db.Integer, db.ForeignKey(VirtualEntity.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     tag = db.Column(db.String, unique=True, nullable=True)
     json_values = db.Column(db.Text, nullable=False)
     virtual_entity = db.relationship("VirtualEntity", back_populates="instances")
-
-    __tablename__ = 'tb_entity_instance'
 
     def __init__(self, virtual_entity: VirtualEntity, tag: str=None):
         if not virtual_entity:
@@ -287,14 +287,14 @@ class DeviceTypes(Enum):
 
 # Pre-populate database for the time being. Create a new (front end) page eventually.
 class DeviceModel(db.Model):
+    __tablename__ = 'tb_device_model'
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(length=255), nullable=False)
     type = db.Column(db.Enum(DeviceTypes), nullable=False)
     part_name = db.Column(db.String(length=255), nullable=True)
     description = db.Column(db.String(length=255), nullable=True)
     physical_devices = db.relationship("PhysicalDevice", back_populates="model")
-
-    __tablename__ = 'tb_device_model'
 
     def __init__(self, name: str, type: DeviceTypes, part_name: str=None, description: str=None):
         self.name = name
@@ -308,6 +308,8 @@ class DeviceModel(db.Model):
 
 
 class PhysicalDevice(db.Model):
+    __tablename__ = 'tb_physical_device'
+
     id = db.Column(db.Integer, primary_key=True)
     model_id = db.Column(db.Integer, db.ForeignKey(DeviceModel.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     ip = db.Column(db.Text(length=2083), nullable=False, unique=True)
@@ -315,8 +317,6 @@ class PhysicalDevice(db.Model):
     model = db.relationship("DeviceModel", back_populates="physical_devices")
     device_outputs = db.relationship("DeviceOutput", back_populates="device")
     device_inputs = db.relationship("DeviceInput", back_populates="device")
-
-    __tablename__ = 'tb_physical_device'
 
     def __init__(self, id: int, model_id: int, ip: str, purpose: str=None):
         self.id = id
@@ -334,6 +334,8 @@ class OutputTypes(Enum):
 
 
 class DeviceOutput(db.Model):
+    __tablename__ = 'tb_device_output'
+
     id = db.Column(db.Integer, primary_key=True)
     device_id = db.Column(db.Integer, db.ForeignKey(PhysicalDevice.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     type = db.Column(db.Enum(OutputTypes), nullable=False)
@@ -341,8 +343,6 @@ class DeviceOutput(db.Model):
     name = db.Column(db.String(length=50), nullable=True)
     description = db.Column(db.String(length=255), nullable=True)
     device = db.relationship("PhysicalDevice", back_populates="device_outputs")
-
-    __tablename__ = 'tb_device_output'
 
     def __init__(self, device_id: int, type: OutputTypes, name: str=None, description: str=None):
         self.device_id = device_id
@@ -361,6 +361,8 @@ class InputTypes(Enum):
 
 
 class DeviceInput(db.Model):
+    __tablename__ = 'tb_device_input'
+
     id = db.Column(db.Integer, primary_key=True)
     device_id = db.Column(db.Integer, db.ForeignKey(PhysicalDevice.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     type = db.Column(db.Enum(InputTypes), nullable=False)
@@ -368,8 +370,6 @@ class DeviceInput(db.Model):
     name = db.Column(db.String(length=50), nullable=True)
     description = db.Column(db.String(length=255), nullable=True)
     device = db.relationship("PhysicalDevice", back_populates="device_inputs")
-
-    __tablename__ = 'tb_device_input'
 
     def __init__(self, device_id: int, type: InputTypes, name: str=None, description: str=None):
         self.device_id = device_id
@@ -408,6 +408,7 @@ class EventTypes(Enum):
 
 
 class Event(db.Model):
+    __tablename__ = 'tb_events'
 
     id = db.Column(db.Integer, primary_key=True)
     sceneID = db.Column(db.Integer, db.ForeignKey(Scene.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
@@ -417,17 +418,16 @@ class Event(db.Model):
     deviceID = db.Column(db.Integer, db.ForeignKey(PhysicalDevice.id, onupdate="CASCADE", ondelete="SET NULL"))
     tagID = db.Column(db.Integer, db.ForeignKey(VirtualEntity.id, onupdate="CASCADE", ondelete="SET NULL"))
 
-    __tablename__ = 'tb_events'
-
     def __repr__(self):
         return "<(id=%s, model_id=%s, ip=%s, purpose=%s)>" % (self.id, self.sceneID, self.name, self.type)
 
 
 class EventActions(db.Model):
+    __tablename__ = 'tb_event_actions'
+
     id = db.Column(db.Integer, primary_key=True)
     eventID = db.Column(db.Integer, db.ForeignKey(Event.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
     actionID = db.Column(db.Integer, db.ForeignKey(Action.id, onupdate="CASCADE", ondelete="CASCADE"), nullable=False)
-    __tablename__ = 'tb_event_actions'
 
     def __repr__(self):
         return "<(id=%s, eventID=%s, actionID=%s)>" % (self.id, self.eventID, self.actionID)
