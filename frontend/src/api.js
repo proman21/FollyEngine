@@ -63,12 +63,7 @@ export async function linkAction(eventId, actionId){
 	});
 	
 	const response = await fetch(request);
-	const response_location = new URL(response.url);
-	// We have to make another request because we need the event id
-	const get_response = await fetch(response_location.pathname);
-	console.log(response_location.pathname)
-
-	return get_response.json();
+	return response.json();
 }
 
 export async function unlinkAction(eventAction){
@@ -117,12 +112,7 @@ export async function newEvent(scene_id){
 	});
 
 	const response = await fetch(request);
-	const response_location = new URL(response.url);
-	// We have to make another request because we need the event id
-	const get_response = await fetch(response_location.pathname);
-	console.log(response_location.pathname)
-
-	return get_response.json();
+	return response.json();
 }
 
 export async function deleteEvent(evt){
@@ -162,11 +152,7 @@ export async function newDevice(device) {
 	});
 
 	const response = await fetch(request);
-	const response_location = new URL(response.url);
-
-	// We have to make another request because we need the device id
-	const get_response = await fetch(response_location.pathname);
-	return get_response.json();
+	return response.json();
 }
 
 export async function newAction(scene) {
@@ -184,11 +170,7 @@ export async function newAction(scene) {
 	});
 
 	const response = await fetch(request);
-	const response_location = new URL(response.url);
-
-	// We have to make another request because we need the action id
-	const get_response = await fetch(response_location.pathname);
-	return get_response.json();
+	return response.json();
 }
 
 export async function newScene(scene) {
@@ -203,11 +185,7 @@ export async function newScene(scene) {
 	});
 
 	const response = await fetch(request);
-	const response_location = new URL(response.url);
-
-	// We have to make another request because we need the scene id
-	const get_response = await fetch(response_location.pathname);
-	return get_response.json();
+	return response.json();
 }
 
 export async function putAction(action) {
@@ -296,11 +274,7 @@ export async function newEntity(entity) {
 	});
 
 	const response = await fetch(request);
-	const response_location = new URL(response.url);
-
-	// We have to make another request because we need the entity id
-	const get_response = await fetch(response_location.pathname);
-	return get_response.json();
+	return response.json();
 }
 
 export async function putEntity(entity) {
@@ -343,12 +317,7 @@ export async function newInstance(entityId) {
 	});
 
 	const response = await fetch(request);
-	const response_location = new URL(response.url);
-
-	// We have to make another request because we need the entity id
-	const get_response = await fetch(response_location.pathname);
-
-	return get_response.json();
+	return response.json();
 }
 
 export async function putInstance(instance) {
