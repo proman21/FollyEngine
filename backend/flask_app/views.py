@@ -86,6 +86,13 @@ def api_devices():
 
         db.add_device(device)
 
+        # FIXME: don't assume what outputs the device has, device should tell us.
+        device_output = model.DeviceOutput(
+            device_id=device.id,
+            type=model.OutputTypes.Text2Speech,
+        )
+        db.add_output(device_output)
+
         return flask.redirect(flask.url_for('api_device_by_id', device_id=device.id), code=303)
 
 
@@ -156,6 +163,98 @@ def api_device_by_id(device_id):
 
         db = data_access.Database()
         db.delete_device(device)
+
+        return '', 204
+
+
+@app.route('/api/virtual-outputs/', methods=['GET', 'POST'])
+def api_virtual_outputs():
+    if flask.request.method == 'GET':
+        db = data_access.Database()
+        virtual_outputs = db.get_all_virtual_outputs()
+
+        serialisable_virtual_outputs = []
+        for virtual_output in virtual_outputs:
+            serialisable_virtual_outputs.append({
+                'id': virtual_output.id,
+                'name': virtual_output.name,
+                'device_output_id': virtual_output.device_output_id,
+            })
+
+        return flask.jsonify(serialisable_virtual_outputs)
+
+    elif flask.request.method == 'POST':
+        new_virtual_output = json.loads(flask.request.get_data(as_text=True))
+
+        name = new_virtual_output.get('name')
+        if name is None:
+            flask.abort(400)
+
+        device_output_id = new_virtual_output.get('device_output_id')
+
+        if device_output_id is not None:
+            device_output = db.get_output_by_id(device_output_id)
+            if device_output is None:
+                flask.abort(400)
+        else:
+            device_output = None
+
+        virtual_output = model.VirtualOutput(name=name, device_output=device_output)
+
+        db = data_access.Database()
+        db.add_virtual_output(virtual_output)
+
+        return flask.redirect(flask.url_for('api_virtual_output_by_id', virtual_output_id=virtual_output.id), code=303)
+
+
+@app.route('/api/virtual-outputs/<int:virtual_output_id>', methods=['GET', 'PUT', 'DELETE'])
+def api_virtual_output_by_id(virtual_output_id):
+    if flask.request.method == 'GET':
+        db = data_access.Database()
+        virtual_output = db.get_virtual_output_by_id(virtual_output_id)
+        if virtual_output is None:
+            flask.abort(404)
+
+        serialisable_virtual_output = {
+            'id': virtual_output.id,
+            'name': virtual_output.name,
+            'device_output_id': virtual_output.device_output_id,
+        }
+
+        return flask.jsonify(serialisable_virtual_output)
+
+    elif flask.request.method == 'PUT':
+        db = data_access.Database()
+        virtual_output = db.get_virtual_output_by_id(virtual_output_id)
+        if virtual_output is None:
+            flask.abort(404)
+
+        updated_virtual_output = json.loads(flask.request.get_data(as_text=True))
+
+        name = updated_virtual_output.get('name')
+        device_output_id = updated_virtual_output.get('device_output_id')
+
+        if device_output_id is not None:
+            device_output = db.get_output_by_id(device_output_id)
+            if device_output is None:
+                flask.abort(400)
+        else:
+            device_output = None
+
+        virtual_output.name = name
+        virtual_output.device_output = device_output
+        db.commit()
+
+        return '', 201
+
+    elif flask.request.method == 'DELETE':
+        db = data_access.Database()
+        virtual_output = db.get_virtual_output_by_id(virtual_output_id)
+        if virtual_output is None:
+            flask.abort(404)
+
+        db = data_access.Database()
+        db.delete_virtual_output(virtual_output)
 
         return '', 204
 

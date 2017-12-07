@@ -106,6 +106,9 @@ class Database(object):
     def get_all_outputs(self):
         return DeviceOutput.query.all()
 
+    def get_output_by_id(self, output_id: int):
+        return DeviceOutput.query.get(output_id)
+
     def add_output(self, output: DeviceOutput):
         self._db.session.add(output)
         self._db.session.commit()
@@ -113,12 +116,20 @@ class Database(object):
     def get_all_inputs(self):
         return DeviceInput.query.all()
 
+    def get_input_by_id(self, input_id: int):
+        return DeviceInput.query.get(input_id)
+
     def add_input(self, input: DeviceInput):
         self._db.session.add(input)
         self._db.session.commit()
 
     def add_virtual_output(self, virtual_output: VirtualOutput):
         self._db.session.add(virtual_output)
+        self._db.session.commit()
+
+    def delete_virtual_output(self, virtual_output: VirtualOutput):
+        self._db.session.delete(virtual_output)
+        self._db.session.commit()
 
     def get_all_virtual_outputs(self):
         return VirtualOutput.query.all()
@@ -128,6 +139,11 @@ class Database(object):
 
     def add_virtual_input(self, virtual_input: VirtualInput):
         self._db.session.add(virtual_input)
+        self._db.session.commit()
+
+    def delete_virtual_input(self, virtual_input: VirtualInput):
+        self._db.session.delete(virtual_input)
+        self._db.session.commit()
 
     def get_all_virtual_inputs(self):
         return VirtualInput.query.all()

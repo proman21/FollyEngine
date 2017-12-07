@@ -119,6 +119,18 @@ def add_devices(db):
     for input in inputs:
         db.add_input(input)
 
+    speaker_virtual_output = model.VirtualOutput(
+        name="Speaker",
+        device_output=emics_output
+    )
+    db.add_virtual_output(speaker_virtual_output)
+
+    monitor_virtual_output = model.VirtualOutput(
+        name="Monitor",
+        device_output=emics_output
+    )
+    db.add_virtual_output(monitor_virtual_output)
+
     return devices
 
 def add_scenes(db):
@@ -215,7 +227,7 @@ def add_entities(db):
     return entities
 
 def add_actions(db):
-    emics_device_id = 3 # FIXME: don't hardcode this
+    speaker_virtual_output_id = 1 # FIXME: don't hardcode this
 
     setup = [
         AssignmentStatement(
@@ -376,7 +388,7 @@ def add_actions(db):
                 PrintStatement(VariableNameExpression(name="outputString")),
 
                 OutputStatement(
-                    output=emics_device_id,
+                    output=speaker_virtual_output_id,
                     resource=VariableNameExpression(name="outputString"),
                 ),
 
@@ -461,7 +473,7 @@ Our system is unique as it allows everyday people to design the logic behind the
 
     greeting_ast = CompoundStatement(statements=[
         OutputStatement(
-            output=emics_device_id,
+            output=speaker_virtual_output_id,
             resource=StringLiteral('greeting'),
         )
     ])

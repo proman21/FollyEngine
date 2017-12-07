@@ -23,12 +23,32 @@
 <template>
 	<div>
 		<div>
-			<label for="output">Device ID</label>
-			<select name="output" v-model="output">
-				<option v-for="device in devices" v-bind:value="device.id">
-					{{device.id}}: {{device.purpose}} ({{device.ip}})
-				</option>
-			</select>
+			<label for="output">Virtual Output</label>
+			<div class="dropdown">
+				<button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<span v-if="output === null">
+						Select Output…
+					</span>
+					<span v-else>
+						{{ output.id }}: {{ output.name }}
+					</span>
+				</button>
+				<div class="dropdown-menu">
+					<button
+						v-for="output in virtualOutputs"
+						v-bind:key="output.id"
+						class="dropdown-item"
+						type="button"
+						v-on:click="selectOutput(output.id)"
+					>
+						{{ output.id }}: {{ output.name }}
+					</button>
+					<div class="dropdown-divider"></div>
+					<router-link v-bind:to="{ name: 'virtual-outputs' }" class="dropdown-item">
+						Edit Virtual Outputs
+					</router-link>
+				</div>
+			</div>
 		</div>
 		<div>
 			<label for="resource">Text</label>
@@ -48,17 +68,22 @@
 		},
 
 		computed: {
-			devices: function() {
-				return this.$store.state.devices.devices;
+			virtualOutputs: function() {
+				return this.$store.state.devices.virtualOutputs;
 			},
 
 			output: {
 				get: function() {
-					return this.$props.statement.output;
+					const outputId = this.$props.statement.output;
+					if (outputId === null) {
+						return null;
+					}
+
+					return this.virtualOutputs[outputId];
 				},
 
-				set: function(output) {
-					const statement = Object.assign({}, this.$props.statement, { output: output });
+				set: function(outputId) {
+					const statement = Object.assign({}, this.$props.statement, { output: outputId });
 					this.$emit('change', statement);
 				},
 			},
@@ -68,6 +93,10 @@
 			resourceChanged: function(expression) {
 				const statement = Object.assign({}, this.$props.statement, { resource: expression });
 				this.$emit('change', statement);
+			},
+
+			selectOutput: function(outputId) {
+				this.output = outputId;
 			},
 		},
 	}

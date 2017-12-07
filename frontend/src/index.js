@@ -38,6 +38,7 @@ import EntityEdit from './components/EntityEdit.vue';
 import InstanceEdit from './components/InstanceEdit.vue';
 import SceneEdit from './components/SceneEdit.vue';
 import EventEdit from './components/EventEdit.vue';
+import VirtualOutputs from './components/VirtualOutputs.vue';
 
 const routes = [
 	{ path: '/', redirect: '/scenes' }, // default route
@@ -112,6 +113,11 @@ const routes = [
 				}),
 			},
 		],
+	},
+	{
+		path: '/virtual-outputs',
+		name: 'virtual-outputs',
+		component: VirtualOutputs,
 	},
 ];
 

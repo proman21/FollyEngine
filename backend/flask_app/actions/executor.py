@@ -127,13 +127,24 @@ class Executor(Visitor):
         self.db.set_instance_entity_property(instance, node.name, value)
 
     def visit_output_statement(self, node: OutputStatement):
-        # TODO: we actually want to reference a *virtual output*, which maps to a physical output, which maps to the device to send to.
-        device_id = int(node.output)
+        virtual_output_id = int(node.output)
         resource = self.visit_expression(node.resource)
 
-        device = self.db.get_device_by_id(device_id)
-        if device is None:
-            raise ValueError("no device with id '{}'".format(device_id))
+        virtual_output = self.db.get_virtual_output_by_id(virtual_output_id)
+        if virtual_output is None:
+            raise ValueError("no virtual output with id {}".format(virtual_output_id))
+
+        print("[DEBUG] Found virtual output:", virtual_output)
+
+        device_output = virtual_output.device_output
+        if device_output is None:
+            raise ValueError("virtual output (id {}) is not mapped to an output".format(virtual_output_id))
+
+        print("[DEBUG] Virtual output maps to:", device_output)
+
+        device = device_output.device
+
+        print("[DEBUG] Device output maps to:", device)
 
         ip_address = device.ip
 

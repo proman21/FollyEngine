@@ -131,8 +131,9 @@
 
 		async created() {
 			await this.$store.dispatch('fetchActions');
-			await this.$store.dispatch('fetchDevices'); // ensure store is populated with the devices
-			await this.$store.dispatch('fetchEntities'); // ensure store is populated with the entities
+			await this.$store.dispatch('fetchDevices');
+			await this.$store.dispatch('fetchVirtualOutputs');
+			await this.$store.dispatch('fetchEntities');
 			this.loading = false;
 		},
 	}

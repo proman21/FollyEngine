@@ -27,6 +27,7 @@ import * as api from '../api.js';
 const deviceStore = {
 	state: {
 		devices: {},
+		virtualOutputs: {},
 	},
 
 	mutations: {
@@ -40,6 +41,14 @@ const deviceStore = {
 
 		deleteDevice(state, { device }) {
 			delete state.devices[device.id];
+		},
+
+		updateVirtualOutputs(state, { virtualOutputs }) {
+			state.virtualOutputs = virtualOutputs;
+		},
+
+		setVirtualOutput(state, { virtualOutput }) {
+			Vue.set(state.virtualOutputs, virtualOutput.id, virtualOutput);
 		},
 	},
 
@@ -55,11 +64,28 @@ const deviceStore = {
 			commit('updateDevices', { devices: normalized_devices });
 		},
 
+		async fetchVirtualOutputs({ commit }) {
+			const virtual_outputs = await api.getVirtualOutputs();
+
+			const normalized_virtual_outputs = {};
+			for (let virtual_output of virtual_outputs) {
+				normalized_virtual_outputs[virtual_output.id] = virtual_output;
+			}
+
+			commit('updateVirtualOutputs', { virtualOutputs: normalized_virtual_outputs });
+		},
+
 		// TODO: debounce...
 		updateDevice({ commit }, { device }) {
 			commit('setDevice', { device })
 
 			api.putDevice(device).catch(console.log)
+		},
+
+		async updateVirtualOutput({ commit }, { virtualOutput }) {
+			commit('setVirtualOutput', { virtualOutput })
+
+			return api.putVirtualOutput(virtualOutput);
 		},
 
 		async newDevice({ commit, dispatch }) {
@@ -69,6 +95,14 @@ const deviceStore = {
 			dispatch('updateDevice', { device });
 
 			return device;
+		},
+
+		async newVirtualOutput({ commit, dispatch }, { virtualOutput }) {
+			const virtualOutputFromServer = await api.newVirtualOutput(virtualOutput);
+
+			commit('setVirtualOutput', { virtualOutput: virtualOutputFromServer })
+
+			return virtualOutputFromServer;
 		},
 
 		async deleteDevice({ commit }, { device }) {

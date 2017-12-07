@@ -131,6 +131,11 @@ export async function getDevices() {
 	return fetchJson(url);
 }
 
+export async function getVirtualOutputs() {
+	const url = `${URL_BASE}/virtual-outputs/`;
+	return fetchJson(url);
+}
+
 export async function getScenes() {
 	const url = `${URL_BASE}/scenes/`;
 	return fetchJson(url);
@@ -149,6 +154,18 @@ export async function newDevice(device) {
 		body: JSON.stringify({
 			ip: '10.10.10.' + Math.floor(Math.random() * 255), // FIXME: should specify before creating or allow null
 		})
+	});
+
+	const response = await fetch(request);
+	return response.json();
+}
+
+export async function newVirtualOutput(virtualOutput) {
+	const url = `${URL_BASE}/virtual-outputs/`;
+
+	const request = new Request(url, {
+		method: 'POST',
+		body: JSON.stringify(virtualOutput)
 	});
 
 	const response = await fetch(request);
@@ -212,6 +229,18 @@ export async function putDevice(device) {
 	return fetch(request);
 }
 
+export async function putVirtualOutput(virtualOutput) {
+	const id = virtualOutput.id;
+	const url = `${URL_BASE}/virtual-outputs/${id}`;
+
+	const request = new Request(url, {
+		method: 'PUT',
+		body: JSON.stringify(virtualOutput),
+	});
+
+	return fetch(request);
+}
+
 export async function putScene(scene) {
 	const id = scene.id;
 	const url = `${URL_BASE}/scenes/${id}`;
@@ -238,6 +267,17 @@ export async function deleteAction(action) {
 export async function deleteDevice(device) {
 	const id = device.id;
 	const url = `${URL_BASE}/devices/${id}`;
+
+	const request = new Request(url, {
+		method: 'DELETE',
+	});
+
+	return fetch(request);
+}
+
+export async function deleteVirtualOutput(virtualOutput) {
+	const id = virtualOutput.id;
+	const url = `${URL_BASE}/virtual-outputs/${id}`;
 
 	const request = new Request(url, {
 		method: 'DELETE',
