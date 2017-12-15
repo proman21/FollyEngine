@@ -33,10 +33,10 @@ host = "http://192.168.0.102:8080/api/devices/";
 
 
 deviceID = str(get_mac());   #using mac as unique device ID
-modelID = "98";
+modelID = "97";
 #TODO make neater
 myIP = [l for l in ([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")][:1], [[(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) if l][0][0]
-myPurpose = "Pi used for RFID scanning";
+myPurpose = "Pi used for Actor Device";
 
 
 payload = json.dumps({'id': deviceID,
@@ -58,7 +58,7 @@ except Exception as err:
     print("not network accessable, the error was:")
     print(err)
     print()
-    print("Waiting 10 seconds till re-atempt...")
+    print("Waiting 10 seconds till re-attempt...")
     #wait(10)
     #TODO add wait loop
     #sys.exit(1)
