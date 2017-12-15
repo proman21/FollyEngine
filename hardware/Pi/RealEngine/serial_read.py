@@ -24,7 +24,7 @@ import requests
 from uuid import getnode as get_mac
 
 # hardcoded server/laptop IP TODO get dynamically
-host = "http://192.168.0.102:8080/api/tags/log/";
+host = "http://192.168.0.102:8080/api/devices/";
 
 deviceID = str(get_mac());
 modelID = "98";
@@ -46,11 +46,11 @@ except Exception as err:
     print("not network accessable, the error was:")
     print(err)
     print()
-    print("Waiting 10 seconds till re-aTtempt...")
+    print("Waiting 10 seconds till re-attempt...")
     #wait(10)
     #TODO add wait loop
     #sys.exit(1)
-
+host = "http://192.168.0.102:8080/api/tags/log/";
 
 while True:
     # the ports appear  as files in /dev
