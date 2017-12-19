@@ -18,38 +18,51 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import socket
-import serial
-import json
 import requests
+import socket
+import json
 from uuid import getnode as get_mac
+from subprocess import call
 
-def register_serial(selector):
-    serialport = init_serial()
+#TODO connect to wifi
+# Real_Engine
+# 93878517
 
-    # Register read events on the serial port with the selector
+def register_speaker(selector):
+    s = init_socket()
+
+    # Register the socket with the selector and ensure the socket is in
+    # non-blocking mode.
+    s.setblocking(False)
     selector.register(
-        fileobj=serialport,
+        fileobj=s,
         events=selectors.EVENT_READ,
-        data=lambda serialport, mask: handle_serial(serialport)
+        data=lambda sock, mask: handle_socket(sock)
     )
 
-def init_serial():
+def init_socket():
     # hardcoded server/laptop IP TODO get dynamically
     host = "http://192.168.0.102:8080/api/devices/";
 
-    deviceID = str(get_mac());
-    modelID = "98";
+
+    deviceID = str(get_mac());   #using mac as unique device ID
+    modelID = "97";
     #TODO make neater
     myIP = [l for l in ([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")][:1], [[(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) if l][0][0]
-    myPurpose = "Pi used for RFID scanning";
+    myPurpose = "Pi used for Actor Device";
 
 
     payload = json.dumps({'id': deviceID,
                'model_id': modelID,
                'ip': myIP,
                'purpose': myPurpose}); 
-               
+
+    # logging
+    print('post payload assembled:');
+    print(payload);
+    print('sending to: ' + host)
+
+
     # send initial post request to server
     try:
         r = requests.post(host, data= payload);
@@ -62,39 +75,54 @@ def init_serial():
         #wait(10)
         #TODO add wait loop
         #sys.exit(1)
-    host = "http://192.168.0.102:8080/api/tags/log/";
+        
 
-    serialport = serial.Serial("/dev/ttyUSB0", 9600, timeout=1)
-    return serialport
 
-def handle_serial(serialport):
-    response = serialport.readlines(None)
-    if response:
-        tag = str(response[0])[6:18];
-        print ("got tag: " + tag)
-        
-        payload = json.dumps({'id': deviceID, "tagID": tag});
-        
-        print('payload: ' + payload)
-        
-        print('sending to: ' + host)
-        
-        try:
-            r = requests.post(host, data=payload);
-        except Exception as err:
-            # the host could not be found
-            print("not network accessable, the error was:")
-            print(err)
-            print()
-            
-            return
+    # logging
+    print("post request sent");
+    print(r.text);
 
-        # logging
-        print("post request sent");
-        print(r.text);
+
+    s = socket.socket();
+    host = "";
+    port = 8080;
+    s.bind((host, port));
+
+    s.listen(5)
+
+    return s
+
+def handle_socket(s):
+    c, addr = s.accept()
+    request = bytes('HTTP/1.1 200 OK\r\n\r\n', 'utf-8');
+    c.send(request)
+
+    print ('Got connection from',addr)
+    data = c.recv(1024)
+
+    c.close()
+
+
+    temp, message = str(data).split("key=")
+
+    print(message)
+
+    speech = "... ..." + message.replace('+',' ') + '... ...'
+
+    print(speech)
+
+    tempFileName = "Audio/test_padded.wav"
+
+    call(['pico2wave','-w', tempFileName, speech])
+    call(['play',tempFileName])
+
+    print("end")
+  
+#icowav
+#s.ubind
 
 if __name__ == '__main__':
-    serialport = init_serial()
+    s = init_socket()
 
     while True:
-        handle_serial(serialport)
+        handle_socket(s)
