@@ -254,18 +254,30 @@ def add_entities(db):
         "tag4",
         "tag5",
         "tag6",
+        "tag7",
+        "tag8",
+        "tag9",
+        "tag10",
+        "tag11",
+        "tag12",
     ]
     for nfc in wands:
         wand_instance = model.InstanceEntity(virtual_entity=wand_entity,tag=nfc)
         db.add_instance_entity(wand_instance)
 
     training_wands = [
-        "tag7",
-        "tag8",
-        "tag9",
-        "tag0",
-        "tag11",
-        "tag12",
+        "nfc1",
+        "nfc2",
+        "nfc3",
+        "nfc4",
+        "nfc5",
+        "nfc6",
+        "nfc7",
+        "nfc8",
+        "nfc9",
+        "nfc10",
+        "nfc11",
+        "nfc12",
     ]
     for nfc in training_wands:
         training_wand_instance = model.InstanceEntity(virtual_entity=trainer_wand_entity,tag=nfc)
@@ -276,254 +288,6 @@ def add_entities(db):
 def add_actions(db):
     speaker_virtual_output_id = 1 # FIXME: don't hardcode this
 
-    setup = [
-        AssignmentStatement(
-            name="__PLAYER1__",
-            rvalue=IntegerLiteral(1), # FIXME: hardcoding instance ID of Player1
-        ),
-        AssignmentStatement(
-            name="__PLAYER2__",
-            rvalue=IntegerLiteral(2), #FIXME: hardcoding instance ID of Player2
-        ),
-    ]
-
-    get_card_name = lambda playerCard, cardName: [
-        IfElseStatement(
-            condition=BinaryOp(
-                left=VariableNameExpression(name=playerCard),
-                operator=nodes.Operator.EQ,
-                right=IntegerLiteral(0),
-            ),
-            if_body=AssignmentStatement(
-                name=cardName,
-                rvalue=StringLiteral("ROCK"),
-            ),
-            else_body=IfElseStatement(
-                condition=BinaryOp(
-                    left=VariableNameExpression(name=playerCard),
-                    operator=nodes.Operator.EQ,
-                    right=IntegerLiteral(1),
-                ),
-                if_body=AssignmentStatement(
-                    name=cardName,
-                    rvalue=StringLiteral("PAPER"),
-                ),
-                else_body=AssignmentStatement(
-                    name=cardName,
-                    rvalue=StringLiteral("SCISSORS"),
-                ),
-            ),
-        ),
-    ]
-
-    calculate_winner = [
-        # p1Card := Player1.card
-        AssignmentStatement(
-            name="p1Card",
-            rvalue=GetAttrExpression(
-                obj="__PLAYER1__",
-                name="card",
-            )
-        ),
-        # p2Card := Player2.card
-        AssignmentStatement(
-            name="p2Card",
-            rvalue=GetAttrExpression(
-                obj="__PLAYER2__",
-                name="card",
-            )
-        ),
-        IfElseStatement(
-            # If p1Card == -1 or p2Card == -1 then wait for both players to scan
-            condition=BinaryOp(
-                left=BinaryOp(
-                    left=VariableNameExpression(name="p1Card"),
-                    operator=nodes.Operator.EQ,
-                    right=IntegerLiteral(-1),
-                ),
-                operator=nodes.Operator.LOGICAL_OR,
-                right=BinaryOp(
-                    left=VariableNameExpression(name="p2Card"),
-                    operator=nodes.Operator.EQ,
-                    right=IntegerLiteral(-1),
-                ),
-            ),
-            if_body=CompoundStatement(statements=[
-                PrintStatement(StringLiteral(">>> Waiting for players...")),
-            ]),
-            else_body=CompoundStatement(statements=[
-                PrintStatement(StringLiteral(">>> Calculating winner")),
-                # winner := (p1Card - p2Card) % 3
-                # Thank Taz for the math :D
-                AssignmentStatement(
-                    name="winner",
-                    rvalue=BinaryOp(
-                        left=BinaryOp(
-                            left=VariableNameExpression(name="p1Card"),
-                            operator=nodes.Operator.SUB,
-                            right=VariableNameExpression(name="p2Card"),
-                        ),
-                        operator=nodes.Operator.MOD,
-                        right=IntegerLiteral(3)
-                    ),
-                ),
-                IfElseStatement(
-                    condition=BinaryOp(
-                        left=VariableNameExpression(name="winner"),
-                        operator=nodes.Operator.EQ,
-                        right=IntegerLiteral(1), # 1 -> Player 1 wins
-                    ),
-                    if_body=CompoundStatement(statements=[
-                        PrintStatement(StringLiteral(">>> Player 1 Wins!!!")),
-                        AssignmentStatement(
-                            name="winnerAnnounce",
-                            rvalue=StringLiteral("Player 1 wins"),
-                        ),
-                    ]),
-                    else_body=IfElseStatement(
-                        condition=BinaryOp(
-                            left=VariableNameExpression(name="winner"),
-                            operator=nodes.Operator.EQ,
-                            right=IntegerLiteral(2), # 2 -> Player 2 wins
-                        ),
-                        if_body=CompoundStatement(statements=[
-                            PrintStatement(StringLiteral(">>> Player 2 Wins!!!")),
-                            AssignmentStatement(
-                                name="winnerAnnounce",
-                                rvalue=StringLiteral("Player 2 wins"),
-                            ),
-                        ]),
-                        else_body=CompoundStatement(statements=[
-                            PrintStatement(StringLiteral(">>> DRAW!!!")),
-                            AssignmentStatement(
-                                name="winnerAnnounce",
-                                rvalue=StringLiteral("It was a draw, play again"),
-                            ),
-                        ]),
-                    ),
-                ),
-
-                # Copy in statements to calculate the card name
-                *get_card_name("p1Card", "p1CardName"),
-                *get_card_name("p2Card", "p2CardName"),
-
-                AssignmentStatement(
-                    name="outputString",
-                    rvalue=BinaryOp(
-                        left=StringLiteral("Player 1 played "),
-                        operator=nodes.Operator.ADD,
-                        right=BinaryOp(
-                            left=VariableNameExpression("p1CardName"),
-                            operator=nodes.Operator.ADD,
-                            right=BinaryOp(
-                                left=StringLiteral(" and player 2 played "),
-                                operator=nodes.Operator.ADD,
-                                right=BinaryOp(
-                                    left=VariableNameExpression("p2CardName"),
-                                    operator=nodes.Operator.ADD,
-                                    right=BinaryOp(
-                                        left=StringLiteral(" and "),
-                                        operator=nodes.Operator.ADD,
-                                        right=VariableNameExpression("winnerAnnounce")
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-
-                PrintStatement(VariableNameExpression(name="outputString")),
-
-                OutputStatement(
-                    output=speaker_virtual_output_id,
-                    resource=VariableNameExpression(name="outputString"),
-                ),
-
-                # Reset Player1.card := -1
-                SetAttrStatement(
-                    obj="__PLAYER1__",
-                    name="card",
-                    rvalue=IntegerLiteral(-1),
-                ),
-                # Reset Player2.card := -1
-                SetAttrStatement(
-                    obj="__PLAYER2__",
-                    name="card",
-                    rvalue=IntegerLiteral(-1),
-                ),
-            ]),
-        ),
-    ]
-
-    rps1 = CompoundStatement(statements=[
-        # Copy in setup statements
-        *setup,
-
-        # Print Player1.name
-        PrintStatement(
-            expression=GetAttrExpression(
-                obj="__PLAYER1__",
-                name="name",
-            )
-        ),
-        # Set Player1.card := __INPUT__.num
-        SetAttrStatement(
-            obj="__PLAYER1__",
-            name="card",
-            rvalue=GetAttrExpression(
-                obj="__INPUT__",
-                name="value",
-            )
-        ),
-
-        # Copy in statements to calculate the winner
-        *calculate_winner,
-    ])
-
-    rps2 = CompoundStatement(statements=[
-        # Copy in setup statements
-        *setup,
-
-        # Print Player2.name
-        PrintStatement(
-            expression=GetAttrExpression(
-                obj="__PLAYER2__",
-                name="name",
-            )
-        ),
-        # Set Player2.card = __INPUT__.num
-        SetAttrStatement(
-            obj="__PLAYER2__",
-            name="card",
-            rvalue=GetAttrExpression(
-                obj="__INPUT__",
-                name="value",
-            )
-        ),
-
-        # Copy in statements to calculate the winner
-        *calculate_winner,
-    ])
-
-    greeting = """
-Welcome to real engine, the video game engine for the real world.
-
-We are six UQ students who've created an offline web application that manages communication between different hardware devices and allows the creation of complex live action role playing games using our intuitive user interface.
-
-It currently supports RFID scanners as input and text to speech bluetooth audio output.
-Once devices are connected the game "architect" can add their game logic by defining object entities within their game and then define which hardware inputs trigger which actions.
-Conditions can be added to your actions in case you want the action to be determined and not happen all the time.
-
-Our clients include larping, art galleries, museums and even small businesses who want a unique marketing method.
-Our system is unique as it allows everyday people to design the logic behind the actions, you don’t need to be a software engineer to program our system as the UI simplifies everything for you.
-    """.strip()
-
-    greeting_ast = CompoundStatement(statements=[
-        OutputStatement(
-            output=speaker_virtual_output_id,
-            resource=StringLiteral('greeting'),
-        )
-    ])
     wand_cast_central_ast = CompoundStatement(statements=[
         # if charged
         IfElseStatement(
@@ -2575,9 +2339,6 @@ Our system is unique as it allows everyday people to design the logic behind the
         ),
     ])
 
-    rps1_str = unparser.to_json(rps1)
-    rps2_str = unparser.to_json(rps2)
-    greeting_ast_str = unparser.to_json(greeting_ast)
     wand_cast_central_str = unparser.to_json(wand_cast_central_ast)
     wand_cast_ship_str = unparser.to_json(wand_cast_ship_ast)
     wand_cast_cathedral_str = unparser.to_json(wand_cast_cathedral_ast)
@@ -2600,8 +2361,6 @@ Our system is unique as it allows everyday people to design the logic behind the
     check_training_complete_str = unparser.to_json(check_training_complete)
     reset_training_str = unparser.to_json(reset_training)
 
-
-
     player_entity = db.get_virtual_entity_by_name(name="Player")
     card_entity = db.get_virtual_entity_by_name(name="Card")
     greeting_tag_entity = db.get_virtual_entity_by_name(name="GreetingTag")
@@ -2609,9 +2368,6 @@ Our system is unique as it allows everyday people to design the logic behind the
     training_wand_entity = db.get_virtual_entity_by_name(name="TrainingWand")
 
     actions = [
-        model.Action(name="Rock-Paper-Scissors (Player 1)", ast=rps1_str, wants_entity=card_entity),
-        model.Action(name="Rock-Paper-Scissors (Player 2)", ast=rps2_str, wants_entity=card_entity),
-        model.Action(name="Greeting", ast=greeting_ast_str, wants_entity=greeting_tag_entity),
         model.Action(name="Cast Spell - Central", ast=wand_cast_central_str, wants_entity=wand_entity),
         model.Action(name="Cast Spell - Ship", ast=wand_cast_ship_str, wants_entity=wand_entity),
         model.Action(name="Cast Spell - Cathedral", ast=wand_cast_cathedral_str, wants_entity=wand_entity),
@@ -2645,16 +2401,34 @@ Our system is unique as it allows everyday people to design the logic behind the
 def add_events(db, *, actions, devices, scenes):
     events = [
         model.Event(
-            name="Event 1",
-            scene_id=scenes[0].id, # FIXME: why do we need this again?
+            name="Central Event",
+            scene_id=scenes[0].id,
             type=model.EventTypes.scan,
             device_id=devices[0].id,
         ),
         model.Event(
-            name="Event 2",
+            name="Train Event",
             scene_id=scenes[0].id,
             type=model.EventTypes.scan,
             device_id=devices[1].id,
+        ),
+        model.Event(
+            name="Ship Event",
+            scene_id=scenes[0].id,
+            type=model.EventTypes.scan,
+            device_id=devices[0].id,
+        ),
+        model.Event(
+            name="Cathedral Event",
+            scene_id=scenes[0].id,
+            type=model.EventTypes.scan,
+            device_id=devices[1].id,
+        ),
+        model.Event(
+            name="Castle Event",
+            scene_id=scenes[0].id,
+            type=model.EventTypes.scan,
+            device_id=devices[0].id,
         ),
     ]
 
