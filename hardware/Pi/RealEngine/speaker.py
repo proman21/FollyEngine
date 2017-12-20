@@ -25,7 +25,8 @@ import json
 from uuid import getnode as get_mac
 from subprocess import call
 
-#TODO connect to wifi
+
+# TODO connect to wifi
 # Real_Engine
 # 93878517
 
@@ -35,28 +36,29 @@ def register_speaker(selector):
     # Register the socket with the selector and ensure the socket is in
     # non-blocking mode.
     s.setblocking(False)
+    print("Register Selector")
+
     selector.register(
         fileobj=s,
         events=selectors.EVENT_READ,
         data=lambda sock, mask: handle_socket(sock)
     )
 
+
 def init_socket():
     # hardcoded server/laptop IP TODO get dynamically
-    host = "http://192.168.0.102:8080/api/devices/";
+    host = "http://192.168.1.168:8080/api/devices/";
 
-
-    deviceID = str(get_mac());   #using mac as unique device ID
+    deviceID = str(get_mac());  # using mac as unique device ID
     modelID = "97";
-    #TODO make neater
+    # TODO make neater
     myIP = [l for l in ([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")][:1], [[(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) if l][0][0]
     myPurpose = "Pi used for Actor Device";
 
-
     payload = json.dumps({'id': deviceID,
-               'model_id': modelID,
-               'ip': myIP,
-               'purpose': myPurpose}); 
+                          'model_id': modelID,
+                          'ip': myIP + ':8080',
+                          'purpose': myPurpose});
 
     # logging
     print('post payload assembled:');
@@ -65,20 +67,20 @@ def init_socket():
 
     # send initial post request to server
     try:
-        r = requests.post(host, data= payload);
+        r = requests.post(host, data=payload);
+
+        # logging
+        print("post request sent");
+        print(r.text);
     except Exception as err:
         # the host could not be found
         print("not network accessable, the error was:")
         print(err)
         print()
         print("Waiting 10 seconds till re-attempt...")
-        #wait(10)
-        #TODO add wait loop
-        #sys.exit(1)
-
-    # logging
-    print("post request sent");
-    print(r.text);
+        # wait(10)
+        # TODO add wait loop
+        # sys.exit(1)
 
     s = socket.socket();
     host = "";
@@ -89,37 +91,39 @@ def init_socket():
 
     return s
 
+
 def handle_socket(s):
     c, addr = s.accept()
     request = bytes('HTTP/1.1 200 OK\r\n\r\n', 'utf-8');
     c.send(request)
 
-    print ('Got connection from',addr)
+    print('Got connection from', addr)
     data = c.recv(1024)
 
     c.close()
-
 
     temp, message = str(data).split("key=")
 
     print(message)
 
-    speech = "... ..." + message.replace('+',' ') + '... ...'
+    speech = message.replace('+', ' ')
 
     print(speech)
 
     tempFileName = "Audio/test_padded.wav"
 
-    call(['pico2wave','-w', tempFileName, speech])
-    call(['play',tempFileName])
+    call(['pico2wave', '-w', tempFileName, speech])
+    call(['aplay', tempFileName])
 
     print("end")
-  
-#icowav
-#s.ubind
+
+
+# icowav
+# s.ubind
 
 if __name__ == '__main__':
     s = init_socket()
 
     while True:
         handle_socket(s)
+
