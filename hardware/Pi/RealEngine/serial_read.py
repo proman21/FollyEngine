@@ -18,11 +18,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import selectors
 import socket
 import serial
 import json
 import requests
 from uuid import getnode as get_mac
+
 
 def register_serial(selector):
     serialport = init_serial()
@@ -81,6 +83,9 @@ def handle_serial(serialport):
         
         try:
             r = requests.post(host, data=payload);
+            # logging
+            print("post request sent");
+            print(r.text);
         except Exception as err:
             # the host could not be found
             print("not network accessable, the error was:")
@@ -89,9 +94,6 @@ def handle_serial(serialport):
             
             return
 
-        # logging
-        print("post request sent");
-        print(r.text);
 
 if __name__ == '__main__':
     serialport = init_serial()

@@ -18,6 +18,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import selectors
 import requests
 import socket
 import json
@@ -62,7 +63,6 @@ def init_socket():
     print(payload);
     print('sending to: ' + host)
 
-
     # send initial post request to server
     try:
         r = requests.post(host, data= payload);
@@ -75,13 +75,10 @@ def init_socket():
         #wait(10)
         #TODO add wait loop
         #sys.exit(1)
-        
-
 
     # logging
     print("post request sent");
     print(r.text);
-
 
     s = socket.socket();
     host = "";
