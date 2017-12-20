@@ -149,11 +149,15 @@ def add_entities(db):
     player_entity = model.VirtualEntity(title="Player", description="player")
     card_entity = model.VirtualEntity(title="Card", description="card")
     greeting_tag_entity = model.VirtualEntity(title="GreetingTag", description="scan to hear pitch")
+    wand_entity = model.VirtualEntity(title="Wand", description="For casting spells")
+    trainer_wand_entity = model.VirtualEntity(title="TrainingWand", description="For finding cast points")
 
     entities = [
         player_entity,
         card_entity,
         greeting_tag_entity,
+        wand_entity,
+        trainer_wand_entity,
     ]
 
     for entity in entities:
@@ -170,8 +174,27 @@ def add_entities(db):
             schema.Property("value", schema.Numeric(type=schema.NumericType.Integer)),
             schema.Property("name", schema.String()),
         ],
-
         greeting_tag_entity: [
+        ],
+        wand_entity: [
+            schema.Property("previousCast", schema.String()),
+            schema.Property("temp1", schema.Numeric(type=schema.NumericType.Integer)),
+            schema.Property("temp2", schema.Numeric(type=schema.NumericType.Integer)),
+            schema.Property("temp3", schema.Numeric(type=schema.NumericType.Integer)),
+            schema.Property("ill1", schema.Numeric(type=schema.NumericType.Integer)),
+            schema.Property("ill2", schema.Numeric(type=schema.NumericType.Integer)),
+            schema.Property("ill3", schema.Numeric(type=schema.NumericType.Integer)),
+            schema.Property("ench1", schema.Numeric(type=schema.NumericType.Integer)),
+            schema.Property("ench2", schema.Numeric(type=schema.NumericType.Integer)),
+            schema.Property("ench3", schema.Numeric(type=schema.NumericType.Integer)),
+            schema.Property("charged", schema.Numeric(type=schema.NumericType.Integer)),
+        ],
+        trainer_wand_entity: [
+            schema.Property("castle", schema.Numeric(type=schema.NumericType.Integer)),
+            schema.Property("cathedral", schema.Numeric(type=schema.NumericType.Integer)),
+            schema.Property("train", schema.Numeric(type=schema.NumericType.Integer)),
+            schema.Property("ship", schema.Numeric(type=schema.NumericType.Integer)),
+            schema.Property("complete", schema.Numeric(type=schema.NumericType.Integer)),
         ],
     }
 
@@ -477,26 +500,921 @@ Our system is unique as it allows everyday people to design the logic behind the
             resource=StringLiteral('greeting'),
         )
     ])
+    wand_cast_ast = CompoundStatement(statements=[
+    # if charged
+        IfElseStatement(
+            condition=BinaryOp(
+                left=GetAttrExpression(
+                obj="__INPUT__",
+                name="charged",
+            ),
+                operator=nodes.Operator.EQ,
+                right=IntegerLiteral(1),
+            ),
+            # -> Wand is charged play spell
+            if_body=CompoundStatement(statements=[
+                PrintStatement(StringLiteral("Casting Spell temp1")),
+                # if spell = 2, output sound and set spell 1
+                IfElseStatement(
+                    condition=BinaryOp(
+                        left=GetAttrExpression(
+                            obj="__INPUT__",
+                            name="temp1",
+                        ),
+                        operator=nodes.Operator.EQ,
+                        right=IntegerLiteral(2),
+                    ),
+                    # -> Spell is charged play spell
+                    if_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Casting Spell")),
+                        OutputStatement(
+                            output=speaker_virtual_output_id,
+                            resource=StringLiteral("Playaudio: 1"),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="temp1",
+                            rvalue=IntegerLiteral(1),
+                        ),
+                    ]),
+                    # -> Not this spell
+                    else_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Not temp1")),
 
+                    ]),
+                ),
+                IfElseStatement(
+                    condition=BinaryOp(
+                        left=GetAttrExpression(
+                            obj="__INPUT__",
+                            name="temp2",
+                        ),
+                        operator=nodes.Operator.EQ,
+                        right=IntegerLiteral(2),
+                    ),
+                    # -> Spell is charged play spell
+                    if_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Casting Spell temp2")),
+                        OutputStatement(
+                            output=speaker_virtual_output_id,
+                            resource=StringLiteral("Playaudio: 1"),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="temp2",
+                            rvalue=IntegerLiteral(1),
+                        ),
+                    ]),
+                    # -> Not this spell
+                    else_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Not temp2")),
+
+                    ]),
+                ),
+                IfElseStatement(
+                    condition=BinaryOp(
+                        left=GetAttrExpression(
+                            obj="__INPUT__",
+                            name="temp3",
+                        ),
+                        operator=nodes.Operator.EQ,
+                        right=IntegerLiteral(2),
+                    ),
+                    # -> Spell is charged play spell
+                    if_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Casting Spell temp3")),
+                        OutputStatement(
+                            output=speaker_virtual_output_id,
+                            resource=StringLiteral("Playaudio: 1"),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="temp3",
+                            rvalue=IntegerLiteral(1),
+                        ),
+                    ]),
+                    # -> Not this spell
+                    else_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Not temp3")),
+
+                    ]),
+                ),
+                IfElseStatement(
+                    condition=BinaryOp(
+                        left=GetAttrExpression(
+                            obj="__INPUT__",
+                            name="il1",
+                        ),
+                        operator=nodes.Operator.EQ,
+                        right=IntegerLiteral(2),
+                    ),
+                    # -> Spell is charged play spell
+                    if_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Casting Spell ill1")),
+                        OutputStatement(
+                            output=speaker_virtual_output_id,
+                            resource=StringLiteral("Playaudio: 1"),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="ill1",
+                            rvalue=IntegerLiteral(1),
+                        ),
+                    ]),
+                    # -> Not this spell
+                    else_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Not ill1")),
+
+                    ]),
+                ),
+                IfElseStatement(
+                    condition=BinaryOp(
+                        left=GetAttrExpression(
+                            obj="__INPUT__",
+                            name="ill2",
+                        ),
+                        operator=nodes.Operator.EQ,
+                        right=IntegerLiteral(2),
+                    ),
+                    # -> Spell is charged play spell
+                    if_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Casting Spell ill2")),
+                        OutputStatement(
+                            output=speaker_virtual_output_id,
+                            resource=StringLiteral("Playaudio: 1"),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="ill2",
+                            rvalue=IntegerLiteral(1),
+                        ),
+                    ]),
+                    # -> Not this spell
+                    else_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Not ill2")),
+
+                    ]),
+                ),
+                IfElseStatement(
+                    condition=BinaryOp(
+                        left=GetAttrExpression(
+                            obj="__INPUT__",
+                            name="ill3",
+                        ),
+                        operator=nodes.Operator.EQ,
+                        right=IntegerLiteral(2),
+                    ),
+                    # -> Spell is charged play spell
+                    if_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Casting Spell ill3")),
+                        OutputStatement(
+                            output=speaker_virtual_output_id,
+                            resource=StringLiteral("Playaudio: 1"),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="ill3",
+                            rvalue=IntegerLiteral(1),
+                        ),
+                    ]),
+                    # -> Not this spell
+                    else_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Not ill3")),
+
+                    ]),
+                ),
+                IfElseStatement(
+                    condition=BinaryOp(
+                        left=GetAttrExpression(
+                            obj="__INPUT__",
+                            name="ench1",
+                        ),
+                        operator=nodes.Operator.EQ,
+                        right=IntegerLiteral(2),
+                    ),
+                    # -> Spell is charged play spell
+                    if_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Casting Spell ench1")),
+                        OutputStatement(
+                            output=speaker_virtual_output_id,
+                            resource=StringLiteral("Playaudio: 1"),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="ench1",
+                            rvalue=IntegerLiteral(1),
+                        ),
+                    ]),
+                    # -> Not this spell
+                    else_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Not ench1")),
+
+                    ]),
+                ),
+                IfElseStatement(
+                    condition=BinaryOp(
+                        left=GetAttrExpression(
+                            obj="__INPUT__",
+                            name="ench2",
+                        ),
+                        operator=nodes.Operator.EQ,
+                        right=IntegerLiteral(2),
+                    ),
+                    # -> Spell is charged play spell
+                    if_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Casting Spell ench2")),
+                        OutputStatement(
+                            output=speaker_virtual_output_id,
+                            resource=StringLiteral("Playaudio: 1"),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="ench2",
+                            rvalue=IntegerLiteral(1),
+                        ),
+                    ]),
+                    # -> Not this spell
+                    else_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Not ench2")),
+
+                    ]),
+                ),
+                IfElseStatement(
+                    condition=BinaryOp(
+                        left=GetAttrExpression(
+                            obj="__INPUT__",
+                            name="ench3",
+                        ),
+                        operator=nodes.Operator.EQ,
+                        right=IntegerLiteral(2),
+                    ),
+                    # -> Spell is charged play spell
+                    if_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Casting Spell ench3")),
+                        OutputStatement(
+                            output=speaker_virtual_output_id,
+                            resource=StringLiteral("Playaudio: 1"),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="ench3",
+                            rvalue=IntegerLiteral(1),
+                        ),
+                    ]),
+                    # -> Not this spell
+                    else_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Not ench3")),
+
+                    ]),
+                ),
+                # Take away charge
+                SetAttrStatement(
+                    obj="__INPUT__",
+                    name="charged",
+                    rvalue=IntegerLiteral(0),
+                ),
+            ]),
+            # -> Wand is empty
+            else_body=CompoundStatement(statements=[
+                PrintStatement(StringLiteral("Wand is not charged")),
+                OutputStatement(
+                    output=speaker_virtual_output_id,
+                    resource=StringLiteral("Playaudio: 1"),
+                ),
+            ]),
+        ),
+    ])
+
+    charge_wand_temp1 = CompoundStatement(statements=[
+        # if not already charged
+        IfElseStatement(
+            condition=BinaryOp(
+                left=GetAttrExpression(
+                    obj="__INPUT__",
+                    name="charged",
+                ),
+                operator=nodes.Operator.EQ,
+                right=IntegerLiteral(0),
+            ),
+            # -> Wand is not charged
+            if_body=CompoundStatement(statements=[
+                PrintStatement(StringLiteral("Charging Spell temp1")),
+                # output sound and set spell = 2
+                PrintStatement(StringLiteral("Charging Wand")),
+                OutputStatement(
+                    output=speaker_virtual_output_id,
+                    resource=GetAttrExpression(
+                        obj="__INPUT__",
+                        name="previousCast",
+                    ),
+                ),
+                SetAttrStatement(
+                    obj="__INPUT__",
+                    name="temp1",
+                    rvalue=IntegerLiteral(2),
+                ),
+            ]),
+            # -> Wand is already charged
+            else_body=CompoundStatement(statements=[
+                PrintStatement(StringLiteral("Wand is already charged")),
+                OutputStatement(
+                    output=speaker_virtual_output_id,
+                    resource=StringLiteral("Playaudio: wand is already charged"),
+                ),
+            ]),
+        ),
+    ])
+
+    charge_wand_temp2 = CompoundStatement(statements=[
+        # if not already charged
+        IfElseStatement(
+            condition=BinaryOp(
+                left=GetAttrExpression(
+                    obj="__INPUT__",
+                    name="charged",
+                ),
+                operator=nodes.Operator.EQ,
+                right=IntegerLiteral(0),
+            ),
+            # -> Wand is not charged check predecessors
+            if_body=CompoundStatement(statements=[
+                PrintStatement(StringLiteral("Charging Spell temp2")),
+                # output sound and set spell = 2
+                IfElseStatement(
+                    condition=BinaryOp(
+                        left=GetAttrExpression(
+                            obj="__INPUT__",
+                            name="temp1",
+                        ),
+                        operator=nodes.Operator.EQ,
+                        right=IntegerLiteral(1),
+                    ),
+                    # -> Spell is charged play spell
+                    if_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Charging Wand")),
+                        OutputStatement(
+                            output=speaker_virtual_output_id,
+                            resource=GetAttrExpression(
+                                obj="__INPUT__",
+                                name="previousCast",
+                            ),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="temp2",
+                            rvalue=IntegerLiteral(2),
+                        ),
+                    ]),
+                    # -> Not ready for this spell
+                    else_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Not ready for this spell")),
+                        OutputStatement(
+                            output=speaker_virtual_output_id,
+                            resource=StringLiteral("Playaudio: not ready for this spell"),
+                        ),
+                    ]),
+                ),
+            ]),
+            # -> Wand is already charged
+            else_body=CompoundStatement(statements=[
+                PrintStatement(StringLiteral("Wand is already charged")),
+                OutputStatement(
+                    output=speaker_virtual_output_id,
+                    resource=StringLiteral("Playaudio: wand is already charged"),
+                ),
+            ]),
+        ),
+    ])
+
+    charge_wand_temp3 = CompoundStatement(statements=[
+        # if not already charged
+        IfElseStatement(
+            condition=BinaryOp(
+                left=GetAttrExpression(
+                    obj="__INPUT__",
+                    name="charged",
+                ),
+                operator=nodes.Operator.EQ,
+                right=IntegerLiteral(0),
+            ),
+            # -> Wand is not charged check predecessors
+            if_body=CompoundStatement(statements=[
+                PrintStatement(StringLiteral("Charging Spell temp3")),
+                # if spell = 2, output sound and set spell 1
+                IfElseStatement(
+                    condition=BinaryOp(
+                        left=GetAttrExpression(
+                            obj="__INPUT__",
+                            name="temp2",
+                        ),
+                        operator=nodes.Operator.EQ,
+                        right=IntegerLiteral(1),
+                    ),
+                    # -> Spell is charged play spell
+                    if_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Charging Wand")),
+                        OutputStatement(
+                            output=speaker_virtual_output_id,
+                            resource=GetAttrExpression(
+                                obj="__INPUT__",
+                                name="previousCast",
+                            ),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="temp3",
+                            rvalue=IntegerLiteral(2),
+                        ),
+                    ]),
+                    # -> Not ready for this spell
+                    else_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Not ready for this spell")),
+                        OutputStatement(
+                            output=speaker_virtual_output_id,
+                            resource=StringLiteral("Playaudio: not ready for this spell"),
+                        ),
+                    ]),
+                ),
+            ]),
+            # -> Wand is already charged
+            else_body=CompoundStatement(statements=[
+                PrintStatement(StringLiteral("Wand is already charged")),
+                OutputStatement(
+                    output=speaker_virtual_output_id,
+                    resource=StringLiteral("Playaudio: wand is already charged"),
+                ),
+            ]),
+        ),
+    ])
+
+    charge_wand_ill1 = CompoundStatement(statements=[
+        # if not already charged
+        IfElseStatement(
+            condition=BinaryOp(
+                left=GetAttrExpression(
+                    obj="__INPUT__",
+                    name="charged",
+                ),
+                operator=nodes.Operator.EQ,
+                right=IntegerLiteral(0),
+            ),
+            # -> Wand is not charged
+            if_body=CompoundStatement(statements=[
+                PrintStatement(StringLiteral("Charging Spell ill1")),
+                # output sound and set spell = 2
+                PrintStatement(StringLiteral("Charging Wand")),
+                OutputStatement(
+                    output=speaker_virtual_output_id,
+                    resource=GetAttrExpression(
+                        obj="__INPUT__",
+                        name="previousCast",
+                    ),
+                ),
+                SetAttrStatement(
+                    obj="__INPUT__",
+                    name="ill1",
+                    rvalue=IntegerLiteral(2),
+                ),
+            ]),
+            # -> Wand is already charged
+            else_body=CompoundStatement(statements=[
+                PrintStatement(StringLiteral("Wand is already charged")),
+                OutputStatement(
+                    output=speaker_virtual_output_id,
+                    resource=StringLiteral("Playaudio: wand is already charged"),
+                ),
+            ]),
+        ),
+    ])
+
+    charge_wand_ill2 = CompoundStatement(statements=[
+        # if not already charged
+        IfElseStatement(
+            condition=BinaryOp(
+                left=GetAttrExpression(
+                    obj="__INPUT__",
+                    name="charged",
+                ),
+                operator=nodes.Operator.EQ,
+                right=IntegerLiteral(0),
+            ),
+            # -> Wand is not charged check predecessors
+            if_body=CompoundStatement(statements=[
+                PrintStatement(StringLiteral("Charging Spell ill2")),
+                # output sound and set spell = 2
+                IfElseStatement(
+                    condition=BinaryOp(
+                        left=GetAttrExpression(
+                            obj="__INPUT__",
+                            name="ill1",
+                        ),
+                        operator=nodes.Operator.EQ,
+                        right=IntegerLiteral(1),
+                    ),
+                    # -> Spell is charged play spell
+                    if_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Charging Wand")),
+                        OutputStatement(
+                            output=speaker_virtual_output_id,
+                            resource=GetAttrExpression(
+                                obj="__INPUT__",
+                                name="previousCast",
+                            ),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="ill2",
+                            rvalue=IntegerLiteral(2),
+                        ),
+                    ]),
+                    # -> Not ready for this spell
+                    else_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Not ready for this spell")),
+                        OutputStatement(
+                            output=speaker_virtual_output_id,
+                            resource=StringLiteral("Playaudio: not ready for this spell"),
+                        ),
+                    ]),
+                ),
+            ]),
+            # -> Wand is already charged
+            else_body=CompoundStatement(statements=[
+                PrintStatement(StringLiteral("Wand is already charged")),
+                OutputStatement(
+                    output=speaker_virtual_output_id,
+                    resource=StringLiteral("Playaudio: wand is already charged"),
+                ),
+            ]),
+        ),
+    ])
+
+    charge_wand_ill3 = CompoundStatement(statements=[
+        # if not already charged
+        IfElseStatement(
+            condition=BinaryOp(
+                left=GetAttrExpression(
+                    obj="__INPUT__",
+                    name="charged",
+                ),
+                operator=nodes.Operator.EQ,
+                right=IntegerLiteral(0),
+            ),
+            # -> Wand is not charged check predecessors
+            if_body=CompoundStatement(statements=[
+                PrintStatement(StringLiteral("Charging Spell ill3")),
+                # if spell = 2, output sound and set spell 1
+                IfElseStatement(
+                    condition=BinaryOp(
+                        left=GetAttrExpression(
+                            obj="__INPUT__",
+                            name="ill2",
+                        ),
+                        operator=nodes.Operator.EQ,
+                        right=IntegerLiteral(1),
+                    ),
+                    # -> Spell is charged play spell
+                    if_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Charging Wand")),
+                        OutputStatement(
+                            output=speaker_virtual_output_id,
+                            resource=GetAttrExpression(
+                                obj="__INPUT__",
+                                name="previousCast",
+                            ),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="ill3",
+                            rvalue=IntegerLiteral(2),
+                        ),
+                    ]),
+                    # -> Not ready for this spell
+                    else_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Not ready for this spell")),
+                        OutputStatement(
+                            output=speaker_virtual_output_id,
+                            resource=StringLiteral("Playaudio: not ready for this spell"),
+                        ),
+                    ]),
+                ),
+            ]),
+            # -> Wand is already charged
+            else_body=CompoundStatement(statements=[
+                PrintStatement(StringLiteral("Wand is already charged")),
+                OutputStatement(
+                    output=speaker_virtual_output_id,
+                    resource=StringLiteral("Playaudio: wand is already charged"),
+                ),
+            ]),
+        ),
+    ])
+
+    charge_wand_ench1 = CompoundStatement(statements=[
+        # if not already charged
+        IfElseStatement(
+            condition=BinaryOp(
+                left=GetAttrExpression(
+                    obj="__INPUT__",
+                    name="charged",
+                ),
+                operator=nodes.Operator.EQ,
+                right=IntegerLiteral(0),
+            ),
+            # -> Wand is not charged
+            if_body=CompoundStatement(statements=[
+                PrintStatement(StringLiteral("Charging Spell ench1")),
+                # output sound and set spell = 2
+                PrintStatement(StringLiteral("Charging Wand")),
+                OutputStatement(
+                    output=speaker_virtual_output_id,
+                    resource=GetAttrExpression(
+                        obj="__INPUT__",
+                        name="previousCast",
+                    ),
+                ),
+                SetAttrStatement(
+                    obj="__INPUT__",
+                    name="ench1",
+                    rvalue=IntegerLiteral(2),
+                ),
+            ]),
+            # -> Wand is already charged
+            else_body=CompoundStatement(statements=[
+                PrintStatement(StringLiteral("Wand is already charged")),
+                OutputStatement(
+                    output=speaker_virtual_output_id,
+                    resource=StringLiteral("Playaudio: wand is already charged"),
+                ),
+            ]),
+        ),
+    ])
+
+    charge_wand_ench2 = CompoundStatement(statements=[
+        # if not already charged
+        IfElseStatement(
+            condition=BinaryOp(
+                left=GetAttrExpression(
+                    obj="__INPUT__",
+                    name="charged",
+                ),
+                operator=nodes.Operator.EQ,
+                right=IntegerLiteral(0),
+            ),
+            # -> Wand is not charged check predecessors
+            if_body=CompoundStatement(statements=[
+                PrintStatement(StringLiteral("Charging Spell ench2")),
+                # output sound and set spell = 2
+                IfElseStatement(
+                    condition=BinaryOp(
+                        left=GetAttrExpression(
+                            obj="__INPUT__",
+                            name="ench1",
+                        ),
+                        operator=nodes.Operator.EQ,
+                        right=IntegerLiteral(1),
+                    ),
+                    # -> Spell is charged play spell
+                    if_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Charging Wand")),
+                        OutputStatement(
+                            output=speaker_virtual_output_id,
+                            resource=GetAttrExpression(
+                                obj="__INPUT__",
+                                name="previousCast",
+                            ),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="ench2",
+                            rvalue=IntegerLiteral(2),
+                        ),
+                    ]),
+                    # -> Not ready for this spell
+                    else_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Not ready for this spell")),
+                        OutputStatement(
+                            output=speaker_virtual_output_id,
+                            resource=StringLiteral("Playaudio: not ready for this spell"),
+                        ),
+                    ]),
+                ),
+            ]),
+            # -> Wand is already charged
+            else_body=CompoundStatement(statements=[
+                PrintStatement(StringLiteral("Wand is already charged")),
+                OutputStatement(
+                    output=speaker_virtual_output_id,
+                    resource=StringLiteral("Playaudio: wand is already charged"),
+                ),
+            ]),
+        ),
+    ])
+
+    charge_wand_ench3 = CompoundStatement(statements=[
+        # if not already charged
+        IfElseStatement(
+            condition=BinaryOp(
+                left=GetAttrExpression(
+                    obj="__INPUT__",
+                    name="charged",
+                ),
+                operator=nodes.Operator.EQ,
+                right=IntegerLiteral(0),
+            ),
+            # -> Wand is not charged check predecessors
+            if_body=CompoundStatement(statements=[
+                PrintStatement(StringLiteral("Charging Spell ench3")),
+                # if spell = 2, output sound and set spell 1
+                IfElseStatement(
+                    condition=BinaryOp(
+                        left=GetAttrExpression(
+                            obj="__INPUT__",
+                            name="ench2",
+                        ),
+                        operator=nodes.Operator.EQ,
+                        right=IntegerLiteral(1),
+                    ),
+                    # -> Spell is charged play spell
+                    if_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Charging Wand")),
+                        OutputStatement(
+                            output=speaker_virtual_output_id,
+                            resource=GetAttrExpression(
+                                obj="__INPUT__",
+                                name="previousCast",
+                            ),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="ench3",
+                            rvalue=IntegerLiteral(2),
+                        ),
+                    ]),
+                    # -> Not ready for this spell
+                    else_body=CompoundStatement(statements=[
+                        PrintStatement(StringLiteral("Not ready for this spell")),
+                        OutputStatement(
+                            output=speaker_virtual_output_id,
+                            resource=StringLiteral("Playaudio: not ready for this spell"),
+                        ),
+                    ]),
+                ),
+            ]),
+            # -> Wand is already charged
+            else_body=CompoundStatement(statements=[
+                PrintStatement(StringLiteral("Wand is already charged")),
+                OutputStatement(
+                    output=speaker_virtual_output_id,
+                    resource=StringLiteral("Playaudio: wand is already charged"),
+                ),
+            ]),
+        ),
+    ])
+
+    found_castle = CompoundStatement(statements=[
+        SetAttrStatement(
+            obj="__INPUT__",
+            name="castle",
+            rvalue=IntegerLiteral(1),
+        ),
+    ])
+
+    found_ship = CompoundStatement(statements=[
+        SetAttrStatement(
+            obj="__INPUT__",
+            name="ship",
+            rvalue=IntegerLiteral(1),
+        ),
+    ])
+
+    found_cathedral = CompoundStatement(statements=[
+        SetAttrStatement(
+            obj="__INPUT__",
+            name="cathedral",
+            rvalue=IntegerLiteral(1),
+        ),
+    ])
+
+    found_train = CompoundStatement(statements=[
+        SetAttrStatement(
+            obj="__INPUT__",
+            name="train",
+            rvalue=IntegerLiteral(1),
+        ),
+    ])
+
+    check_training_complete = CompoundStatement(statements=[
+        IfElseStatement(
+            # If p1Card == -1 or p2Card == -1 then wait for both players to scan
+            condition=BinaryOp(
+                left=BinaryOp(
+                    left=BinaryOp(
+                        left=GetAttrExpression(
+                            obj="__INPUT__",
+                            name="castle",
+                        ),
+                        operator=nodes.Operator.EQ,
+                        right=IntegerLiteral(1),
+                    ),
+                    operator=nodes.Operator.LOGICAL_AND,
+                    right=BinaryOp(
+                        left=GetAttrExpression(
+                            obj="__INPUT__",
+                            name="ship",
+                        ),
+                        operator=nodes.Operator.EQ,
+                        right=IntegerLiteral(1),
+                    ),
+                ),
+                operator=nodes.Operator.LOGICAL_AND,
+                right=BinaryOp(
+                    left=BinaryOp(
+                        left=GetAttrExpression(
+                            obj="__INPUT__",
+                            name="train",
+                        ),
+                        operator=nodes.Operator.EQ,
+                        right=IntegerLiteral(1),
+                    ),
+                    operator=nodes.Operator.LOGICAL_AND,
+                    right=BinaryOp(
+                        left=GetAttrExpression(
+                            obj="__INPUT__",
+                            name="cathedral",
+                        ),
+                        operator=nodes.Operator.EQ,
+                        right=IntegerLiteral(1),
+                    ),
+                ),
+            ),
+            if_body=CompoundStatement(statements=[
+                PrintStatement(StringLiteral(">>> Waiting for players...")),
+            ]),
+            else_body=CompoundStatement(statements=[
+                PrintStatement(StringLiteral(">>> Calculating winner")),
+
+                # Reset Player2.card := -1
+                SetAttrStatement(
+                    obj="__INPUT__",
+                    name="complete",
+                    rvalue=IntegerLiteral(1),
+                ),
+            ]),
+        ),
+    ])
 
     rps1_str = unparser.to_json(rps1)
     rps2_str = unparser.to_json(rps2)
     greeting_ast_str = unparser.to_json(greeting_ast)
+    wand_cast_str = unparser.to_json(wand_cast_ast)
+    charge_temp1_str = unparser.to_json(charge_wand_temp1)
+    charge_temp2_str = unparser.to_json(charge_wand_temp2)
+    charge_temp3_str = unparser.to_json(charge_wand_temp3)
+    charge_ill1_str = unparser.to_json(charge_wand_ill1)
+    charge_ill2_str = unparser.to_json(charge_wand_ill2)
+    charge_ill3_str = unparser.to_json(charge_wand_ill3)
+    charge_ench1_str = unparser.to_json(charge_wand_ench1)
+    charge_ench2_str = unparser.to_json(charge_wand_ench2)
+    charge_ench3_str = unparser.to_json(charge_wand_ench3)
+    found_ship_str = unparser.to_json(found_ship)
+    found_cathedral_str = unparser.to_json(found_cathedral)
+    found_train_str = unparser.to_json(found_train)
+    found_castle_str = unparser.to_json(found_castle)
+    check_training_complete_str = unparser.to_json(check_training_complete)
 
     player_entity = db.get_virtual_entity_by_name(name="Player")
     card_entity = db.get_virtual_entity_by_name(name="Card")
     greeting_tag_entity = db.get_virtual_entity_by_name(name="GreetingTag")
+    wand_entity = db.get_virtual_entity_by_name(name="Wand")
+    training_wand_entity = db.get_virtual_entity_by_name(name="TrainingWand")
 
     actions = [
         model.Action(name="Rock-Paper-Scissors (Player 1)", ast=rps1_str, wants_entity=card_entity),
         model.Action(name="Rock-Paper-Scissors (Player 2)", ast=rps2_str, wants_entity=card_entity),
         model.Action(name="Greeting", ast=greeting_ast_str, wants_entity=greeting_tag_entity),
+        model.Action(name="Cast Spell", ast=wand_cast_str, wants_entity=wand_entity),
+        model.Action(name="Charge temp1", ast=charge_temp1_str, wants_entity=wand_entity),
+        model.Action(name="Charge temp2", ast=charge_temp2_str, wants_entity=wand_entity),
+        model.Action(name="Charge temp3", ast=charge_temp3_str, wants_entity=wand_entity),
+        model.Action(name="Charge ill1", ast=charge_ill1_str, wants_entity=wand_entity),
+        model.Action(name="Charge ill2", ast=charge_ill2_str, wants_entity=wand_entity),
+        model.Action(name="Charge ill3", ast=charge_ill3_str, wants_entity=wand_entity),
+        model.Action(name="Charge ench1", ast=charge_ench1_str, wants_entity=wand_entity),
+        model.Action(name="Charge ench2", ast=charge_ench2_str, wants_entity=wand_entity),
+        model.Action(name="Charge ench3", ast=charge_ench3_str, wants_entity=wand_entity),
+        model.Action(name="Check Training", ast=check_training_complete_str, wants_entity=training_wand_entity),
+        model.Action(name="Found Ship", ast=found_ship_str, wants_entity=training_wand_entity),
+        model.Action(name="Found Castle", ast=found_castle_str, wants_entity=training_wand_entity),
+        model.Action(name="Found Train", ast=found_train_str, wants_entity=training_wand_entity),
+        model.Action(name="Found Cathedral", ast=found_cathedral_str, wants_entity=training_wand_entity),
+
     ]
 
     for action in actions:
         db.add_action(action)
 
     return actions
+
 
 def add_events(db, *, actions, devices, scenes):
     events = [
