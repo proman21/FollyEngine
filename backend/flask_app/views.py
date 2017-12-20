@@ -82,7 +82,7 @@ def api_devices():
             # If device exists update the ip
             existingDevice.ip = ip
             db.commit()
-            return '', 200
+            return flask.redirect(flask.url_for('api_device_by_id', device_id=device.id), code=303)
 
         db.add_device(device)
 
