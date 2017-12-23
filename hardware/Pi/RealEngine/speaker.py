@@ -126,4 +126,3 @@ if __name__ == '__main__':
 
     while True:
         handle_socket(s)
-

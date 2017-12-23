@@ -32,10 +32,11 @@ from smartcard.CardRequest import CardRequest
 from smartcard.CardConnectionObserver import ConsoleCardConnectionObserver
 from smartcard.Exceptions import CardRequestTimeoutException
 
+deviceID = str(get_mac());  # using mac as unique device ID
+
 def init_nfc():
     host = "http://192.168.0.102:8080/api/devices/";
 
-    deviceID = str(get_mac());  # using mac as unique device ID
     modelID = "98";
     # TODO make neater
     myIP = [l for l in ([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")][:1], [
@@ -65,7 +66,6 @@ def init_nfc():
         # wait(10)
         # TODO add wait loop
         # sys.exit(1)
-    host = "http://192.168.0.102:8080/api/tags/log/";
 
     cardtype = AnyCardType()
     cardrequest = CardRequest(timeout=None, cardType=cardtype)
@@ -95,6 +95,7 @@ def handle_nfc(cardrequest):
 
         print('payload: ' + payload)
 
+        host = "http://192.168.0.102:8080/api/tags/log/";
         print('sending to: ' + host)
 
         try:
