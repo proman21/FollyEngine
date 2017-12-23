@@ -125,11 +125,37 @@ def add_devices(db):
     )
     db.add_virtual_output(speaker_virtual_output)
 
-    monitor_virtual_output = model.VirtualOutput(
-        name="Monitor",
+    wizard_virtual_output = model.VirtualOutput(
+        name="Wizard",
         device_output=emics_output
     )
-    db.add_virtual_output(monitor_virtual_output)
+    db.add_virtual_output(wizard_virtual_output)
+    central_virtual_output = model.VirtualOutput(
+        name="Central",
+        device_output=emics_output
+    )
+    db.add_virtual_output(central_virtual_output)
+    ship_virtual_output = model.VirtualOutput(
+        name="Ship",
+        device_output=emics_output
+    )
+    db.add_virtual_output(ship_virtual_output)
+    cathedral_virtual_output = model.VirtualOutput(
+        name="Cathedral",
+        device_output=emics_output
+    )
+    db.add_virtual_output(cathedral_virtual_output)
+    castle_virtual_output = model.VirtualOutput(
+        name="Castle",
+        device_output=emics_output
+    )
+    db.add_virtual_output(castle_virtual_output)
+    train_virtual_output = model.VirtualOutput(
+        name="Train",
+        device_output=emics_output
+    )
+    db.add_virtual_output(train_virtual_output)
+
 
     return devices
 
@@ -316,8 +342,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=3,
+                            resource=StringLiteral("Playaudio: temp1.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -344,8 +370,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell temp2")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=3,
+                            resource=StringLiteral("Playaudio: temp2.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -372,8 +398,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell temp3")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=3,
+                            resource=StringLiteral("Playaudio: temp3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -400,8 +426,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ill1")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=3,
+                            resource=StringLiteral("Playaudio: ill1.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -428,8 +454,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ill2")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=3,
+                            resource=StringLiteral("Playaudio: ill2.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -456,8 +482,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ill3")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=3,
+                            resource=StringLiteral("Playaudio: ill3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -484,8 +510,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ench1")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=3,
+                            resource=StringLiteral("Playaudio: ench1.wav"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -512,8 +538,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ench2")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=3,
+                            resource=StringLiteral("Playaudio: ench2.wav"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -540,8 +566,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ench3")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=3,
+                            resource=StringLiteral("Playaudio: ench3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -566,8 +592,8 @@ def add_actions(db):
             else_body=CompoundStatement(statements=[
                 PrintStatement(StringLiteral("Wand is not charged")),
                 OutputStatement(
-                    output=speaker_virtual_output_id,
-                    resource=StringLiteral("Playaudio: 1"),
+                    output=3,
+                    resource=StringLiteral("Playaudio: failed.wav"),
                 ),
             ]),
         ),
@@ -601,8 +627,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=4,
+                            resource=StringLiteral("Playaudio: temp1.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -629,8 +655,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell temp2")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=4,
+                            resource=StringLiteral("Playaudio: temp2.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -657,8 +683,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell temp3")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=4,
+                            resource=StringLiteral("Playaudio: temp3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -685,8 +711,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ill1")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=4,
+                            resource=StringLiteral("Playaudio: ill1.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -713,8 +739,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ill2")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=4,
+                            resource=StringLiteral("Playaudio: ill2.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -741,8 +767,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ill3")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=4,
+                            resource=StringLiteral("Playaudio: ill3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -769,8 +795,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ench1")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=4,
+                            resource=StringLiteral("Playaudio: ench1.wav"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -797,8 +823,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ench2")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=4,
+                            resource=StringLiteral("Playaudio: ench2.wav"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -825,8 +851,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ench3")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=4,
+                            resource=StringLiteral("Playaudio: ench3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -851,8 +877,8 @@ def add_actions(db):
             else_body=CompoundStatement(statements=[
                 PrintStatement(StringLiteral("Wand is not charged")),
                 OutputStatement(
-                    output=speaker_virtual_output_id,
-                    resource=StringLiteral("Playaudio: 1"),
+                    output=4,
+                    resource=StringLiteral("Playaudio: failed.wav"),
                 ),
             ]),
         ),
@@ -871,7 +897,6 @@ def add_actions(db):
             ),
             # -> Wand is charged play spell
             if_body=CompoundStatement(statements=[
-                PrintStatement(StringLiteral("Casting Spell temp1")),
                 # if spell = 2, output sound and set spell 1
                 IfElseStatement(
                     condition=BinaryOp(
@@ -886,8 +911,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=6,
+                            resource=StringLiteral("Playaudio: temp1.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -914,8 +939,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell temp2")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=6,
+                            resource=StringLiteral("Playaudio: temp2.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -942,8 +967,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell temp3")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=6,
+                            resource=StringLiteral("Playaudio: temp3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -970,8 +995,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ill1")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=6,
+                            resource=StringLiteral("Playaudio: ill1.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -998,8 +1023,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ill2")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=6,
+                            resource=StringLiteral("Playaudio: ill2.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1026,8 +1051,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ill3")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=6,
+                            resource=StringLiteral("Playaudio: ill3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1054,8 +1079,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ench1")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=6,
+                            resource=StringLiteral("Playaudio: ench1.wav"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1082,8 +1107,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ench2")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=6,
+                            resource=StringLiteral("Playaudio: ench2.wav"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1110,8 +1135,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ench3")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=6,
+                            resource=StringLiteral("Playaudio: ench3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1136,8 +1161,8 @@ def add_actions(db):
             else_body=CompoundStatement(statements=[
                 PrintStatement(StringLiteral("Wand is not charged")),
                 OutputStatement(
-                    output=speaker_virtual_output_id,
-                    resource=StringLiteral("Playaudio: 1"),
+                    output=6,
+                    resource=StringLiteral("Playaudio: failed.wav"),
                 ),
             ]),
         ),
@@ -1171,8 +1196,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=7,
+                            resource=StringLiteral("Playaudio: temp1.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1199,8 +1224,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell temp2")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=7,
+                            resource=StringLiteral("Playaudio: temp2.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1227,8 +1252,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell temp3")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=7,
+                            resource=StringLiteral("Playaudio: temp3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1255,8 +1280,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ill1")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=7,
+                            resource=StringLiteral("Playaudio: ill1.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1283,8 +1308,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ill2")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=7,
+                            resource=StringLiteral("Playaudio: ill2.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1311,8 +1336,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ill3")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=7,
+                            resource=StringLiteral("Playaudio: ill3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1339,8 +1364,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ench1")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=7,
+                            resource=StringLiteral("Playaudio: ench1.wav"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1367,8 +1392,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ench2")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=7,
+                            resource=StringLiteral("Playaudio: ench2.wav"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1395,8 +1420,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ench3")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=7,
+                            resource=StringLiteral("Playaudio: ench3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1421,8 +1446,8 @@ def add_actions(db):
             else_body=CompoundStatement(statements=[
                 PrintStatement(StringLiteral("Wand is not charged")),
                 OutputStatement(
-                    output=speaker_virtual_output_id,
-                    resource=StringLiteral("Playaudio: 1"),
+                    output=7,
+                    resource=StringLiteral("Playaudio: failed.wav"),
                 ),
             ]),
         ),
@@ -1456,8 +1481,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=5,
+                            resource=StringLiteral("Playaudio: temp1.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1484,8 +1509,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell temp2")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=5,
+                            resource=StringLiteral("Playaudio: temp2.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1512,8 +1537,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell temp3")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=5,
+                            resource=StringLiteral("Playaudio: temp3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1540,8 +1565,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ill1")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=5,
+                            resource=StringLiteral("Playaudio: ill1.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1568,8 +1593,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ill2")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=5,
+                            resource=StringLiteral("Playaudio: ill2.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1596,8 +1621,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ill3")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=5,
+                            resource=StringLiteral("Playaudio: ill3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1624,8 +1649,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ench1")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=5,
+                            resource=StringLiteral("Playaudio: ench1.wav"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1652,8 +1677,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ench2")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=5,
+                            resource=StringLiteral("Playaudio: ench2.wav"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1680,8 +1705,8 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Casting Spell ench3")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
-                            resource=StringLiteral("Playaudio: 1"),
+                            output=5,
+                            resource=StringLiteral("Playaudio: ench3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1706,8 +1731,8 @@ def add_actions(db):
             else_body=CompoundStatement(statements=[
                 PrintStatement(StringLiteral("Wand is not charged")),
                 OutputStatement(
-                    output=speaker_virtual_output_id,
-                    resource=StringLiteral("Playaudio: 1"),
+                    output=5,
+                    resource=StringLiteral("Playaudio: failed.wav"),
                 ),
             ]),
         ),
@@ -1730,7 +1755,7 @@ def add_actions(db):
                 # output sound and set spell = 2
                 PrintStatement(StringLiteral("Charging Wand")),
                 OutputStatement(
-                    output=speaker_virtual_output_id,
+                    output=2,
                     resource=GetAttrExpression(
                         obj="__INPUT__",
                         name="previousCast",
@@ -1746,8 +1771,8 @@ def add_actions(db):
             else_body=CompoundStatement(statements=[
                 PrintStatement(StringLiteral("Wand is already charged")),
                 OutputStatement(
-                    output=speaker_virtual_output_id,
-                    resource=StringLiteral("Playaudio: wand is already charged"),
+                    output=3,
+                    resource=StringLiteral("Playaudio: charged.mp3"),
                 ),
             ]),
         ),
@@ -1781,7 +1806,7 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Charging Wand")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
+                            output=2,
                             resource=GetAttrExpression(
                                 obj="__INPUT__",
                                 name="previousCast",
@@ -1797,7 +1822,7 @@ def add_actions(db):
                     else_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Not ready for this spell")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
+                            output=2,
                             resource=StringLiteral("Playaudio: not ready for this spell"),
                         ),
                     ]),
@@ -1807,7 +1832,7 @@ def add_actions(db):
             else_body=CompoundStatement(statements=[
                 PrintStatement(StringLiteral("Wand is already charged")),
                 OutputStatement(
-                    output=speaker_virtual_output_id,
+                    output=2,
                     resource=StringLiteral("Playaudio: wand is already charged"),
                 ),
             ]),
@@ -1842,7 +1867,7 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Charging Wand")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
+                            output=2,
                             resource=GetAttrExpression(
                                 obj="__INPUT__",
                                 name="previousCast",
@@ -1858,7 +1883,7 @@ def add_actions(db):
                     else_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Not ready for this spell")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
+                            output=2,
                             resource=StringLiteral("Playaudio: not ready for this spell"),
                         ),
                     ]),
@@ -1868,7 +1893,7 @@ def add_actions(db):
             else_body=CompoundStatement(statements=[
                 PrintStatement(StringLiteral("Wand is already charged")),
                 OutputStatement(
-                    output=speaker_virtual_output_id,
+                    output=2,
                     resource=StringLiteral("Playaudio: wand is already charged"),
                 ),
             ]),
@@ -1892,7 +1917,7 @@ def add_actions(db):
                 # output sound and set spell = 2
                 PrintStatement(StringLiteral("Charging Wand")),
                 OutputStatement(
-                    output=speaker_virtual_output_id,
+                    output=2,
                     resource=GetAttrExpression(
                         obj="__INPUT__",
                         name="previousCast",
@@ -1908,7 +1933,7 @@ def add_actions(db):
             else_body=CompoundStatement(statements=[
                 PrintStatement(StringLiteral("Wand is already charged")),
                 OutputStatement(
-                    output=speaker_virtual_output_id,
+                    output=2,
                     resource=StringLiteral("Playaudio: wand is already charged"),
                 ),
             ]),
@@ -1943,7 +1968,7 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Charging Wand")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
+                            output=2,
                             resource=GetAttrExpression(
                                 obj="__INPUT__",
                                 name="previousCast",
@@ -1959,7 +1984,7 @@ def add_actions(db):
                     else_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Not ready for this spell")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
+                            output=2,
                             resource=StringLiteral("Playaudio: not ready for this spell"),
                         ),
                     ]),
@@ -1969,7 +1994,7 @@ def add_actions(db):
             else_body=CompoundStatement(statements=[
                 PrintStatement(StringLiteral("Wand is already charged")),
                 OutputStatement(
-                    output=speaker_virtual_output_id,
+                    output=2,
                     resource=StringLiteral("Playaudio: wand is already charged"),
                 ),
             ]),
@@ -2004,7 +2029,7 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Charging Wand")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
+                            output=2,
                             resource=GetAttrExpression(
                                 obj="__INPUT__",
                                 name="previousCast",
@@ -2020,7 +2045,7 @@ def add_actions(db):
                     else_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Not ready for this spell")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
+                            output=2,
                             resource=StringLiteral("Playaudio: not ready for this spell"),
                         ),
                     ]),
@@ -2030,7 +2055,7 @@ def add_actions(db):
             else_body=CompoundStatement(statements=[
                 PrintStatement(StringLiteral("Wand is already charged")),
                 OutputStatement(
-                    output=speaker_virtual_output_id,
+                    output=2,
                     resource=StringLiteral("Playaudio: wand is already charged"),
                 ),
             ]),
@@ -2054,7 +2079,7 @@ def add_actions(db):
                 # output sound and set spell = 2
                 PrintStatement(StringLiteral("Charging Wand")),
                 OutputStatement(
-                    output=speaker_virtual_output_id,
+                    output=2,
                     resource=GetAttrExpression(
                         obj="__INPUT__",
                         name="previousCast",
@@ -2070,7 +2095,7 @@ def add_actions(db):
             else_body=CompoundStatement(statements=[
                 PrintStatement(StringLiteral("Wand is already charged")),
                 OutputStatement(
-                    output=speaker_virtual_output_id,
+                    output=2,
                     resource=StringLiteral("Playaudio: wand is already charged"),
                 ),
             ]),
@@ -2105,7 +2130,7 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Charging Wand")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
+                            output=2,
                             resource=GetAttrExpression(
                                 obj="__INPUT__",
                                 name="previousCast",
@@ -2121,7 +2146,7 @@ def add_actions(db):
                     else_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Not ready for this spell")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
+                            output=2,
                             resource=StringLiteral("Playaudio: not ready for this spell"),
                         ),
                     ]),
@@ -2131,7 +2156,7 @@ def add_actions(db):
             else_body=CompoundStatement(statements=[
                 PrintStatement(StringLiteral("Wand is already charged")),
                 OutputStatement(
-                    output=speaker_virtual_output_id,
+                    output=2,
                     resource=StringLiteral("Playaudio: wand is already charged"),
                 ),
             ]),
@@ -2166,7 +2191,7 @@ def add_actions(db):
                     if_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Charging Wand")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
+                            output=2,
                             resource=GetAttrExpression(
                                 obj="__INPUT__",
                                 name="previousCast",
@@ -2182,7 +2207,7 @@ def add_actions(db):
                     else_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Not ready for this spell")),
                         OutputStatement(
-                            output=speaker_virtual_output_id,
+                            output=2,
                             resource=StringLiteral("Playaudio: not ready for this spell"),
                         ),
                     ]),
@@ -2192,7 +2217,7 @@ def add_actions(db):
             else_body=CompoundStatement(statements=[
                 PrintStatement(StringLiteral("Wand is already charged")),
                 OutputStatement(
-                    output=speaker_virtual_output_id,
+                    output=2,
                     resource=StringLiteral("Playaudio: wand is already charged"),
                 ),
             ]),
@@ -2206,8 +2231,8 @@ def add_actions(db):
             rvalue=IntegerLiteral(1),
         ),
         OutputStatement(
-            output=speaker_virtual_output_id,
-            resource=StringLiteral("Playaudio: found castle"),
+            output=6,
+            resource=StringLiteral("Playaudio: found.mp3"),
         ),
     ])
 
@@ -2218,8 +2243,8 @@ def add_actions(db):
             rvalue=IntegerLiteral(1),
         ),
         OutputStatement(
-            output=speaker_virtual_output_id,
-            resource=StringLiteral("Playaudio: found ship"),
+            output=4,
+            resource=StringLiteral("Playaudio: found.mp3"),
         ),
     ])
 
@@ -2230,8 +2255,8 @@ def add_actions(db):
             rvalue=IntegerLiteral(1),
         ),
         OutputStatement(
-            output=speaker_virtual_output_id,
-            resource=StringLiteral("Playaudio: found cathedral"),
+            output=5,
+            resource=StringLiteral("Playaudio: found.mp3"),
         ),
     ])
 
@@ -2242,15 +2267,15 @@ def add_actions(db):
             rvalue=IntegerLiteral(1),
         ),
         OutputStatement(
-            output=speaker_virtual_output_id,
-            resource=StringLiteral("Playaudio:found train"),
+            output=7,
+            resource=StringLiteral("Playaudio:found.mp3"),
         ),
     ])
 
     found_central = CompoundStatement(statements=[
         OutputStatement(
-            output=speaker_virtual_output_id,
-            resource=StringLiteral("Playaudio:found central"),
+            output=3,
+            resource=StringLiteral("Playaudio: found.mp3"),
         ),
     ])
 
@@ -2301,7 +2326,7 @@ def add_actions(db):
             if_body=CompoundStatement(statements=[
                 PrintStatement(StringLiteral("Training complete")),
                 OutputStatement(
-                    output=speaker_virtual_output_id,
+                    output=2,
                     resource=StringLiteral("Training complete."),
                 ),
             ]),
@@ -2309,7 +2334,7 @@ def add_actions(db):
                 PrintStatement(StringLiteral("Training has not been complete.")),
 
                 OutputStatement(
-                    output=speaker_virtual_output_id,
+                    output=2,
                     resource=StringLiteral("Training has not been completed."),
                 ),
             ]),
@@ -2361,9 +2386,6 @@ def add_actions(db):
     check_training_complete_str = unparser.to_json(check_training_complete)
     reset_training_str = unparser.to_json(reset_training)
 
-    player_entity = db.get_virtual_entity_by_name(name="Player")
-    card_entity = db.get_virtual_entity_by_name(name="Card")
-    greeting_tag_entity = db.get_virtual_entity_by_name(name="GreetingTag")
     wand_entity = db.get_virtual_entity_by_name(name="Wand")
     training_wand_entity = db.get_virtual_entity_by_name(name="TrainingWand")
 
@@ -2407,25 +2429,25 @@ def add_events(db, *, actions, devices, scenes):
             device_id=devices[0].id,
         ),
         model.Event(
-            name="Train Event",
-            scene_id=scenes[0].id,
-            type=model.EventTypes.scan,
-            device_id=devices[1].id,
-        ),
-        model.Event(
             name="Ship Event",
             scene_id=scenes[0].id,
             type=model.EventTypes.scan,
-            device_id=devices[0].id,
+            device_id=devices[1].id,
         ),
         model.Event(
             name="Cathedral Event",
             scene_id=scenes[0].id,
             type=model.EventTypes.scan,
-            device_id=devices[1].id,
+            device_id=devices[0].id,
         ),
         model.Event(
             name="Castle Event",
+            scene_id=scenes[0].id,
+            type=model.EventTypes.scan,
+            device_id=devices[1].id,
+        ),
+        model.Event(
+            name="Train Event",
             scene_id=scenes[0].id,
             type=model.EventTypes.scan,
             device_id=devices[0].id,
@@ -2436,15 +2458,25 @@ def add_events(db, *, actions, devices, scenes):
         db.add_event(event)
 
     event_actions_list = [
-        # Player 1 action
+        # Central action
         model.EventActions(event_id=events[0].id, action_id=actions[0].id),
+        model.EventActions(event_id=events[0].id, action_id=actions[19].id),
 
-        # Player 2 action
+        # Ship action
         model.EventActions(event_id=events[1].id, action_id=actions[1].id),
+        model.EventActions(event_id=events[1].id, action_id=actions[15].id),
+        # Cathedral action
+        model.EventActions(event_id=events[2].id, action_id=actions[2].id),
+        model.EventActions(event_id=events[2].id, action_id=actions[18].id),
 
-        # Allow scanning the greeting tag on either device
-        model.EventActions(event_id=events[0].id, action_id=actions[2].id),
-        model.EventActions(event_id=events[1].id, action_id=actions[2].id),
+        # Castle action
+        model.EventActions(event_id=events[3].id, action_id=actions[3].id),
+        model.EventActions(event_id=events[3].id, action_id=actions[16].id),
+
+        # Train action
+        model.EventActions(event_id=events[4].id, action_id=actions[4].id),
+        model.EventActions(event_id=events[4].id, action_id=actions[17].id),
+
     ]
 
     for event_actions in event_actions_list:
