@@ -109,11 +109,11 @@ def handle_socket(s):
     speech = message.replace('+', ' ')
 
     print(speech)
-    isAudio = speech.find('Playaudio: ')
-    if isAudio > 0:
+    isAudio = speech.find('Playaudio')
+    if isAudio >= 0:
         print('play audio')
 
-        tempFileName = "Audio/" + speech[isAudio+11:]
+        tempFileName = "Audio/" + speech[isAudio+10:-1]
         print(tempFileName)
         call(['omxplayer', tempFileName])
     else:
