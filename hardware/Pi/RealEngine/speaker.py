@@ -109,11 +109,17 @@ def handle_socket(s):
     speech = message.replace('+', ' ')
 
     print(speech)
+    isAudio = speech.find('Playaudio: ')
+    if isAudio > 0:
+        print('play audio')
 
-    tempFileName = "Audio/test_padded.wav"
-
-    call(['pico2wave', '-w', tempFileName, speech])
-    call(['aplay', tempFileName])
+        tempFileName = "Audio/" + speech[isAudio+11:]
+        print(tempFileName)
+        call(['omxplayer', tempFileName])
+    else:
+        tempFileName = "Audio/test_padded.wav"
+        call(['pico2wave', '-w', tempFileName, speech])
+        call(['aplay', tempFileName])
 
     print("end")
 
@@ -126,4 +132,3 @@ if __name__ == '__main__':
 
     while True:
         handle_socket(s)
-
