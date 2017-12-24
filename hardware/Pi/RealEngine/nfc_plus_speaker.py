@@ -35,7 +35,7 @@ if __name__ == '__main__':
     # Start threads
     nfc_thread = Thread(target=nfc_loop)
     nfc_thread.start()
-
+    selector = selectors.DefaultSelector()
     # Register events
     print("Registering event handlers...")
     register_speaker(selector)

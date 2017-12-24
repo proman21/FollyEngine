@@ -35,7 +35,7 @@ from smartcard.Exceptions import CardRequestTimeoutException
 deviceID = str(get_mac());  # using mac as unique device ID
 
 def init_nfc():
-    host = "http://192.168.0.102:8080/api/devices/";
+    host = "http://192.168.1.168:8080/api/devices/";
 
     modelID = "98";
     # TODO make neater
@@ -46,7 +46,7 @@ def init_nfc():
 
     payload = json.dumps({'id': deviceID,
                           'model_id': modelID,
-                          'ip': myIP,
+                          'ip': myIP+':8080',
                           'purpose': myPurpose});
 
     # logging
@@ -91,11 +91,11 @@ def handle_nfc(cardrequest):
     tag = str(response)
     print(tag)
     if (tag != '[]'):
-        payload = json.dumps({'id': deviceID, "tagID": tag});
+        payload = json.dumps({'id': deviceID, "tag_id": tag});
 
         print('payload: ' + payload)
 
-        host = "http://192.168.0.102:8080/api/tags/log/";
+        host = "http://192.168.1.168:8080/api/tags/log/";
         print('sending to: ' + host)
 
         try:
@@ -106,7 +106,6 @@ def handle_nfc(cardrequest):
             print(err)
             print()
 
-            continue
     time.sleep(3)
 
 def run_nfc():
