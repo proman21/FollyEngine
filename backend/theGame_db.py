@@ -350,6 +350,11 @@ def add_actions(db):
                             name="temp1",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast temporal1"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -377,6 +382,11 @@ def add_actions(db):
                             obj="__INPUT__",
                             name="temp2",
                             rvalue=IntegerLiteral(1),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast temporal2"),
                         ),
                     ]),
                     # -> Not this spell
@@ -406,6 +416,11 @@ def add_actions(db):
                             name="temp3",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast temporal3"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -433,6 +448,11 @@ def add_actions(db):
                             obj="__INPUT__",
                             name="ill1",
                             rvalue=IntegerLiteral(1),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast illusion1"),
                         ),
                     ]),
                     # -> Not this spell
@@ -462,6 +482,11 @@ def add_actions(db):
                             name="ill2",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast illusion2"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -489,6 +514,11 @@ def add_actions(db):
                             obj="__INPUT__",
                             name="ill3",
                             rvalue=IntegerLiteral(1),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast illusion3"),
                         ),
                     ]),
                     # -> Not this spell
@@ -518,6 +548,11 @@ def add_actions(db):
                             name="ench1",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast enchantment1"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -546,6 +581,11 @@ def add_actions(db):
                             name="ench2",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast enchantment2"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -573,6 +613,11 @@ def add_actions(db):
                             obj="__INPUT__",
                             name="ench3",
                             rvalue=IntegerLiteral(1),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast enchantment3"),
                         ),
                     ]),
                     # -> Not this spell
@@ -635,6 +680,11 @@ def add_actions(db):
                             name="temp1",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast temporal1"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -662,6 +712,11 @@ def add_actions(db):
                             obj="__INPUT__",
                             name="temp2",
                             rvalue=IntegerLiteral(1),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast temporal2"),
                         ),
                     ]),
                     # -> Not this spell
@@ -691,6 +746,11 @@ def add_actions(db):
                             name="temp3",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast temporal3"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -718,6 +778,11 @@ def add_actions(db):
                             obj="__INPUT__",
                             name="ill1",
                             rvalue=IntegerLiteral(1),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast illusion1"),
                         ),
                     ]),
                     # -> Not this spell
@@ -747,6 +812,11 @@ def add_actions(db):
                             name="ill2",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast illusion2"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -774,6 +844,11 @@ def add_actions(db):
                             obj="__INPUT__",
                             name="ill3",
                             rvalue=IntegerLiteral(1),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast illusion3"),
                         ),
                     ]),
                     # -> Not this spell
@@ -803,6 +878,11 @@ def add_actions(db):
                             name="ench1",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast enchantment1"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -831,6 +911,11 @@ def add_actions(db):
                             name="ench2",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast enchantment2"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -858,6 +943,11 @@ def add_actions(db):
                             obj="__INPUT__",
                             name="ench3",
                             rvalue=IntegerLiteral(1),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast enchantment3"),
                         ),
                     ]),
                     # -> Not this spell
@@ -919,6 +1009,11 @@ def add_actions(db):
                             name="temp1",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast temporal1"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -946,6 +1041,11 @@ def add_actions(db):
                             obj="__INPUT__",
                             name="temp2",
                             rvalue=IntegerLiteral(1),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast temporal2"),
                         ),
                     ]),
                     # -> Not this spell
@@ -975,6 +1075,11 @@ def add_actions(db):
                             name="temp3",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast temporal3"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -1002,6 +1107,11 @@ def add_actions(db):
                             obj="__INPUT__",
                             name="ill1",
                             rvalue=IntegerLiteral(1),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast illusion1"),
                         ),
                     ]),
                     # -> Not this spell
@@ -1031,6 +1141,11 @@ def add_actions(db):
                             name="ill2",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast illusion2"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -1058,6 +1173,11 @@ def add_actions(db):
                             obj="__INPUT__",
                             name="ill3",
                             rvalue=IntegerLiteral(1),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast illusion3"),
                         ),
                     ]),
                     # -> Not this spell
@@ -1087,6 +1207,11 @@ def add_actions(db):
                             name="ench1",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast enchantment1"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -1115,6 +1240,11 @@ def add_actions(db):
                             name="ench2",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast enchantment2"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -1142,6 +1272,11 @@ def add_actions(db):
                             obj="__INPUT__",
                             name="ench3",
                             rvalue=IntegerLiteral(1),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast enchantment3"),
                         ),
                     ]),
                     # -> Not this spell
@@ -1204,6 +1339,11 @@ def add_actions(db):
                             name="temp1",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast temporal1"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -1231,6 +1371,11 @@ def add_actions(db):
                             obj="__INPUT__",
                             name="temp2",
                             rvalue=IntegerLiteral(1),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast temporal2"),
                         ),
                     ]),
                     # -> Not this spell
@@ -1260,6 +1405,11 @@ def add_actions(db):
                             name="temp3",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast temporal3"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -1287,6 +1437,11 @@ def add_actions(db):
                             obj="__INPUT__",
                             name="ill1",
                             rvalue=IntegerLiteral(1),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast illusion1"),
                         ),
                     ]),
                     # -> Not this spell
@@ -1316,6 +1471,11 @@ def add_actions(db):
                             name="ill2",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast illusion2"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -1343,6 +1503,11 @@ def add_actions(db):
                             obj="__INPUT__",
                             name="ill3",
                             rvalue=IntegerLiteral(1),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast illusion3"),
                         ),
                     ]),
                     # -> Not this spell
@@ -1372,6 +1537,11 @@ def add_actions(db):
                             name="ench1",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast enchantment1"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -1400,6 +1570,11 @@ def add_actions(db):
                             name="ench2",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast enchantment2"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -1427,6 +1602,11 @@ def add_actions(db):
                             obj="__INPUT__",
                             name="ench3",
                             rvalue=IntegerLiteral(1),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast enchantment3"),
                         ),
                     ]),
                     # -> Not this spell
@@ -1489,6 +1669,11 @@ def add_actions(db):
                             name="temp1",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast temporal1"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -1516,6 +1701,11 @@ def add_actions(db):
                             obj="__INPUT__",
                             name="temp2",
                             rvalue=IntegerLiteral(1),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast temporal2"),
                         ),
                     ]),
                     # -> Not this spell
@@ -1545,6 +1735,11 @@ def add_actions(db):
                             name="temp3",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast temporal3"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -1572,6 +1767,11 @@ def add_actions(db):
                             obj="__INPUT__",
                             name="ill1",
                             rvalue=IntegerLiteral(1),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast illusion1"),
                         ),
                     ]),
                     # -> Not this spell
@@ -1601,6 +1801,11 @@ def add_actions(db):
                             name="ill2",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast illusion2"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -1628,6 +1833,11 @@ def add_actions(db):
                             obj="__INPUT__",
                             name="ill3",
                             rvalue=IntegerLiteral(1),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast illusion3"),
                         ),
                     ]),
                     # -> Not this spell
@@ -1657,6 +1867,11 @@ def add_actions(db):
                             name="ench1",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast enchantment1"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -1685,6 +1900,11 @@ def add_actions(db):
                             name="ench2",
                             rvalue=IntegerLiteral(1),
                         ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast enchantment2"),
+                        ),
                     ]),
                     # -> Not this spell
                     else_body=CompoundStatement(statements=[
@@ -1712,6 +1932,11 @@ def add_actions(db):
                             obj="__INPUT__",
                             name="ench3",
                             rvalue=IntegerLiteral(1),
+                        ),
+                        SetAttrStatement(
+                            obj="__INPUT__",
+                            name="previousCast",
+                            rvalue=StringLiteral("Previously cast enchantment3"),
                         ),
                     ]),
                     # -> Not this spell
