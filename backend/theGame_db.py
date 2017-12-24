@@ -343,7 +343,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell")),
                         OutputStatement(
                             output=3,
-                            resource=StringLiteral("Playaudio: temp1.mp3"),
+                            resource=StringLiteral("Playaudio temp1.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -371,7 +371,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell temp2")),
                         OutputStatement(
                             output=3,
-                            resource=StringLiteral("Playaudio: temp2.mp3"),
+                            resource=StringLiteral("Playaudio temp2.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -399,7 +399,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell temp3")),
                         OutputStatement(
                             output=3,
-                            resource=StringLiteral("Playaudio: temp3.mp3"),
+                            resource=StringLiteral("Playaudio temp3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -427,7 +427,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ill1")),
                         OutputStatement(
                             output=3,
-                            resource=StringLiteral("Playaudio: ill1.mp3"),
+                            resource=StringLiteral("Playaudio ill1.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -455,7 +455,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ill2")),
                         OutputStatement(
                             output=3,
-                            resource=StringLiteral("Playaudio: ill2.mp3"),
+                            resource=StringLiteral("Playaudio ill2.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -483,7 +483,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ill3")),
                         OutputStatement(
                             output=3,
-                            resource=StringLiteral("Playaudio: ill3.mp3"),
+                            resource=StringLiteral("Playaudio ill3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -511,7 +511,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ench1")),
                         OutputStatement(
                             output=3,
-                            resource=StringLiteral("Playaudio: ench1.wav"),
+                            resource=StringLiteral("Playaudio ench1.wav"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -539,7 +539,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ench2")),
                         OutputStatement(
                             output=3,
-                            resource=StringLiteral("Playaudio: ench2.wav"),
+                            resource=StringLiteral("Playaudio ench2.wav"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -567,7 +567,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ench3")),
                         OutputStatement(
                             output=3,
-                            resource=StringLiteral("Playaudio: ench3.mp3"),
+                            resource=StringLiteral("Playaudio ench3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -593,7 +593,7 @@ def add_actions(db):
                 PrintStatement(StringLiteral("Wand is not charged")),
                 OutputStatement(
                     output=3,
-                    resource=StringLiteral("Playaudio: failed.wav"),
+                    resource=StringLiteral("Playaudio failed.wav"),
                 ),
             ]),
         ),
@@ -628,7 +628,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell")),
                         OutputStatement(
                             output=4,
-                            resource=StringLiteral("Playaudio: temp1.mp3"),
+                            resource=StringLiteral("Playaudio temp1.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -656,7 +656,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell temp2")),
                         OutputStatement(
                             output=4,
-                            resource=StringLiteral("Playaudio: temp2.mp3"),
+                            resource=StringLiteral("Playaudio temp2.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -684,7 +684,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell temp3")),
                         OutputStatement(
                             output=4,
-                            resource=StringLiteral("Playaudio: temp3.mp3"),
+                            resource=StringLiteral("Playaudio temp3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -712,7 +712,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ill1")),
                         OutputStatement(
                             output=4,
-                            resource=StringLiteral("Playaudio: ill1.mp3"),
+                            resource=StringLiteral("Playaudio ill1.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -740,7 +740,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ill2")),
                         OutputStatement(
                             output=4,
-                            resource=StringLiteral("Playaudio: ill2.mp3"),
+                            resource=StringLiteral("Playaudio ill2.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -768,7 +768,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ill3")),
                         OutputStatement(
                             output=4,
-                            resource=StringLiteral("Playaudio: ill3.mp3"),
+                            resource=StringLiteral("Playaudio ill3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -796,7 +796,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ench1")),
                         OutputStatement(
                             output=4,
-                            resource=StringLiteral("Playaudio: ench1.wav"),
+                            resource=StringLiteral("Playaudio ench1.wav"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -824,7 +824,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ench2")),
                         OutputStatement(
                             output=4,
-                            resource=StringLiteral("Playaudio: ench2.wav"),
+                            resource=StringLiteral("Playaudio ench2.wav"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -852,7 +852,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ench3")),
                         OutputStatement(
                             output=4,
-                            resource=StringLiteral("Playaudio: ench3.mp3"),
+                            resource=StringLiteral("Playaudio ench3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -878,7 +878,7 @@ def add_actions(db):
                 PrintStatement(StringLiteral("Wand is not charged")),
                 OutputStatement(
                     output=4,
-                    resource=StringLiteral("Playaudio: failed.wav"),
+                    resource=StringLiteral("Playaudio failed.wav"),
                 ),
             ]),
         ),
@@ -912,7 +912,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell")),
                         OutputStatement(
                             output=6,
-                            resource=StringLiteral("Playaudio: temp1.mp3"),
+                            resource=StringLiteral("Playaudio temp1.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -940,7 +940,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell temp2")),
                         OutputStatement(
                             output=6,
-                            resource=StringLiteral("Playaudio: temp2.mp3"),
+                            resource=StringLiteral("Playaudio temp2.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -968,7 +968,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell temp3")),
                         OutputStatement(
                             output=6,
-                            resource=StringLiteral("Playaudio: temp3.mp3"),
+                            resource=StringLiteral("Playaudio temp3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -996,7 +996,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ill1")),
                         OutputStatement(
                             output=6,
-                            resource=StringLiteral("Playaudio: ill1.mp3"),
+                            resource=StringLiteral("Playaudio ill1.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1024,7 +1024,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ill2")),
                         OutputStatement(
                             output=6,
-                            resource=StringLiteral("Playaudio: ill2.mp3"),
+                            resource=StringLiteral("Playaudio ill2.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1052,7 +1052,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ill3")),
                         OutputStatement(
                             output=6,
-                            resource=StringLiteral("Playaudio: ill3.mp3"),
+                            resource=StringLiteral("Playaudio ill3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1080,7 +1080,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ench1")),
                         OutputStatement(
                             output=6,
-                            resource=StringLiteral("Playaudio: ench1.wav"),
+                            resource=StringLiteral("Playaudio ench1.wav"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1108,7 +1108,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ench2")),
                         OutputStatement(
                             output=6,
-                            resource=StringLiteral("Playaudio: ench2.wav"),
+                            resource=StringLiteral("Playaudio ench2.wav"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1136,7 +1136,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ench3")),
                         OutputStatement(
                             output=6,
-                            resource=StringLiteral("Playaudio: ench3.mp3"),
+                            resource=StringLiteral("Playaudio ench3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1162,7 +1162,7 @@ def add_actions(db):
                 PrintStatement(StringLiteral("Wand is not charged")),
                 OutputStatement(
                     output=6,
-                    resource=StringLiteral("Playaudio: failed.wav"),
+                    resource=StringLiteral("Playaudio failed.wav"),
                 ),
             ]),
         ),
@@ -1197,7 +1197,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell")),
                         OutputStatement(
                             output=7,
-                            resource=StringLiteral("Playaudio: temp1.mp3"),
+                            resource=StringLiteral("Playaudio temp1.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1225,7 +1225,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell temp2")),
                         OutputStatement(
                             output=7,
-                            resource=StringLiteral("Playaudio: temp2.mp3"),
+                            resource=StringLiteral("Playaudio temp2.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1253,7 +1253,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell temp3")),
                         OutputStatement(
                             output=7,
-                            resource=StringLiteral("Playaudio: temp3.mp3"),
+                            resource=StringLiteral("Playaudio temp3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1281,7 +1281,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ill1")),
                         OutputStatement(
                             output=7,
-                            resource=StringLiteral("Playaudio: ill1.mp3"),
+                            resource=StringLiteral("Playaudio ill1.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1309,7 +1309,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ill2")),
                         OutputStatement(
                             output=7,
-                            resource=StringLiteral("Playaudio: ill2.mp3"),
+                            resource=StringLiteral("Playaudio ill2.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1337,7 +1337,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ill3")),
                         OutputStatement(
                             output=7,
-                            resource=StringLiteral("Playaudio: ill3.mp3"),
+                            resource=StringLiteral("Playaudio ill3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1365,7 +1365,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ench1")),
                         OutputStatement(
                             output=7,
-                            resource=StringLiteral("Playaudio: ench1.wav"),
+                            resource=StringLiteral("Playaudio ench1.wav"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1393,7 +1393,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ench2")),
                         OutputStatement(
                             output=7,
-                            resource=StringLiteral("Playaudio: ench2.wav"),
+                            resource=StringLiteral("Playaudio ench2.wav"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1421,7 +1421,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ench3")),
                         OutputStatement(
                             output=7,
-                            resource=StringLiteral("Playaudio: ench3.mp3"),
+                            resource=StringLiteral("Playaudio ench3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1447,7 +1447,7 @@ def add_actions(db):
                 PrintStatement(StringLiteral("Wand is not charged")),
                 OutputStatement(
                     output=7,
-                    resource=StringLiteral("Playaudio: failed.wav"),
+                    resource=StringLiteral("Playaudio failed.wav"),
                 ),
             ]),
         ),
@@ -1482,7 +1482,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell")),
                         OutputStatement(
                             output=5,
-                            resource=StringLiteral("Playaudio: temp1.mp3"),
+                            resource=StringLiteral("Playaudio temp1.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1510,7 +1510,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell temp2")),
                         OutputStatement(
                             output=5,
-                            resource=StringLiteral("Playaudio: temp2.mp3"),
+                            resource=StringLiteral("Playaudio temp2.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1538,7 +1538,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell temp3")),
                         OutputStatement(
                             output=5,
-                            resource=StringLiteral("Playaudio: temp3.mp3"),
+                            resource=StringLiteral("Playaudio temp3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1566,7 +1566,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ill1")),
                         OutputStatement(
                             output=5,
-                            resource=StringLiteral("Playaudio: ill1.mp3"),
+                            resource=StringLiteral("Playaudio ill1.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1594,7 +1594,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ill2")),
                         OutputStatement(
                             output=5,
-                            resource=StringLiteral("Playaudio: ill2.mp3"),
+                            resource=StringLiteral("Playaudio ill2.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1622,7 +1622,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ill3")),
                         OutputStatement(
                             output=5,
-                            resource=StringLiteral("Playaudio: ill3.mp3"),
+                            resource=StringLiteral("Playaudio ill3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1650,7 +1650,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ench1")),
                         OutputStatement(
                             output=5,
-                            resource=StringLiteral("Playaudio: ench1.wav"),
+                            resource=StringLiteral("Playaudio ench1.wav"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1678,7 +1678,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ench2")),
                         OutputStatement(
                             output=5,
-                            resource=StringLiteral("Playaudio: ench2.wav"),
+                            resource=StringLiteral("Playaudio ench2.wav"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1706,7 +1706,7 @@ def add_actions(db):
                         PrintStatement(StringLiteral("Casting Spell ench3")),
                         OutputStatement(
                             output=5,
-                            resource=StringLiteral("Playaudio: ench3.mp3"),
+                            resource=StringLiteral("Playaudio ench3.mp3"),
                         ),
                         SetAttrStatement(
                             obj="__INPUT__",
@@ -1732,7 +1732,7 @@ def add_actions(db):
                 PrintStatement(StringLiteral("Wand is not charged")),
                 OutputStatement(
                     output=5,
-                    resource=StringLiteral("Playaudio: failed.wav"),
+                    resource=StringLiteral("Playaudio failed.wav"),
                 ),
             ]),
         ),
@@ -1766,13 +1766,17 @@ def add_actions(db):
                     name="temp1",
                     rvalue=IntegerLiteral(2),
                 ),
+                OutputStatement(
+                    output=3,
+                    resource=StringLiteral("Playaudio charging.mp3"),
+                ),
             ]),
             # -> Wand is already charged
             else_body=CompoundStatement(statements=[
                 PrintStatement(StringLiteral("Wand is already charged")),
                 OutputStatement(
                     output=3,
-                    resource=StringLiteral("Playaudio: charged.mp3"),
+                    resource=StringLiteral("Playaudio failed.wav"),
                 ),
             ]),
         ),
@@ -1817,13 +1821,17 @@ def add_actions(db):
                             name="temp2",
                             rvalue=IntegerLiteral(2),
                         ),
+                        OutputStatement(
+                            output=3,
+                            resource=StringLiteral("Playaudio charging.mp3"),
+                        ),
                     ]),
                     # -> Not ready for this spell
                     else_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Not ready for this spell")),
                         OutputStatement(
                             output=2,
-                            resource=StringLiteral("Playaudio: not ready for this spell"),
+                            resource=StringLiteral("Playaudio failed.wav"),
                         ),
                     ]),
                 ),
@@ -1833,7 +1841,7 @@ def add_actions(db):
                 PrintStatement(StringLiteral("Wand is already charged")),
                 OutputStatement(
                     output=2,
-                    resource=StringLiteral("Playaudio: wand is already charged"),
+                    resource=StringLiteral("Playaudio failed.wav"),
                 ),
             ]),
         ),
@@ -1878,13 +1886,17 @@ def add_actions(db):
                             name="temp3",
                             rvalue=IntegerLiteral(2),
                         ),
+                        OutputStatement(
+                            output=3,
+                            resource=StringLiteral("Playaudio charging.mp3"),
+                        ),
                     ]),
                     # -> Not ready for this spell
                     else_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Not ready for this spell")),
                         OutputStatement(
                             output=2,
-                            resource=StringLiteral("Playaudio: not ready for this spell"),
+                            resource=StringLiteral("Playaudio failed.wav"),
                         ),
                     ]),
                 ),
@@ -1894,7 +1906,7 @@ def add_actions(db):
                 PrintStatement(StringLiteral("Wand is already charged")),
                 OutputStatement(
                     output=2,
-                    resource=StringLiteral("Playaudio: wand is already charged"),
+                    resource=StringLiteral("Playaudio failed.wav"),
                 ),
             ]),
         ),
@@ -1928,13 +1940,17 @@ def add_actions(db):
                     name="ill1",
                     rvalue=IntegerLiteral(2),
                 ),
+                OutputStatement(
+                    output=3,
+                    resource=StringLiteral("Playaudio charging.mp3"),
+                ),
             ]),
             # -> Wand is already charged
             else_body=CompoundStatement(statements=[
                 PrintStatement(StringLiteral("Wand is already charged")),
                 OutputStatement(
                     output=2,
-                    resource=StringLiteral("Playaudio: wand is already charged"),
+                    resource=StringLiteral("Playaudio failed.wav"),
                 ),
             ]),
         ),
@@ -1979,13 +1995,17 @@ def add_actions(db):
                             name="ill2",
                             rvalue=IntegerLiteral(2),
                         ),
+                        OutputStatement(
+                            output=3,
+                            resource=StringLiteral("Playaudio charging.mp3"),
+                        ),
                     ]),
                     # -> Not ready for this spell
                     else_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Not ready for this spell")),
                         OutputStatement(
                             output=2,
-                            resource=StringLiteral("Playaudio: not ready for this spell"),
+                            resource=StringLiteral("Playaudio failed.wav"),
                         ),
                     ]),
                 ),
@@ -1995,7 +2015,7 @@ def add_actions(db):
                 PrintStatement(StringLiteral("Wand is already charged")),
                 OutputStatement(
                     output=2,
-                    resource=StringLiteral("Playaudio: wand is already charged"),
+                    resource=StringLiteral("Playaudio failed.wav"),
                 ),
             ]),
         ),
@@ -2040,13 +2060,17 @@ def add_actions(db):
                             name="ill3",
                             rvalue=IntegerLiteral(2),
                         ),
+                        OutputStatement(
+                            output=3,
+                            resource=StringLiteral("Playaudio charging.mp3"),
+                        ),
                     ]),
                     # -> Not ready for this spell
                     else_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Not ready for this spell")),
                         OutputStatement(
                             output=2,
-                            resource=StringLiteral("Playaudio: not ready for this spell"),
+                            resource=StringLiteral("Playaudio failed.wav"),
                         ),
                     ]),
                 ),
@@ -2056,7 +2080,7 @@ def add_actions(db):
                 PrintStatement(StringLiteral("Wand is already charged")),
                 OutputStatement(
                     output=2,
-                    resource=StringLiteral("Playaudio: wand is already charged"),
+                    resource=StringLiteral("Playaudio failed.wav"),
                 ),
             ]),
         ),
@@ -2090,13 +2114,17 @@ def add_actions(db):
                     name="ench1",
                     rvalue=IntegerLiteral(2),
                 ),
+                OutputStatement(
+                    output=3,
+                    resource=StringLiteral("Playaudio charging.mp3"),
+                ),
             ]),
             # -> Wand is already charged
             else_body=CompoundStatement(statements=[
                 PrintStatement(StringLiteral("Wand is already charged")),
                 OutputStatement(
                     output=2,
-                    resource=StringLiteral("Playaudio: wand is already charged"),
+                    resource=StringLiteral("Playaudio failed.wav"),
                 ),
             ]),
         ),
@@ -2141,13 +2169,17 @@ def add_actions(db):
                             name="ench2",
                             rvalue=IntegerLiteral(2),
                         ),
+                        OutputStatement(
+                            output=3,
+                            resource=StringLiteral("Playaudio charging.mp3"),
+                        ),
                     ]),
                     # -> Not ready for this spell
                     else_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Not ready for this spell")),
                         OutputStatement(
                             output=2,
-                            resource=StringLiteral("Playaudio: not ready for this spell"),
+                            resource=StringLiteral("Playaudio failed.wav"),
                         ),
                     ]),
                 ),
@@ -2157,7 +2189,7 @@ def add_actions(db):
                 PrintStatement(StringLiteral("Wand is already charged")),
                 OutputStatement(
                     output=2,
-                    resource=StringLiteral("Playaudio: wand is already charged"),
+                    resource=StringLiteral("Playaudio failed.wav"),
                 ),
             ]),
         ),
@@ -2202,13 +2234,17 @@ def add_actions(db):
                             name="ench3",
                             rvalue=IntegerLiteral(2),
                         ),
+                        OutputStatement(
+                            output=3,
+                            resource=StringLiteral("Playaudio charging.mp3"),
+                        ),
                     ]),
                     # -> Not ready for this spell
                     else_body=CompoundStatement(statements=[
                         PrintStatement(StringLiteral("Not ready for this spell")),
                         OutputStatement(
                             output=2,
-                            resource=StringLiteral("Playaudio: not ready for this spell"),
+                            resource=StringLiteral("Playaudio failed.wav"),
                         ),
                     ]),
                 ),
@@ -2218,7 +2254,7 @@ def add_actions(db):
                 PrintStatement(StringLiteral("Wand is already charged")),
                 OutputStatement(
                     output=2,
-                    resource=StringLiteral("Playaudio: wand is already charged"),
+                    resource=StringLiteral("Playaudio failed.wav"),
                 ),
             ]),
         ),
@@ -2232,7 +2268,7 @@ def add_actions(db):
         ),
         OutputStatement(
             output=6,
-            resource=StringLiteral("Playaudio: found.mp3"),
+            resource=StringLiteral("Playaudio found.mp3"),
         ),
     ])
 
@@ -2244,7 +2280,7 @@ def add_actions(db):
         ),
         OutputStatement(
             output=4,
-            resource=StringLiteral("Playaudio: found.mp3"),
+            resource=StringLiteral("Playaudio found.mp3"),
         ),
     ])
 
@@ -2256,7 +2292,7 @@ def add_actions(db):
         ),
         OutputStatement(
             output=5,
-            resource=StringLiteral("Playaudio: found.mp3"),
+            resource=StringLiteral("Playaudio found.mp3"),
         ),
     ])
 
@@ -2268,14 +2304,14 @@ def add_actions(db):
         ),
         OutputStatement(
             output=7,
-            resource=StringLiteral("Playaudio:found.mp3"),
+            resource=StringLiteral("Playaudio found.mp3"),
         ),
     ])
 
     found_central = CompoundStatement(statements=[
         OutputStatement(
             output=3,
-            resource=StringLiteral("Playaudio: found.mp3"),
+            resource=StringLiteral("Playaudio found.mp3"),
         ),
     ])
 
