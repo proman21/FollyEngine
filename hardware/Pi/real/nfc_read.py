@@ -23,6 +23,7 @@ import time
 import requests
 import socket
 import json
+import random
 
 from uuid import getnode as get_mac
 from subprocess import call
@@ -35,7 +36,7 @@ from smartcard.Exceptions import CardRequestTimeoutException
 deviceID = str(get_mac());  # using mac as unique device ID
 
 def init_nfc():
-    host = "http://192.168.1.168:8080/api/devices/";
+    host = "http://172.16.7.33:8080/api/devices/";  # !!! Hardcoded IP
 
     modelID = "98";
     # TODO make neater
@@ -95,13 +96,45 @@ def handle_nfc(cardrequest):
 
         print('payload: ' + payload)
 
-        host = "http://192.168.1.168:8080/api/tags/log/";
+        host = "http://172.16.7.33:8080/api/tags/log/"; # !!! Hardcoded IP
         print('sending to: ' + host)
 
         try:
             r = requests.post(host, data=payload);
         except Exception as err:
             # the host could not be found
+            
+            
+
+            tempFileName = "Audio/failed.wav"
+
+            '''
+            randnum =  random.randint(1,9)
+            if randnum == 1:
+               tempFileName = "Audio/temp1.mp3"
+            elif randnum == 2:
+               tempFileName = "Audio/temp2.mp3"
+            elif randnum == 3:
+               tempFileName = "Audio/temp3.mp3"
+            elif randnum ==  4:
+               tempFileName = "Audio/ill1.mp3"
+            elif randnum ==  5:
+               tempFileName = "Audio/ill2.mp3" 
+            elif randnum ==  6:
+               tempFileName = "Audio/ill3.mp3"
+            elif randnum ==  7:
+               tempFileName = "Audio/ench1.wav"
+            elif randnum ==  8:
+               tempFileName = "Audio/ench2.wav"
+            elif randnum ==  9:
+               tempFileName = "Audio/ench3.mp3"
+            '''
+            
+            print(tempFileName)
+            call(['omxplayer', tempFileName])
+            
+            
+            
             print("not network accessable, the error was:")
             print(err)
             print()

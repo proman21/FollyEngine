@@ -47,7 +47,7 @@ def register_speaker(selector):
 
 def init_socket():
     # hardcoded server/laptop IP TODO get dynamically
-    host = "http://192.168.1.168:8080/api/devices/";
+    host = "http://172.16.7.33:8080/api/devices/";   # !!! Hardcoded IP
 
     deviceID = str(get_mac());  # using mac as unique device ID
     modelID = "97";
@@ -109,7 +109,9 @@ def handle_socket(s):
     speech = message.replace('+', ' ')
 
     print(speech)
+
     isAudio = speech.find('Playaudio')
+    print(isAudio)
     if isAudio >= 0:
         print('play audio')
 
