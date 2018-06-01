@@ -1,0 +1,86 @@
+* {
+    /* Variables */
+}
+
+.content {
+    margin-left: 10%;
+}
+
+.login {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+}
+
+.main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.sideNav {
+    background-color: #275C7D;
+    box-shadow: 5px 0 10px lightgrey;
+}
+
+.menu-open, .menu-close {
+    position: absolute;
+    left: 15px;
+    top: 0;
+    margin-top: 50px;
+    min-width: 0;
+    color: white;
+    font-size: 16px;
+}
+
+.menu-open {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.sidenav-buttons-group {
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: none;
+}
+
+.sidenav-buttons-group > * {
+    padding: 10px 15px;
+    text-align: center;
+    background-color: white;
+    color: #275C7D;
+}
+
+.sidenav-buttons-group > *.selected {
+    background-color: #275C7D;
+    color: white;
+}
+
+::ng-deep .alert-bar .mat-simple-snackbar {
+    color: white;
+}
+
+::ng-deep snack-bar-container.alert-bar {
+
+}

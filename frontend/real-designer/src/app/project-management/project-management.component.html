@@ -1,0 +1,9 @@
+<menubar [workspace]="workspace" [projectName]="_projectName" [username]="_username"
+    (onOpenWelcome)="displayWelcomeDialog()"
+    (onPressSideBar)="toggleSideBar()"
+    (onPressSave)="save()"
+    (onOpenSettings)="displaySettingsDialog()"
+    (onNew)="makeNewProject()"
+    (onPressNewEntity)="makeNewEntity()"
+    (onPressNewComponent)="makeNewComponent()"
+></menubar>

@@ -1,0 +1,10 @@
+<div class="page-container">
+  
+	<search-list [data]="search_data"
+	(onSelectCallback)="selectAsset($event)"
+	(onPressAddButton)="newAsset()"
+	class="asset-search-list">
+	</search-list>
+	<asset-list [asset]="assets.get(selected_index)" class="asset-list" (childEvent)="tests(message)" (onNameChange)="changeName($event)"
+	></asset-list>
+</div>

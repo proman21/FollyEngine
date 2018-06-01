@@ -1,0 +1,81 @@
+.start {
+
+}
+
+.welcome {
+    width: 65%;
+    background-color: #EEE;
+    float: left;
+    text-align: center;
+    display: block;
+}
+
+.welcome h1 {
+    margin: 0 auto;
+    margin-top: 100px;
+    margin-bottom: 20px;
+    font-size: 48px;
+}
+
+.welcome button {
+    padding: 10px 20px;
+    margin: 50px auto;
+    margin-top: 100px;
+}
+
+.welcome a {
+    margin: 10px auto;
+    display: block;
+    clear: both;
+}
+
+.welcome a:last-child {
+    margin-bottom: 100px;
+}
+
+.open {
+    width: 35%;
+    float: right;
+    text-align: center;
+}
+
+.open ol {
+    list-style: none;
+}
+
+.create {
+    text-align: center;
+}
+
+.create > * {
+    width: 100%;
+}
+
+.create button {
+    padding: 5px 10px;
+}
+
+a {
+    color: #0071BC;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.icon {
+    font-size: 32px;
+    margin-right: 16px;
+    padding-bottom: 12px;
+}
+
+.load-btn {
+    display: block;
+    width: 100%;
+}
+
+.textDescription {
+    min-height: 80px;
+    max-height: 300px;
+}

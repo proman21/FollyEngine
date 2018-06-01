@@ -1,0 +1,15 @@
+<div class="page-container">
+	<search-list [data]="search_data"
+	(onSelectCallback)="selectComponent($event)"
+	(onPressAddButton)="newComponent()"
+	class="component-search-list">
+	</search-list>
+	<component-editor [component]="components.get(selected_index)" class="component-editor"
+	(onNameChange)="changeName($event)"
+	(onDestroyComponent)="destroySelected()"
+	(onNewAttribute)="addAttributeToSelected()"
+	(onDestroyAttribute)="destroyAttributeFromSelected($event)"
+	(onNameChangeAttribute)="changeAttributeName($event)"
+	(onDescriptionChangeAttribute)="changeAttributeDescription($event)"
+	></component-editor>
+</div>

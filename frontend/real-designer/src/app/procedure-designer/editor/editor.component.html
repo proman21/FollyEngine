@@ -1,0 +1,17 @@
+	<div id="blank-context-menu" class="context-menu">
+		<ul>
+			<li (click)="addEntityToEditorDialog()"> Add Entity </li>
+			<li (click)="addComponentToEditorDialog()"> Add Component </li>
+			<li (click)="addLogicNodeToEditorDialog()"> Add Logic Node </li>
+		</ul>
+	</div>
+	<div id="node-context-menu" class="context-menu">
+		<ul>
+			<li (click)="duplicateSelectedNode()"> Duplicate </li>
+			<li (click)="deleteSelectedNode()" class="warn-context-button"> Delete </li>
+		</ul>
+	</div>
+	<div id="editor-container">
+		<div class="editor">
+		</div>
+	</div>

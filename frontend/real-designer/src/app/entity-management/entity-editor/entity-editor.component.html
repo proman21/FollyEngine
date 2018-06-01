@@ -1,0 +1,19 @@
+<div *ngIf="entity">
+	<div class="entity-name">
+		<input type="text" maxlength="50" class="name-field" value={{entity.name}} (keyup)="nameChange($event)">
+		<button mat-button color="primary" class="add-button" (click)="addComponent()">
+			<mat-icon>add box</mat-icon>
+		</button>
+		<button mat-button class="destroy-button"
+		(click)="onDestroyEntity.emit()">
+			 <mat-icon>delete</mat-icon>
+		  </button>
+
+
+	</div>
+	<div class="entity-components">
+		<description-display></description-display>
+		<component-display [components]="component_list" (onDestroyComponent)="onDestroyComponent.emit($event)"></component-display>
+		<procedures-display></procedures-display>
+	</div>
+</div>
