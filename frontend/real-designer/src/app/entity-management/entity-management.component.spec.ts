@@ -37,7 +37,6 @@ describe('EntityManagementComponent', () => {
 
     	// Sync with designer
     	comp.subscribeDesigner();
-
     });
 
     it('refresh search list', () => {
@@ -49,25 +48,25 @@ describe('EntityManagementComponent', () => {
     	expect(comp.search_data).toEqual(expected);
     });
 
-    it('selected index updates correctly'), () => {
+    it('selected index updates correctly', () => {
     	expect(comp.getSelected()).toBe(c);
     	comp.selected_index = 1;
     	expect(comp.getSelected()).toBe(a);
     });
 
-    it('check entity tries to register'), () => {
+    it('check entity tries to register', () => {
     	const spy = spyOn(designer, "registerNewEntity");
     	comp.newEntity();
     	expect(spy).toHaveBeenCalledWith(new DesignerEntity("New Entity"));
     });
 
-    it('check destroy tries to destroy'), () => {
+    it('check destroy tries to destroy', () => {
     	const spy = spyOn(designer, "destroyEntity");
     	comp.destroySelected();
     	expect(spy).toHaveBeenCalledWith(c.id);
     });
 
-    it('check select button updates index'), () => {
+    it('check select button updates index', () => {
     });
 });
 // 	destroySelected() {
