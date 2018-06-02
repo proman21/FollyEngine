@@ -1,0 +1,20 @@
+<div class="search-list">
+	<div class="search" (keyup)=search($event)>
+		<mat-form-field class="input-field">
+    		<input matInput type="search" placeholder="Search" value="">
+  		</mat-form-field>
+		<button mat-icon-button color="primary" class="add-button" (click)="addElement()">
+    		<mat-icon>add</mat-icon>
+  		</button>
+	</div>
+		<mat-list>
+			<div *ngFor="let e of searched_data | iterable">
+				<a href="#" class="element" (click)="selectCallback(e.value)">
+					<mat-list-item>
+						{{e.key}}
+					</mat-list-item>
+				</a>
+			</div>
+	</mat-list>
+		<ng-content></ng-content>
+</div>

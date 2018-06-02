@@ -1,0 +1,46 @@
+<div class="settings-container">
+    <div class="header">
+        <h1 mat-dialog-title>Settings</h1>
+        <img src="https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png" height="64" width="64"/>
+        <h2 mat-dialog-title>{{ name }}</h2>
+    </div>
+
+    <mat-tab-group class="settings-tabs">
+
+        <mat-tab label="Personal">
+            <settings-personal></settings-personal>
+        </mat-tab>
+
+        <mat-tab label="Notifications">
+            <div style="margin: 30px;">
+                <mat-checkbox color="primary">Receive Email Notifications</mat-checkbox>
+                <p>We'll send you email updates on any progress or changes made to Folly Designer.</p>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="Language">
+            <div style="margin: 30px;">
+                <mat-form-field>
+                  <mat-select placeholder="Language" [(value)]="selectedLanguage">
+                    <mat-option>None</mat-option>
+                    <mat-option *ngFor="let language of languages" [value]="language">{{language}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="Other">
+            <div style="margin: 30px;">
+                <mat-checkbox color="primary">Send Anonymous Usage Data</mat-checkbox>
+                <p>Help us improve the overall experience of the Folly Designer.</p>
+            </div>
+        </mat-tab>
+
+    </mat-tab-group>
+
+    <div class="settings-actions">
+        <button mat-raised-button color="primary" (click)="saveSettings()">Save Changes</button>
+        <button mat-raised-button (click)="cancelSettings()">Cancel</button>
+    </div>
+
+</div>

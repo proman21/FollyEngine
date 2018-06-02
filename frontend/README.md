@@ -1,31 +1,23 @@
-# Real Engine -- Frontend
+# RealDesigner 
 
+## Building
+Building the website can be done with the ./build.sh script. This builds it into the real-designer/dist folder.
+This script will also build all npm dependencies. Refer to the angular-cli documentation for installing Angular2+ 
 
-## Prerequisites
+[Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.
 
-Make sure you have [npm](https://npmjs.com), the node.js package manager.
+## Development server
+
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 ## Build
 
-Install the dependencies.
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
-```sh
-$ npm install
-```
+## Running unit tests
 
-Then build the frontend
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-```sh
-$ npm run build
-```
+## Further help
 
-which will create the `dist/bundle.js` file.
-
-# JavaScript modules
-
-This project uses multiple javascript modules.
-Currently no browsers support javascript modules, so we bundle the modules together into a single `bundle.js` file using [webpack](https://webpack.js.org/).
-
-# Vue
-
-To make development easier, we're using [Vue.js](https://vuejs.org/) to build the frontend.
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).

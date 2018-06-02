@@ -1,0 +1,28 @@
+
+.attribute-card {
+	padding-bottom: 10px;
+	padding-top: 10px;
+}
+
+.attribute-name {
+	font-size: 1.3em;
+}
+
+.attribute-description {
+	display: inline;
+	float: left;
+}
+
+.attribute-type {
+	display: inline;
+	float: right;
+}
+
+.actions {
+	display: inline;
+}
+
+.actions button {
+	margin-top: 16px;
+	float: right;
+}

@@ -1,0 +1,17 @@
+<div class="dialog">
+<h1 mat-dialog-title>{{data.title}}</h1>
+<div mat-dialog-content>
+	<p>{{data.description}}</p>
+	<mat-form-field>
+		<mat-select placeholder="{{data.placeholder}}" [(ngModel)]="selected_id">
+			<mat-option *ngFor="let c of data.elements" [value]="c.id">
+				{{c.getName()}}
+			</mat-option>
+		</mat-select>
+	</mat-form-field>
+</div>
+<div mat-dialog-actions>
+	<button mat-button (click)="onNoClick()">Cancel</button>
+	<button mat-button [mat-dialog-close]="selected_id" cdkFocusInitial>Ok</button>
+</div>
+</div>

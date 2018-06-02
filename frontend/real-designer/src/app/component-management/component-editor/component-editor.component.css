@@ -1,0 +1,19 @@
+
+.component-name {
+	margin: 15px;
+}
+
+.component-name input {
+	width: 69%;
+	font-size: 1.5em;
+	border: none;
+	background: none;
+}
+
+.component-name input:focus {
+	background: white;
+}
+
+.component-name button {
+	width: 15%;
+}

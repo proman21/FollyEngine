@@ -1,0 +1,24 @@
+<div class="attribute" *ngFor="let a of attributes;index as i">
+	<mat-card class="attribute-card">
+		<div>
+			<mat-form-field>
+				<input matInput placeholder="Name" class="attribute-name" type="text" value={{a.getName()}}
+				(keyup)="onNameChangeAttribute.emit([i, $event.target.value])"
+				>
+			</mat-form-field>
+			<mat-card-actions class="actions">
+				<button mat-button color="warn" class="attribute-destroy" (click)="onDestroyAttribute.emit(i)"
+				><mat-icon>delete</mat-icon>
+			</button>
+			</mat-card-actions>
+			<mat-card-content>
+					<mat-form-field>
+						<input matInput placeholder="Description" class="attribute-description" type="text" value={{a.getDescription()}} 
+						(keyup)="onDescriptionChangeAttribute.emit([i, $event.target.value])"
+						>
+					</mat-form-field>
+					<div class="attribute-type">{{a.getType()}}</div>
+				</mat-card-content>
+		</div>
+	</mat-card>
+</div>

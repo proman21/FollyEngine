@@ -1,0 +1,6 @@
+<div *ngIf="asset">
+	<div class="asset-name">
+		<input type="text" value={{asset.name}}
+		(keyup)="onNameChange.emit($event.target.value)">
+		<input type="text" value={{asset.file}}>
+</div>
