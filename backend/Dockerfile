@@ -1,7 +1,7 @@
 FROM python:3.6
 
 WORKDIR /app
-RUN pip install pipenv
+RUN pip install --no-cache-dir pipenv
 
 COPY Pipfile* ./
 RUN pipenv install --system --deploy
