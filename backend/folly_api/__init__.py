@@ -18,21 +18,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-import os
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_security import Security, SQLAlchemyUserDatastore
+from models import User, Role
 
-import flask
-import flask_sqlalchemy
-
-app = flask.Flask(
-    import_name=__name__,
-    static_folder='../../frontend/',
-    static_url_path='',
-)
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(app.instance_path, 'real_engine.db')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db = flask_sqlalchemy.SQLAlchemy(app)
-
-# this has to go *after* the creating the app object
-from . import views # noqa: E402 F401
+app = Flask(__name__)
+db = SQLAlchemy(app)
+users = SQLAlchemyUserDatastore(db, User, Role)
+security = Security(app, users)

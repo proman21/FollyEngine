@@ -29,7 +29,7 @@ from . import model
 
 @app.route('/')
 def index():
-    return app.send_static_file('app.html')
+    return "El Barto Was Here"
 
 
 @app.route('/api/devices/', methods=['GET', 'POST'])
