@@ -12,6 +12,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: "cameo-Knot-walt-Joint-meyer"
       MYSQL_DATABASE: "follyengine"
+    volumes:
+      - db:/var/lib/mysql
 
   web:
     image: nginx
@@ -21,3 +23,6 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - api
+
+volumes:
+  db:
