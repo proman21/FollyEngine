@@ -19,11 +19,16 @@ command to check.
 $ pipenv --version
 ```
 
-If no version information is shown, pipenv hasn't installed properly.
+If no version information is shown, pipenv hasn't installed properly. Install
+using.
+
+```sh
+$ pip install --user pipenv
+```
 
 Then, install the development dependencies using pipenv.
 
-```
+```sh
 $ pipenv install --dev
 ```
 
