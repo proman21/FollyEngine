@@ -10,3 +10,6 @@ docker-compose = "*"
 
 [requires]
 python_version = "2.7"
+
+[scripts]
+dc = "docker-compose"
