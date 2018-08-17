@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  api:
+    volumes:
+      - ./backend/folly_api:/app/folly_api:ro
+    environment:
+      FLASK_APP: folly_api
+      FLASK_ENV: development
+    entrypoint:
+      - flask
+      - run
+      - -h
+      - "0.0.0.0"
+
+  front:
+    build: ./frontend
+    volumes:
+      - ./frontend/real-designer:/app
+    entrypoint:
+      - ng
+      - serve
+      - --host
+      - "0.0.0.0"
+
+  web:
+    volumes:
+      - ./follyengine.dev.conf:/etc/nginx/conf.d/follyengine.dev.conf
+    depends_on:
+      - front
