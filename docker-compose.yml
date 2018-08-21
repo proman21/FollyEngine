@@ -5,13 +5,16 @@ services:
     build: ./backend
     depends_on:
       - db
+    env_file: .env
+    environment:
+      - =mysql://db/$MYSQL_DATABASE
 
   db:
     image: mariadb
     restart: always
+    env_file: .env
     environment:
       MYSQL_ROOT_PASSWORD: "cameo-Knot-walt-Joint-meyer"
-      MYSQL_DATABASE: "follyengine"
     volumes:
       - db:/var/lib/mysql
 
