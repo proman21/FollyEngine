@@ -7,7 +7,7 @@ services:
       - db
     env_file: .env
     environment:
-      - =mysql://db/$MYSQL_DATABASE
+      - SQLALCHEMY_DATABASE_URI=mysql://db/$MYSQL_DATABASE
 
   db:
     image: mariadb
