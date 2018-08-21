@@ -12,8 +12,8 @@ The project consists of:
 
 ## Setup
 
-First, make sure you have pipenv installed on your machine. Issue the following
-command to check.
+First, make sure you have **Docker** and **pipenv** installed on your machine.
+Issue the following command to check.
 
 ```sh
 $ pipenv --version
@@ -35,3 +35,5 @@ $ pipenv install --dev
 You will now have `docker-compose` available in a Python virtual environment.
 You can use `pipenv run docker-compose` to run docker-compose without needing to
 activate the virtual environment. `pipenv run dc` is a shortcut to avoid typing.
+
+`pipenv run dc up` will run the project at `http://localhost:8000/`.
