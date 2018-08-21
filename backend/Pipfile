@@ -12,6 +12,7 @@ requests = "*"
 gunicorn = "*"
 graphene = ">=2.0"
 flask-migrate = "*"
+flask-security = "*"
 
 [requires]
 python_version = "3.6"
