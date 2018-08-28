@@ -12,6 +12,9 @@ requests = "*"
 gunicorn = "*"
 flask-migrate = "*"
 flask-security = "*"
+marshmallow-jsonapi = "*"
+pymysql = "*"
+bcrypt = "*"
 
 [requires]
 python_version = "3.6"
