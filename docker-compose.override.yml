@@ -4,9 +4,11 @@ services:
   api:
     volumes:
       - ./backend/folly_api:/app/folly_api:ro
+      - ./backend/config/dev.py:/app/config.py:ro
     environment:
       FLASK_APP: folly_api
       FLASK_ENV: development
+      FOLLYAPI_SETTINGS: /app/config.py
     entrypoint:
       - flask
       - run

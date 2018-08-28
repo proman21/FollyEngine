@@ -7,14 +7,12 @@ services:
       - db
     env_file: .env
     environment:
-      SQLALCHEMY_DATABASE_URI: mysql://db/$MYSQL_DATABASE
+      - DATABASE_URI=mysql+pymysql://root:${MYSQL_ROOT_PASSWORD}@db/${MYSQL_DATABASE}
 
   db:
     image: mariadb
     restart: always
     env_file: .env
-    environment:
-      MYSQL_ROOT_PASSWORD: "cameo-Knot-walt-Joint-meyer"
     volumes:
       - db:/var/lib/mysql
 
