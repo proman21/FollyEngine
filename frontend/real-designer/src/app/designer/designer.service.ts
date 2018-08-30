@@ -96,6 +96,11 @@ export class DesignerService {
 				o[key] = value;
 				return o;
 			}, []);
+		let assets = Array.from(this.currentProject.assets)
+			.reduce((o, [key, value]) => {
+				o[key] = value;
+				return o;
+			}, []);
 
 		// TODO
 		/*
@@ -105,7 +110,13 @@ export class DesignerService {
 			data: {email: email, project: project, entities: entities, components: components}
 		});
 		*/
-		let state = JSON.stringify({email: email, project: project, entities: entities, components: components});
+		let state = JSON.stringify({
+			email: email,
+			project: project,
+			entities: entities,
+			components: components,
+			assets: assets
+		});
 		console.log(state);
 		localStorage.setItem("localState", state);
 	}
@@ -190,28 +201,28 @@ export class DesignerService {
 		});
 		*/
 		let state = JSON.parse(localStorage.getItem("localState"));
-		let components = state["components"];
-		let entities = state["entities"];
+		let components = state.components;
+		let entities = state.entities;
+		let assets = state.assets;
 
-		for (var comp in components) {
-			let c = components[comp];
+		for (let entry of components) {
 			let attrs = [];
-
-			for (var a in c["attributes"]) {
-				let atr = c["attributes"][a];
-				attrs.push(new DesignerAttribute(atr.name, atr.description));
+			for (let attr of entry.attributes) {
+				attrs.push(new DesignerAttribute(attr.name, attr.description));
 			}
-			this.registerNewComponent(new DesignerComponent(c.name, attrs));
+			this.registerNewComponent(new DesignerComponent(entry.name, attrs));
 		}
-		for (var ent in entities) {
-			let e = entities[ent];
-			let de = new DesignerEntity(e.name);
 
-			for (var c in e["components"]) {
-				de.addComponent(e["components"][c]);
+		for (let entry of entities) {
+			let entity = new DesignerEntity(entry.name);
+			for (var c in entry.components) {
+				entity.addComponent(entry.components[c]);
 			}
+			this.registerNewEntity(entity);
+		}
 
-			this.registerNewEntity(de);
+		for (let entry of assets) {
+			this.registerNewAsset(new DesignerAsset(entry.name, entry.file));
 		}
 	}
 
