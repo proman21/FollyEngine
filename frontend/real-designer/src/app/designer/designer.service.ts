@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
+import { HttpClient } from "@angular/common/http";
 import { DesignerEntity, DesignerComponent, DesignerAttribute, DesignerAsset } from '../designer/designer';
 import { Flow } from '../flow/flow';
-
-declare var $: any;
 
 @Injectable()
 export class DesignerService {
@@ -65,11 +64,14 @@ export class DesignerService {
 		let email = sessionStorage.getItem('email');
 		let project = name;
 
+		// TODO
+		/*
 		$.ajax({
 			url: 'new-project.php',
 			type: "POST",
 			data: {email: email, project: project}
 		});
+		*/
 
 		let p = new Project();
 		this.projects.set(name, p);
@@ -83,32 +85,29 @@ export class DesignerService {
 		let email = sessionStorage.getItem('email');
 		let project = this.currentProjectName;
 
-		// TS Maps are wacky (can't directly convert to json). SO magic solves this
-		let entities = JSON.stringify(
-			Array.from(this.currentProject.entities)
+		// convert maps to plain JS arrays
+		let entities = Array.from(this.currentProject.entities)
 			.reduce((o, [key, value]) => {
 				o[key] = value;
 				return o;
-			}, {})
-			);
-		let components = JSON.stringify(
-			Array.from(this.currentProject.components)
+			}, []);
+		let components = Array.from(this.currentProject.components)
 			.reduce((o, [key, value]) => {
 				o[key] = value;
 				return o;
-			}, {})
-			);
+			}, []);
 
-		console.log(email);
-		console.log(project);
-		console.log(entities);
-		console.log(components);
-
+		// TODO
+		/*
 		$.ajax({
 			url: 'save-state.php',
 			type: "POST",
 			data: {email: email, project: project, entities: entities, components: components}
 		});
+		*/
+		let state = JSON.stringify({email: email, project: project, entities: entities, components: components});
+		console.log(state);
+		localStorage.setItem("localState", state);
 	}
 
 	loadAllProjects() {
@@ -117,6 +116,8 @@ export class DesignerService {
 		let self = this;
 		let email = sessionStorage.getItem('email');
 
+		// TODO
+		/*
 		$.ajax({
 			url: 'get-projects.php',
 			type: "GET",
@@ -131,6 +132,12 @@ export class DesignerService {
 				}
 			}
 		});
+		*/
+		let stateString = localStorage.getItem("localState");
+		if (stateString != null) {
+			let state = JSON.parse(stateString);
+			self.projects.set(state.project, new Project());
+		}
 	}
 
 	loadProject(name: string) {
@@ -147,6 +154,8 @@ export class DesignerService {
 		let project = this.currentProjectName;
 		this.currentProject = this.projects.get(this.currentProjectName);
 
+		// TODO
+		/*
 		$.ajax({
 			url: 'load-state.php',
 			type: "GET",
@@ -179,6 +188,31 @@ export class DesignerService {
 
 			}
 		});
+		*/
+		let state = JSON.parse(localStorage.getItem("localState"));
+		let components = state["components"];
+		let entities = state["entities"];
+
+		for (var comp in components) {
+			let c = components[comp];
+			let attrs = [];
+
+			for (var a in c["attributes"]) {
+				let atr = c["attributes"][a];
+				attrs.push(new DesignerAttribute(atr.name, atr.description));
+			}
+			this.registerNewComponent(new DesignerComponent(c.name, attrs));
+		}
+		for (var ent in entities) {
+			let e = entities[ent];
+			let de = new DesignerEntity(e.name);
+
+			for (var c in e["components"]) {
+				de.addComponent(e["components"][c]);
+			}
+
+			this.registerNewEntity(de);
+		}
 	}
 
 	// TODO overloads?
