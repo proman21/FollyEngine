@@ -40,13 +40,13 @@
 
         <mat-card *ngIf="!state" class="login-card">
             <form (submit)="createAccount()">
-                <div>
+                <!--div>
                     <mat-icon>person</mat-icon>
                     <mat-form-field>
                         <input required matInput placeholder="Username" [formControl]="makeUsername">
                         <mat-error *ngIf="makeUsername.invalid">{{ getMakeUsernameErrorMessage() }}</mat-error>
                     </mat-form-field>
-                </div>
+                </div-->
 
                 <div>
                     <mat-icon>mail</mat-icon>
@@ -78,13 +78,11 @@
 
         <!-- Make an Account -->
         <div *ngIf="state">
-            <span id="assistMessage">Don't have an account?</span>
-            <a id="assistAction" href="#" (click)="toggleState()">Create an account</a>
+            <span id="assistMessage">Don't have an account?</span>&nbsp;<a id="assistAction" href="#" (click)="toggleState()">Create an account</a>
         </div>
 
         <div *ngIf="!state">
-            <span id="assistMessage">Already have an account?</span>
-            <a id="assistAction" href="#" (click)="toggleState()">Log In</a>
+            <span id="assistMessage">Already have an account?</span>&nbsp;<a id="assistAction" href="#" (click)="toggleState()">Log In</a>
         </div>
 
     </div>
