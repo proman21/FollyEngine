@@ -4,6 +4,9 @@ from .models import Project
 
 # Register your models here.
 class ProjectAdmin(admin.ModelAdmin):
-    fields = ['title', 'description']
+    date_hierarchy = 'modified'
+    readonly_fields = ('created', 'modified')
+    list_display = ('title', 'owner', 'created', 'modified')
+    search_fields = ['title', 'owner__username']
 
 admin.site.register(Project, ProjectAdmin)
