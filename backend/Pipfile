@@ -6,15 +6,9 @@ name = "pypi"
 [dev-packages]
 
 [packages]
-flask = "*"
-flask-sqlalchemy = "*"
-requests = "*"
-gunicorn = "*"
-flask-migrate = "*"
-flask-security = "*"
-marshmallow-jsonapi = "*"
-pymysql = "*"
-bcrypt = "*"
+django = "*"
+djangorestframework = "*"
+djangorestframework-jsonapi = "*"
 
 [requires]
 python_version = "3.6"
