@@ -17,6 +17,19 @@ class Project(models.Model):
         return self.title
 
 
+class Component(models.Model):
+    name = models.CharField(max_length=64)
+    description = models.TextField()
+
+
+class Entity(models.Model):
+    name = models.CharField(max_length=64)
+    description = models.TextField()
+    project = models.ForeignKey(Project, related_name='entities',
+                                on_delete=models.CASCADE)
+    components = models.ManyToManyField(Component, related_name='implementers')
+
+
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
