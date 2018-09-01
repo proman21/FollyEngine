@@ -2,9 +2,9 @@
 
 ## Backend Setup
 
-Make sure you have Python 3.7 and pipenv installed on your machine.
+Make sure you have Python 3.6 and pipenv installed on your machine.
 
-Install the python packages for the Django.
+Install the python packages for Django and the backend.
 
 ```sh
 $ pipenv install
@@ -13,17 +13,13 @@ $ pipenv install
 Run the migrations onto the database.
 
 ```sh
-$ python manage.py migrate
+$ docker-compose run --rm api migrate
 ```
 
 Create a new superuser so you can access the system
 
 ```sh
-$ python manage.py createsuperuser
+$ docker-compose run --rm api createsuperuser
 ```
 
-Run the development server
-
-```sh
-$ python manage.py runserver
-```
+Now
