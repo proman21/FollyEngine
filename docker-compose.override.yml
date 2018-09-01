@@ -3,17 +3,11 @@ version: '3'
 services:
   api:
     volumes:
-      - ./backend/folly_api:/app/folly_api:ro
-      - ./backend/config/dev.py:/app/config.py:ro
+      - ./backend/follyengine:/app/follyengine
     environment:
-      FLASK_APP: folly_api
-      FLASK_ENV: development
-      FOLLYAPI_SETTINGS: /app/config.py
-    entrypoint:
-      - flask
-      - run
-      - -h
-      - "0.0.0.0"
+      - DJANGO_SETTINGS_MODULE=follyengine.settings.dev
+    entrypoint: ["python", "manage.py"]
+    command: ["runserver", "0.0.0.0:8000"]
 
   front:
     build: ./frontend

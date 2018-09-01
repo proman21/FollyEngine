@@ -6,10 +6,12 @@ name = "pypi"
 [dev-packages]
 
 [packages]
-django = "*"
+django = "~=2.1.1"
 djangorestframework = "*"
-djangorestframework-jsonapi = "*"
+djangorestframework-jsonapi = "~=2.5.0"
 drf-nested-routers = "*"
+gunicorn = "*"
+"psycopg2" = "*"
 
 [requires]
 python_version = "3.6"

@@ -14,5 +14,3 @@ python_version = "2.7"
 [scripts]
 dc = "docker-compose"
 serve = "docker-compose run --no-deps --rm -p 4200:4200 front"
-api = "docker-compose run --rm -p 5000:5000 api"
-db_migrate = "docker-compose run --rm --entrypoint \"\" -e FLASK_APP=$FLASK_APP -v $PWD/backend/migrations:/app/migrations flask db migrate"
