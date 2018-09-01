@@ -4,9 +4,11 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
+
 # Create your models here.
 class Project(models.Model):
     title = models.CharField(max_length=64)
+    slug = models.SlugField(max_length=64, allow_unicode=True)
     description = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -18,12 +20,14 @@ class Project(models.Model):
 
 
 class Component(models.Model):
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=64, unique=True)
     description = models.TextField()
+    project = models.ForeignKey(Project, related_name='components',
+                                on_delete=models.CASCADE)
 
 
 class Entity(models.Model):
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=64, unique=True)
     description = models.TextField()
     project = models.ForeignKey(Project, related_name='entities',
                                 on_delete=models.CASCADE)
