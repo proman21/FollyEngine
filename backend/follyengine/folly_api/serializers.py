@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework_json_api import serializers
 
-from follyengine.folly_api.models import Project
+from follyengine.folly_api import models
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -18,5 +18,17 @@ class GroupSerializer(serializers.ModelSerializer):
 
 class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Project
-        fields = ('title', 'description', 'created', 'modified')
+        model = models.Project
+        fields = ('title', 'description', 'slug', 'created', 'modified')
+
+
+class EntitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Entity
+        fields = ('name', 'description')
+
+
+class ComponentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Component
+        fields = ('name', 'description')

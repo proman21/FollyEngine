@@ -16,8 +16,8 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.urls import path
-from rest_framework import routers
 from rest_framework.authtoken import views as rest_views
+from rest_framework_nested import routers
 
 from follyengine.folly_api import views
 
@@ -26,9 +26,15 @@ router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'projects', views.ProjectViewSet, base_name='project')
 
+project_router = routers.NestedDefaultRouter(router, r'projects',
+                                             lookup='project')
+project_router.register(r'entities', views.EntityViewSet)
+project_router.register(r'components', views.ComponentViewSet)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^api/', include(router.urls)),
+    url(r'^api/', include(project_router.urls)),
     url(r'^api/auth/token', rest_views.obtain_auth_token),
-    url(r'^', include('rest_framework.urls', namespace='rest_framework'))
+    url(r'^api/', include('rest_framework.urls', namespace='rest_framework'))
 ]
