@@ -10,6 +10,12 @@ Install the python packages for Django and the backend.
 $ pipenv install
 ```
 
+Make sure the Docker image for the backend is built
+
+```sh
+$ docker-compose build api
+```
+
 Run the migrations onto the database.
 
 ```sh
@@ -22,4 +28,8 @@ Create a new superuser so you can access the system
 $ docker-compose run --rm api createsuperuser
 ```
 
-Now
+Now you can bring up the whole stack using
+
+```sh
+$ docker-compose up -d
+```
