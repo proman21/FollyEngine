@@ -133,6 +133,13 @@ export class FlowEditorComponent implements OnInit {
                     var $target = $(evt.target);
                     this.model.set($target.attr('name'), $target.val());
                 }, this));
+                this.$box.find('input,select').each(_.bind(function(index, element) {
+                    var $element = $(element);
+                    var val = this.model.get($element.attr('name'));
+                    if (val != undefined) {
+                        $element.val(val);
+                    }
+                }, this));
                 this.$box.find('.delete').on('click', _.bind(this.model.remove, this.model));
 
                 return this;

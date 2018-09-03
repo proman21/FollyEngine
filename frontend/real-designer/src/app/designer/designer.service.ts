@@ -239,8 +239,6 @@ export class DesignerService {
 			flow.id = entry.id;
 			this.currentProject.flows.set(entry.id, flow);
 		}
-		console.log(flows);
-		console.log(this.getFlows());
 
 		for (let entry of assets) {
 			this.registerNewAsset(new DesignerAsset(entry.name, entry.file));
