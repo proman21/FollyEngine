@@ -1,8 +1,8 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 
 import { DesignerService } from '../../designer/designer.service';
-import { DesignerEntity, DesignerComponent } from '../../designer/designer';
+import { DesignerEntity, DesignerComponent, DesignerFlow } from '../../designer/designer';
 import { GenericSelectDialog } from "../../dialogs/dialogs.component";
 
 // JointJS
@@ -20,8 +20,9 @@ declare var _: any;
     encapsulation: ViewEncapsulation.None
 })
 export class FlowEditorComponent implements OnInit {
+    @Input() flow: DesignerFlow;
+
     paper: any;
-    graph: any;
 
     selected: any;
 
@@ -39,11 +40,9 @@ export class FlowEditorComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.graph = new joint.dia.Graph;
-
         this.paper = new joint.dia.Paper({
             el: $('.editor'),
-            model: this.graph,
+            model: this.flow.getGraph(),
             width: 10000,
             height: 10000,
             gridSize: 10,
@@ -159,20 +158,23 @@ export class FlowEditorComponent implements OnInit {
             }
         }); 
 
-        var el1 = new joint.shapes.html.Element({
-            position: { x: 80, y: 80 },
-            size: { width: 240, height: 200 },
-            inPorts: ['in'],
-            outPorts: ['true', 'false']
-        });
-        var el2 = new joint.shapes.html.Element({
-            position: { x: 370, y: 160 },
-            size: { width: 240, height: 200 },
-            inPorts: ['in'],
-            outPorts: ['true', 'false']
-        });
-
-        this.graph.addCells([el1, el2]);
+        if (this.flow.json != null) {
+            this.flow.restore();
+        } else {
+            var el1 = new joint.shapes.html.Element({
+                position: { x: 80, y: 80 },
+                size: { width: 240, height: 200 },
+                inPorts: ['in'],
+                outPorts: ['true', 'false']
+            });
+            var el2 = new joint.shapes.html.Element({
+                position: { x: 370, y: 160 },
+                size: { width: 240, height: 200 },
+                inPorts: ['in'],
+                outPorts: ['true', 'false']
+            });
+            this.flow.getGraph().addCells([el1, el2]);
+        }
 
         // Setup handlers
 

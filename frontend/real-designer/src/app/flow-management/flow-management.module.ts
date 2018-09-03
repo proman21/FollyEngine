@@ -9,12 +9,18 @@ import { FlowEditorComponent } from './flow-editor/flow-editor.component';
 
 // Services
 
+// Module
+import { MaterialModule } from './../material.module';
+import { SharedUiModule } from '../shared-ui/shared-ui.module';
+
 @NgModule({
   imports: [
-  CommonModule
+    CommonModule,
+    SharedUiModule,
+    MaterialModule
   ],
   exports: [
-  FlowManagementComponent,
+    FlowManagementComponent,
   ],
   declarations: [
   	FlowManagementComponent,

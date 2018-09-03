@@ -1,3 +1,5 @@
+declare var joint: any;
+
 export class DesignerEntity {
 	id: number; // unique ID
 	name: string;
@@ -85,6 +87,35 @@ export class DesignerAttribute {
 		return this.type;
 	}
 
+}
+
+export class DesignerFlow {
+	id: number; // unique ID
+	name: string;
+	json: {};
+	graph: any;
+
+	constructor(name: string, json: {}) {
+		this.name = name;
+		this.json = json;
+		this.graph = new joint.dia.Graph();
+	}
+
+	getName() {
+		return this.name;
+	}
+
+	getJSON() {
+		return this.graph.toJSON();
+	}
+
+	getGraph() {
+		return this.graph;
+	}
+
+	restore() {
+		this.graph.fromJSON(this.json);
+	}
 }
 
 export class DesignerAsset {

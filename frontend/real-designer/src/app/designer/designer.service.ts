@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { HttpClient } from "@angular/common/http";
-import { DesignerEntity, DesignerComponent, DesignerAttribute, DesignerAsset } from '../designer/designer';
+import { DesignerEntity, DesignerComponent, DesignerAttribute, DesignerFlow, DesignerAsset } from '../designer/designer';
 
 @Injectable()
 export class DesignerService {
@@ -55,6 +55,10 @@ export class DesignerService {
 		this.currentProject.entities.get(2).addComponent(1);
 		this.currentProject.entities.get(2).addComponent(3);
 
+		// Add flow
+		let flow = new DesignerFlow("Flow", null);
+		flow.id = 0;
+		this.currentProject.flows.set(0, flow);
 	}
 
 	newProject(name: string) {
@@ -95,6 +99,14 @@ export class DesignerService {
 				o[key] = value;
 				return o;
 			}, []);
+		let flows = Array.from(this.currentProject.flows)
+			.reduce((o, [key, value]) => {
+				o[key] = {};
+				o[key]["name"] = value.name;
+				o[key]["json"] = value.getJSON();
+				o[key]["id"] = value.id;
+				return o;
+			}, []);
 		let assets = Array.from(this.currentProject.assets)
 			.reduce((o, [key, value]) => {
 				o[key] = value;
@@ -114,6 +126,7 @@ export class DesignerService {
 			project: project,
 			entities: entities,
 			components: components,
+			flows: flows,
 			assets: assets
 		});
 		console.log(state);
@@ -202,6 +215,7 @@ export class DesignerService {
 		let state = JSON.parse(localStorage.getItem("localState"));
 		let components = state.components;
 		let entities = state.entities;
+		let flows = state.flows;
 		let assets = state.assets;
 
 		for (let entry of components) {
@@ -219,6 +233,14 @@ export class DesignerService {
 			}
 			this.registerNewEntity(entity);
 		}
+
+		for (let entry of flows) {
+			let flow = new DesignerFlow(entry.name, entry.json);
+			flow.id = entry.id;
+			this.currentProject.flows.set(entry.id, flow);
+		}
+		console.log(flows);
+		console.log(this.getFlows());
 
 		for (let entry of assets) {
 			this.registerNewAsset(new DesignerAsset(entry.name, entry.file));
@@ -279,6 +301,10 @@ export class DesignerService {
 		return this.currentProject.components;
 	}
 
+	getFlows() {
+		return this.currentProject.flows;
+	}
+
 	getAssets() {
 		return this.currentProject.assets;
 	}
@@ -294,6 +320,7 @@ export class Project {
 	asset_gen: NumGen = new NumGen();
 	entities: Map<number, DesignerEntity> = new Map();
 	components: Map<number, DesignerComponent> = new Map();
+	flows: Map<number, DesignerFlow> = new Map();
 	assets: Map<number, DesignerAsset> = new Map();
 }
 
