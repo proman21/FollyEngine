@@ -16,7 +16,7 @@ import { DesignerService } from './designer/designer.service';
 import { ProjectManagementModule } from './project-management/project-management.module'
 import { EntityManagementModule } from './entity-management/entity-management.module'
 import { ComponentManagementModule } from './component-management/component-management.module'
-import { ProcedureDesignerModule } from './procedure-designer/procedure-designer.module'
+import { FlowManagementModule } from './flow-management/flow-management.module'
 import { AssetManagementModule } from './asset-management/asset-management.module'
 import { LoginScreenModule } from './login-screen/login-screen.module'
 import { FormsModule } from '@angular/forms';
@@ -36,7 +36,7 @@ import { FormsModule } from '@angular/forms';
     ProjectManagementModule,
     EntityManagementModule,
     ComponentManagementModule,
-    ProcedureDesignerModule,
+    FlowManagementModule,
     AssetManagementModule,
     LoginScreenModule,
     FormsModule,

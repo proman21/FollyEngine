@@ -14,12 +14,12 @@ declare var $: any;
 declare var _: any;
 
 @Component({
-    selector: 'app-editor',
-    templateUrl: './editor.component.html',
-    styleUrls: ['./editor.component.css'],
+    selector: 'flow-editor',
+    templateUrl: './flow-editor.component.html',
+    styleUrls: ['./flow-editor.component.css'],
     encapsulation: ViewEncapsulation.None
 })
-export class EditorComponent implements OnInit {
+export class FlowEditorComponent implements OnInit {
     paper: any;
     graph: any;
 
