@@ -3,7 +3,6 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { HttpClient } from "@angular/common/http";
 import { DesignerEntity, DesignerComponent, DesignerAttribute, DesignerAsset } from '../designer/designer';
-import { Flow } from '../flow/flow';
 
 @Injectable()
 export class DesignerService {
@@ -296,7 +295,6 @@ export class Project {
 	entities: Map<number, DesignerEntity> = new Map();
 	components: Map<number, DesignerComponent> = new Map();
 	assets: Map<number, DesignerAsset> = new Map();
-	flows: Map<Number, Flow> = new Map();
 }
 
 class NumGen {

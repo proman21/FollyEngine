@@ -1,23 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { EntityFlowNode, IfLogicFlowNode, ConstLogicFlowNode, OperationLogicFlowNode, ActionLogicFlowNode, FlowNode, FlowEdge, Flow } from '../../flow/flow';
-import { Operation, Conditionals, Action, PortType } from '../../flow/flow';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material';
+
 import { DesignerService } from '../../designer/designer.service';
 import { DesignerEntity, DesignerComponent } from '../../designer/designer';
-
-import { MatDialog, MatDialogRef } from '@angular/material';
 import { GenericSelectDialog } from "../../dialogs/dialogs.component";
 
-import { ScanEditorNode, EntityEditorNode, IfLogicEditorNode, EditorNode, ConstLogicEditorNode, OperationLogicEditorNode, ActionLogicEditorNode} from "./editor.parts";
-
+// JointJS
 declare var joint: any;
+declare var V: any;
+// jQuery
 declare var $: any;
-
-// TODO less monolithic
+// lodash
+declare var _: any;
 
 @Component({
     selector: 'app-editor',
     templateUrl: './editor.component.html',
-    styleUrls: ['./editor.component.css']
+    styleUrls: ['./editor.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class EditorComponent implements OnInit {
     paper: any;
@@ -33,11 +33,7 @@ export class EditorComponent implements OnInit {
     mX: number;
     mY: number;
 
-    nodes: Map<string, EditorNode> = new Map<string, EditorNode>();
     subscribed: Map<string, any> = new Map<string, any>(); // Id -> Functions
-
-    // Current flow
-    flow: Flow = new Flow();
 
     constructor(private designerService: DesignerService, public dialog: MatDialog) {
     }
@@ -48,34 +44,135 @@ export class EditorComponent implements OnInit {
         this.paper = new joint.dia.Paper({
             el: $('.editor'),
             model: this.graph,
-            gridSize: 1,
             width: 10000,
             height: 10000,
+            gridSize: 10,
+            drawGrid: true,
+            background: {
+                color: '#fafafa'
+            },
             defaultLink: new joint.dia.Link({
                 attrs: {
-                    '.': { filter: { name: 'dropShadow', args: { dx: 1, dy: 1, blur: 3 } } },
                     '.connection' : { stroke: 'black', 'stroke-width': 3, },
-                    '.marker-source': { fill: 'orange', d: 'M 10 0 L 0 5 L 10 10 z' },
-                    '.marker-target': { fill: 'red', d: 'M 10 0 L 0 5 L 10 10 z' }
-                },
-                smooth: true,
+                    '.marker-target': { fill: 'black', d: 'M 10 0 L 0 5 L 10 10 z' }
+                }
             }),
             // validateConnection: this.checkConnection,
             // validateMagnet: this.checkMagnet,
             snapLinks: { radius: 40 },
-            linkPinning: false,
+            linkPinning: false
         });
 
+        joint.shapes.html = {};
+        joint.shapes.html.Element = joint.shapes.basic.Generic.extend(_.extend({}, joint.shapes.basic.PortsModelInterface, {
+            markup: [
+                '<g class="rotatable">',
+                '<g class="scalable">',
+                '<rect/>',
+                '<foreignObject width="240" height="200" transform="scale(42,50)">',
+                '<div xmlns="http://www.w3.org/1999/xhtml" class="flow-node">',
+                '<button class="delete">x</button>',
+                '<span class="node-caption">Condition</span>', '<br/>',
+                '<input name="name" type="text" value="Name" />', '<br/>',
+                '<select name="entity"><option>Entity</option><option>one</option><option>two</option></select>', '<br/>',
+                '<select name="attr"><option>Attribute</option><option>one</option><option>two</option></select>', '<br/>',
+                '<select name="action"><option>Action</option><option>one</option><option>two</option></select>', '<br/>',
+                '<input name="value" type="text" value="Value" />',
+                '</div>',
+                '</foreignObject>',
+                '</g>',
+                '<g class="inPorts"/>',
+                '<g class="outPorts"/>',
+                '</g>'
+            ].join(''),
+            portMarkup: '<g class="port<%= id %>"><circle/></g>',
+            defaults: joint.util.deepSupplement({
+                type: 'html.Element',
+                inPorts: [],
+                outPorts: [],
+                attrs: {
+                    '.': { magnet: false },
+                    rect: {
+                        stroke: 'none', 'fill-opacity': 0, width: '100%', height: '100%',
+                    },
+                    circle: {
+                        r: 8,
+                        magnet: true
+                    },
+                    '.inPorts circle': { fill: 'green', magnet: 'passive', type: 'input'},
+                    '.outPorts circle': { fill: 'red', type: 'output'}
+                }
+            }, joint.shapes.basic.Generic.prototype.defaults),
+            getPortAttrs: function (portName, index, total, selector, type) {
+                var attrs = {};
+                var portClass = 'port' + index;
+                var portSelector = selector + '>.' + portClass;
+                var portCircleSelector = portSelector + '>circle';
+                attrs[portCircleSelector] = { port: { id: portName || _.uniqueId(type), type: type } };
+                attrs[portSelector] = { ref: 'rect', 'ref-y': (index + 0.5) * (1 / total) };
+                if (selector === '.outPorts') { attrs[portSelector]['ref-dx'] = 0; }
+                return attrs;
+            }
+        }));
 
-        this.addEntityToEditor(0);
-        this.addEntityToEditor(1);
-        this.addConstLogicNodeToEditor("10");
-        this.addConstLogicNodeToEditor("30");
-        this.addScanLogicNode();
-        this.addIfLogicNodeToEditor();
-        this.addOperationLogicNodeToEditor();
-        this.addActionLogicNodeToEditor();
-        this.addActionLogicNodeToEditor();
+
+        joint.shapes.html.ElementView = joint.dia.ElementView.extend({
+            initialize: function() {
+                this.listenTo(this.model, 'process:ports', this.update);
+                joint.dia.ElementView.prototype.initialize.apply(this, arguments);
+            },
+            render: function() {
+                joint.dia.ElementView.prototype.render.apply(this, arguments);
+
+                this.$box = this.paper.$el.find('[model-id="' + this.model.id + '"]');
+                // Prevent paper from handling pointerdown.
+                this.$box.find('input,select').on('mousedown click', function(evt) {
+                    evt.stopPropagation();
+                });
+                // This is an example of reacting on the input change and storing the input data in the cell model.
+                this.$box.find('input,select').on('change', _.bind(function(evt) {
+                    var $target = $(evt.target);
+                    this.model.set($target.attr('name'), $target.val());
+                }, this));
+                this.$box.find('.delete').on('click', _.bind(this.model.remove, this.model));
+
+                return this;
+            },
+            renderPorts: function () {
+                var $inPorts = this.$('.inPorts').empty();
+                var $outPorts = this.$('.outPorts').empty();
+
+                var portTemplate = _.template(this.model.portMarkup);
+
+                _.each(_.filter(this.model.ports, function (p) { return p.type === 'in' }), function (port, index) {
+                    $inPorts.append(V(portTemplate({ id: index, port: port })).node);
+                });
+                _.each(_.filter(this.model.ports, function (p) { return p.type === 'out' }), function (port, index) {
+                    $outPorts.append(V(portTemplate({ id: index, port: port })).node);
+                });
+            }, 
+            update: function () {
+                // First render ports so that `attrs` can be applied to those newly created DOM elements
+                // in `ElementView.prototype.update()`.
+                this.renderPorts();
+                joint.dia.ElementView.prototype.update.apply(this, arguments);
+            }
+        }); 
+
+        var el1 = new joint.shapes.html.Element({
+            position: { x: 80, y: 80 },
+            size: { width: 240, height: 200 },
+            inPorts: ['in'],
+            outPorts: ['true', 'false']
+        });
+        var el2 = new joint.shapes.html.Element({
+            position: { x: 370, y: 160 },
+            size: { width: 240, height: 200 },
+            inPorts: ['in'],
+            outPorts: ['true', 'false']
+        });
+
+        this.graph.addCells([el1, el2]);
 
         // Setup handlers
 
@@ -150,57 +247,28 @@ export class EditorComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe(id => {
             if (id !== undefined) {
-                this.addEntityToEditor(id)
+                //this.addEntityToEditor(id)
             }
         });
         this.hideBlankContextMenu();
     }
 
     addEntityToEditor(id: number) {
-        let fNode = new EntityFlowNode(id);
-        let n = new EntityEditorNode(this.flow, fNode);
-        let elements = n.buildElements(this.designerService);
-        n.setupSubscriptions(this, elements);
-        this.graph.addCells(elements);
     }
 
     addScanLogicNode() {
-        let n = new ScanEditorNode(this.flow);
-        let elements = n.buildElements(this.designerService);
-        n.setupSubscriptions(this, elements);
-        this.graph.addCells(elements);
     }
 
     addIfLogicNodeToEditor() {
-        let fNode = new IfLogicFlowNode(Conditionals.Equal);
-        let n = new IfLogicEditorNode(this.flow, fNode);
-        let elements = n.buildElements(this.designerService);
-        n.setupSubscriptions(this, elements);
-        this.graph.addCells(elements);
     }
 
     addConstLogicNodeToEditor(value: string) {
-        let fNode = new ConstLogicFlowNode(value);
-        let n = new ConstLogicEditorNode(this.flow, value);
-        let elements = n.buildElements(this.designerService);
-        n.setupSubscriptions(this, elements);
-        this.graph.addCells(elements);
     }
 
     addOperationLogicNodeToEditor() {
-        let fNode = new OperationLogicFlowNode(Operation.Add);
-        let n = new OperationLogicEditorNode(this.flow, fNode);
-        let elements = n.buildElements(this.designerService);
-        n.setupSubscriptions(this, elements);
-        this.graph.addCells(elements);
     }
 
     addActionLogicNodeToEditor() {
-        let fNode = new ActionLogicFlowNode(Action.Message);
-        let n = new ActionLogicEditorNode(this.flow, fNode);
-        let elements = n.buildElements(this.designerService);
-        n.setupSubscriptions(this, elements);
-        this.graph.addCells(elements);
     }
 
     addSubscription(id: string, func: any) {
@@ -239,7 +307,7 @@ export class EditorComponent implements OnInit {
         });
 
         dialogRef.afterClosed().subscribe(id => {
-            if (id !== undefined) {
+            /*if (id !== undefined) {
                 if (id == "If Node") {
                     this.addIfLogicNodeToEditor();
                 }
@@ -255,7 +323,7 @@ export class EditorComponent implements OnInit {
                 else if (id == "Scan Node") {
                     this.addScanLogicNode();
                 }
-            }
+            }*/
         });
         this.hideBlankContextMenu();
     }

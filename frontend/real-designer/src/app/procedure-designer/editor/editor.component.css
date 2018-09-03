@@ -1,36 +1,3 @@
-.editor2 {
-	-webkit-box-sizing: content-box;
-	-moz-box-sizing: content-box;
-	box-sizing: content-box;
-	width: 320px;
-	height: 320px;
-	border: none;
-	font: normal 100%/normal Arial, Helvetica, sans-serif;
-	color: rgba(255,255,255,1);
-	-o-text-overflow: clip;
-	text-overflow: clip;
-	background: -webkit-linear-gradient(90deg, #0E0E0E, #FFFFFF 2px, rgba(0,0,0,0) 2px, rgba(0,0,0,0) 100%), -webkit-linear-gradient(0deg, #302a2a 0, #FFFFFF 2px, rgba(0,0,0,0) 2px, rgba(0,0,0,0) 100%), -webkit-linear-gradient(90deg, rgba(255,255,255,1) 1px, rgba(0,0,0,0) 1px), -webkit-linear-gradient(0deg, rgba(255,255,255,1) 1px, rgba(0,0,0,0) 1px), rgba(0, 0, 0, 0);
-	background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
-	-webkit-background-origin: padding-box;
-	background-origin: padding-box;
-	-webkit-background-clip: border-box;
-	background-clip: border-box;
-	-webkit-background-size: 100px 100px, 100px 100px, 20px 20px, 20px 19px;
-	background-size: 100px 100px, 100px 100px, 20px 20px, 20px 19px;
-	overflow: hidden;
-}
-
-#editor-container {
-	border: 2px solid black;
-	overflow: hidden;
-	margin: 10px;
-	position: absolute;
-	top: 0;
-    left: 0;
-    width: calc(100% - 22px);
-    height: calc(100% - 22px);
-}
-
 .context-menu {
 	position: fixed;
 	z-index: 10;
@@ -65,4 +32,57 @@
 
 .context-menu ul .warn-context-button:hover {
 	background: yellow;
+}
+
+#editor-container {
+    overflow: hidden;
+    margin: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: calc(100% - 22px);
+    height: calc(100% - 22px);
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+.editor {
+    position: relative;
+    display: inline-block;
+    background: transparent;
+    overflow: hidden;
+}
+.editor svg {
+    background: transparent;
+}
+
+.flow-node {
+    background: #fff;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+    padding: 14px;
+    box-sizing: border-box;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+}
+.flow-node button.delete {
+    color: white;
+    border: none;
+    background-color: #f44336;
+    border-radius: 21px;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+    text-align: middle;
+    position: absolute;
+    top: -7px;
+    left: -7px;
+    padding: 0;
+    margin: 0;
+    font-weight: bold;
+    cursor: pointer;
+}
+.flow-node button.delete:hover {
+    width: 21px;
+    height: 21px;
+    line-height: 21px;
 }
