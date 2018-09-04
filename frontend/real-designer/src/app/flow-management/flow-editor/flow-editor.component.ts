@@ -40,6 +40,23 @@ export class FlowEditorComponent implements OnInit {
     }
 
     ngOnInit() {
+        let entities = this.designerService.getEntities();
+        let entityEntries = Array.from(entities)
+            .reduce((o, [key, value]) => {
+                o[key] = value.name;
+                return o;
+            }, []);
+        let components = this.designerService.getComponents();
+        let attributes = {};
+        entities.forEach(function(entity) {
+            attributes[entity.name] = [];
+            entity.components.forEach(function(c) {
+                components.get(c).attributes.forEach(function(attr) {
+                    attributes[entity.name].push(attr.getName());
+                });
+            });
+        });
+
         this.paper = new joint.dia.Paper({
             el: $('.editor'),
             model: this.flow.getGraph(),
@@ -72,11 +89,15 @@ export class FlowEditorComponent implements OnInit {
                 '<div xmlns="http://www.w3.org/1999/xhtml" class="flow-node">',
                 '<button class="delete">x</button>',
                 '<span class="node-caption">Condition</span>', '<br/>',
-                '<input name="name" type="text" value="Name" />', '<br/>',
-                '<select name="entity"><option>Entity</option><option>one</option><option>two</option></select>', '<br/>',
-                '<select name="attr"><option>Attribute</option><option>one</option><option>two</option></select>', '<br/>',
-                '<select name="action"><option>Action</option><option>one</option><option>two</option></select>', '<br/>',
-                '<input name="value" type="text" value="Value" />',
+                '<input name="name" type="text" value="New Node" />', '<br/>',
+                '<label>Entity</label>', '<br/>',
+                '<select name="entity"></select>', '<br/>',
+                '<label>Attribute</label>', '<br/>',
+                '<select name="attr"><option></option></select>', '<br/>',
+                '<label>Action</label>', '<br/>',
+                '<select name="action"></select>', '<br/>',
+                '<label>Value</label>', '<br/>',
+                '<input name="value" type="text" value="" />',
                 '</div>',
                 '</foreignObject>',
                 '</g>',
@@ -114,7 +135,6 @@ export class FlowEditorComponent implements OnInit {
             }
         }));
 
-
         joint.shapes.html.ElementView = joint.dia.ElementView.extend({
             initialize: function() {
                 this.listenTo(this.model, 'process:ports', this.update);
@@ -128,10 +148,15 @@ export class FlowEditorComponent implements OnInit {
                 this.$box.find('input,select').on('mousedown click', function(evt) {
                     evt.stopPropagation();
                 });
-                // This is an example of reacting on the input change and storing the input data in the cell model.
+                // React on the input change and store the input data in the cell model.
+                this.$box.find('.node-caption').html(this.model.get('label'));
                 this.$box.find('input,select').on('change', _.bind(function(evt) {
                     var $target = $(evt.target);
                     this.model.set($target.attr('name'), $target.val());
+
+                    if ($target.attr('name') == 'entity') {
+                        this.$box.find('select[name="attr"]').append('<option>' + attributes[this.model.get('entity')].join('</option><option>') + '</option>');
+                    }
                 }, this));
                 this.$box.find('input,select').each(_.bind(function(index, element) {
                     var $element = $(element);
@@ -140,6 +165,8 @@ export class FlowEditorComponent implements OnInit {
                         $element.val(val);
                     }
                 }, this));
+                this.$box.find('select[name="entity"]').append('<option>' + entityEntries.join('</option><option>') + '</option>');
+                this.$box.find('select[name="action"]').append('<option>' + this.model.get('actions').join('</option><option>') + '</option>');
                 this.$box.find('.delete').on('click', _.bind(this.model.remove, this.model));
 
                 return this;
@@ -168,19 +195,9 @@ export class FlowEditorComponent implements OnInit {
         if (this.flow.json != null) {
             this.flow.restore();
         } else {
-            var el1 = new joint.shapes.html.Element({
-                position: { x: 80, y: 80 },
-                size: { width: 240, height: 200 },
-                inPorts: ['in'],
-                outPorts: ['true', 'false']
-            });
-            var el2 = new joint.shapes.html.Element({
-                position: { x: 370, y: 160 },
-                size: { width: 240, height: 200 },
-                inPorts: ['in'],
-                outPorts: ['true', 'false']
-            });
-            this.flow.getGraph().addCells([el1, el2]);
+            this.addIfLogicNodeToEditor();
+            this.addOperationLogicNodeToEditor();
+            this.addActionLogicNodeToEditor();
         }
 
         // Setup handlers
@@ -269,15 +286,42 @@ export class FlowEditorComponent implements OnInit {
     }
 
     addIfLogicNodeToEditor() {
+        var el = new joint.shapes.html.Element({
+            position: { x: 80, y: 80 },
+            size: { width: 240, height: 200 },
+            label: 'Condition',
+            actions: ['Equal to', 'Greater than', 'Less than', 'Greater than or equal to', 'Less than or equal to'],
+            inPorts: ['in'],
+            outPorts: ['true', 'false']
+        });
+        this.flow.getGraph().addCells([el]);
     }
 
     addConstLogicNodeToEditor(value: string) {
     }
 
     addOperationLogicNodeToEditor() {
+        var el = new joint.shapes.html.Element({
+            position: { x: 80, y: 80 },
+            size: { width: 240, height: 200 },
+            label: 'Operation',
+            actions: ['Add', 'Subtract', 'Set'],
+            inPorts: ['in'],
+            outPorts: ['out']
+        });
+        this.flow.getGraph().addCells([el]);
     }
 
     addActionLogicNodeToEditor() {
+        var el = new joint.shapes.html.Element({
+            position: { x: 80, y: 80 },
+            size: { width: 240, height: 200 },
+            label: 'Action',
+            actions: ['1', '2', '3', '4'],
+            inPorts: ['in'],
+            outPorts: ['out']
+        });
+        this.flow.getGraph().addCells([el]);
     }
 
     addSubscription(id: string, func: any) {

@@ -56,7 +56,7 @@ export class DesignerService {
 		this.currentProject.entities.get(2).addComponent(3);
 
 		// Add flow
-		let flow = new DesignerFlow("Flow", null);
+		let flow = new DesignerFlow("New Flow", null);
 		flow.id = 0;
 		this.currentProject.flows.set(0, flow);
 	}
