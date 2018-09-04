@@ -14,3 +14,4 @@ python_version = "2.7"
 [scripts]
 dc = "docker-compose"
 serve = "docker-compose run --no-deps --rm -p 4200:4200 front"
+test_api = "docker-compose run --rm api test"
