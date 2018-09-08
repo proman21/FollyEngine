@@ -79,8 +79,8 @@ export class FlowEditorComponent implements OnInit {
             linkPinning: false
         });
 
-        joint.shapes.html = {};
-        joint.shapes.html.Element = joint.shapes.basic.Generic.extend(_.extend({}, joint.shapes.basic.PortsModelInterface, {
+        joint.shapes.folly = {};
+        joint.shapes.folly.Node = joint.shapes.basic.Generic.extend(_.extend({}, joint.shapes.basic.PortsModelInterface, {
             markup: [
                 '<g class="rotatable">',
                 '<g class="scalable">',
@@ -107,7 +107,7 @@ export class FlowEditorComponent implements OnInit {
             ].join(''),
             portMarkup: '<g class="port<%= id %>"><circle/></g>',
             defaults: joint.util.deepSupplement({
-                type: 'html.Element',
+                type: 'folly.Node',
                 inPorts: [],
                 outPorts: [],
                 attrs: {
@@ -135,7 +135,7 @@ export class FlowEditorComponent implements OnInit {
             }
         }));
 
-        joint.shapes.html.ElementView = joint.dia.ElementView.extend({
+        joint.shapes.folly.NodeView = joint.dia.ElementView.extend({
             initialize: function() {
                 this.listenTo(this.model, 'process:ports', this.update);
                 joint.dia.ElementView.prototype.initialize.apply(this, arguments);
@@ -291,7 +291,7 @@ export class FlowEditorComponent implements OnInit {
     }
 
     addIfLogicNodeToEditor() {
-        var el = new joint.shapes.html.Element({
+        var el = new joint.shapes.folly.Node({
             position: { x: 80, y: 80 },
             size: { width: 240, height: 200 },
             label: 'Condition',
@@ -306,7 +306,7 @@ export class FlowEditorComponent implements OnInit {
     }
 
     addOperationLogicNodeToEditor() {
-        var el = new joint.shapes.html.Element({
+        var el = new joint.shapes.folly.Node({
             position: { x: 80, y: 80 },
             size: { width: 240, height: 200 },
             label: 'Operation',
@@ -318,7 +318,7 @@ export class FlowEditorComponent implements OnInit {
     }
 
     addActionLogicNodeToEditor() {
-        var el = new joint.shapes.html.Element({
+        var el = new joint.shapes.folly.Node({
             position: { x: 80, y: 80 },
             size: { width: 240, height: 200 },
             label: 'Action',
