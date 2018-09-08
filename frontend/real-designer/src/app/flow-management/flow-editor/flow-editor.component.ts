@@ -80,8 +80,8 @@ export class FlowEditorComponent implements OnInit {
         });
 
         joint.shapes.folly = {};
-        joint.shapes.folly.Node = joint.shapes.basic.Generic.extend(_.extend({}, joint.shapes.basic.PortsModelInterface, {
-            markup: [
+        joint.shapes.folly.Node = class extends joint.shapes.basic.Generic.extend(joint.shapes.basic.PortsModelInterface) {
+            markup = [
                 '<g class="rotatable">',
                 '<g class="scalable">',
                 '<rect/>',
@@ -104,26 +104,31 @@ export class FlowEditorComponent implements OnInit {
                 '<g class="inPorts"/>',
                 '<g class="outPorts"/>',
                 '</g>'
-            ].join(''),
-            portMarkup: '<g class="port<%= id %>"><circle/></g>',
-            defaults: joint.util.deepSupplement({
-                type: 'folly.Node',
-                inPorts: [],
-                outPorts: [],
-                attrs: {
-                    '.': { magnet: false },
-                    rect: {
-                        stroke: 'none', 'fill-opacity': 0, width: '100%', height: '100%',
-                    },
-                    circle: {
-                        r: 8,
-                        magnet: true
-                    },
-                    '.inPorts circle': { fill: 'green', magnet: 'passive', type: 'input'},
-                    '.outPorts circle': { fill: 'red', type: 'output'}
-                }
-            }, joint.shapes.basic.Generic.prototype.defaults),
-            getPortAttrs: function (portName, index, total, selector, type) {
+            ].join('');
+            portMarkup = '<g class="port<%= id %>"><circle/></g>';
+
+            defaults() {
+                return {
+                    ...super.defaults,
+                    type: 'folly.Node',
+                    inPorts: [],
+                    outPorts: [],
+                    attrs: {
+                        '.': { magnet: false },
+                        rect: {
+                            stroke: 'none', 'fill-opacity': 0, width: '100%', height: '100%',
+                        },
+                        circle: {
+                            r: 8,
+                            magnet: true
+                        },
+                        '.inPorts circle': { fill: 'green', magnet: 'passive', type: 'input'},
+                        '.outPorts circle': { fill: 'red', type: 'output'}
+                    }
+                };
+            }
+
+            getPortAttrs(portName, index, total, selector, type) {
                 var attrs = {};
                 var portClass = 'port' + index;
                 var portSelector = selector + '>.' + portClass;
@@ -133,15 +138,16 @@ export class FlowEditorComponent implements OnInit {
                 if (selector === '.outPorts') { attrs[portSelector]['ref-dx'] = 0; }
                 return attrs;
             }
-        }));
+        };
 
-        joint.shapes.folly.NodeView = joint.dia.ElementView.extend({
-            initialize: function() {
+        joint.shapes.folly.NodeView = class extends joint.dia.ElementView {
+            constructor() {
+                super(...arguments);
                 this.listenTo(this.model, 'process:ports', this.update);
-                joint.dia.ElementView.prototype.initialize.apply(this, arguments);
-            },
-            render: function() {
-                joint.dia.ElementView.prototype.render.apply(this, arguments);
+            }
+
+            render() {
+                super.render(...arguments);
 
                 this.$box = this.paper.$el.find('[model-id="' + this.model.id + '"]');
                 // Prevent paper from handling pointerdown.
@@ -170,8 +176,9 @@ export class FlowEditorComponent implements OnInit {
                 this.$box.find('.delete').on('click', _.bind(this.model.remove, this.model));
 
                 return this;
-            },
-            renderPorts: function () {
+            }
+
+            renderPorts() {
                 var $inPorts = this.$('.inPorts').empty();
                 var $outPorts = this.$('.outPorts').empty();
 
@@ -183,14 +190,15 @@ export class FlowEditorComponent implements OnInit {
                 _.each(_.filter(this.model.ports, function (p) { return p.type === 'out' }), function (port, index) {
                     $outPorts.append(V(portTemplate({ id: index, port: port })).node);
                 });
-            }, 
-            update: function () {
+            }
+
+            update() {
                 // First render ports so that `attrs` can be applied to those newly created DOM elements
                 // in `ElementView.prototype.update()`.
                 this.renderPorts();
-                joint.dia.ElementView.prototype.update.apply(this, arguments);
+                super.update(...arguments);
             }
-        }); 
+        };
 
         if (this.flow.json != null) {
             this.flow.restore();
