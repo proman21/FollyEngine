@@ -85,7 +85,7 @@ export class FlowEditorComponent implements OnInit {
                 '<g class="rotatable">',
                 '<g class="scalable">',
                 '<rect/>',
-                '<foreignObject width="240" height="200" transform="scale(42,50)">',
+                '<foreignObject>',
                 '<div xmlns="http://www.w3.org/1999/xhtml" class="flow-node">',
                 '<button class="delete">x</button>',
                 '<span class="node-caption"></span>', '<br/>',
@@ -150,10 +150,12 @@ export class FlowEditorComponent implements OnInit {
                 super.render(...arguments);
 
                 this.$box = this.paper.$el.find('[model-id="' + this.model.id + '"]');
+                
                 // Prevent paper from handling pointerdown.
                 this.$box.find('input,select').on('mousedown click', function(evt) {
                     evt.stopPropagation();
                 });
+                
                 // React on the input change and store the input data in the cell model.
                 this.$box.find('.node-caption').html(this.model.get('label'));
                 this.$box.find('input,select').on('change', _.bind(function(evt) {
@@ -174,6 +176,10 @@ export class FlowEditorComponent implements OnInit {
                 this.$box.find('select[name="entity"]').append('<option>' + entityEntries.join('</option><option>') + '</option>');
                 this.$box.find('select[name="action"]').append('<option>' + this.model.get('actions').join('</option><option>') + '</option>');
                 this.$box.find('.delete').on('click', _.bind(this.model.remove, this.model));
+                
+                // Update the box whenever the underlying model changes.
+                this.model.on('change', this.updateBox, this);
+                this.updateBox();
 
                 return this;
             }
@@ -197,6 +203,20 @@ export class FlowEditorComponent implements OnInit {
                 // in `ElementView.prototype.update()`.
                 this.renderPorts();
                 super.update(...arguments);
+            }
+
+            updateBox() {
+                let $scalable = this.$box.find('.scalable');
+                let bbox = this.model.getBBox();
+
+                const matrixRegex = /matrix\((-?\d*\.?\d+),\s*0,\s*0,\s*(-?\d*\.?\d+),\s*0,\s*0\)/;
+                let scale = $scalable.css('transform').match(matrixRegex);
+
+                $scalable.find('foreignObject').css({
+                    width: bbox.width,
+                    height: bbox.height,
+                    transform: 'scale(' + (1 / scale[1]) + ',' + (1 / scale[2]) + ')'
+                });
             }
         };
 
@@ -361,7 +381,7 @@ export class FlowEditorComponent implements OnInit {
     addActionLogicNodeToEditor() {
         var el = new joint.shapes.folly.ActionNode({
             position: { x: 80, y: 80 },
-            size: { width: 240, height: 200 }
+            size: { width: 200, height: 240 }
         });
         this.flow.graph.addCells([el]);
     }
