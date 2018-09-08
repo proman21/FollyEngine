@@ -58,7 +58,7 @@ export class FlowEditorComponent implements OnInit {
         });
 
         this.paper = new joint.dia.Paper({
-            el: $('.editor'),
+            el: $('.flow-paper'),
             model: this.flow.graph,
             width: 10000,
             height: 10000,
