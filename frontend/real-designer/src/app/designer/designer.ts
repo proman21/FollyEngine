@@ -101,16 +101,12 @@ export class DesignerFlow {
 		this.graph = new joint.dia.Graph();
 	}
 
-	getName() {
-		return this.name;
-	}
-
 	getJSON() {
-		return this.graph.toJSON();
+		return this.json;
 	}
 
-	getGraph() {
-		return this.graph;
+	save() {
+		this.json = this.graph.toJSON();
 	}
 
 	restore() {

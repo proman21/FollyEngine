@@ -59,7 +59,7 @@ export class FlowEditorComponent implements OnInit {
 
         this.paper = new joint.dia.Paper({
             el: $('.editor'),
-            model: this.flow.getGraph(),
+            model: this.flow.graph,
             width: 10000,
             height: 10000,
             gridSize: 10,
@@ -202,6 +202,11 @@ export class FlowEditorComponent implements OnInit {
 
         // Setup handlers
 
+        this.flow.graph.on('change', _.debounce(_.bind(function() {
+            this.flow.save();
+            console.log(this.flow.json);
+        }, this), 100, {leading: true, trailing: true}));
+
         this.paper.on('blank:contextmenu', this.showBlankContextMenu.bind(this));
         this.paper.on('blank:pointerdown', this.hideBlankContextMenu.bind(this));
         this.paper.on('cell:pointerdown', this.hideBlankContextMenu.bind(this));
@@ -294,7 +299,7 @@ export class FlowEditorComponent implements OnInit {
             inPorts: ['in'],
             outPorts: ['true', 'false']
         });
-        this.flow.getGraph().addCells([el]);
+        this.flow.graph.addCells([el]);
     }
 
     addConstLogicNodeToEditor(value: string) {
@@ -309,7 +314,7 @@ export class FlowEditorComponent implements OnInit {
             inPorts: ['in'],
             outPorts: ['out']
         });
-        this.flow.getGraph().addCells([el]);
+        this.flow.graph.addCells([el]);
     }
 
     addActionLogicNodeToEditor() {
@@ -321,7 +326,7 @@ export class FlowEditorComponent implements OnInit {
             inPorts: ['in'],
             outPorts: ['out']
         });
-        this.flow.getGraph().addCells([el]);
+        this.flow.graph.addCells([el]);
     }
 
     addSubscription(id: string, func: any) {
