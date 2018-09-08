@@ -88,7 +88,7 @@ export class FlowEditorComponent implements OnInit {
                 '<foreignObject width="240" height="200" transform="scale(42,50)">',
                 '<div xmlns="http://www.w3.org/1999/xhtml" class="flow-node">',
                 '<button class="delete">x</button>',
-                '<span class="node-caption">Condition</span>', '<br/>',
+                '<span class="node-caption"></span>', '<br/>',
                 '<input name="name" type="text" value="New Node" />', '<br/>',
                 '<label>Entity</label>', '<br/>',
                 '<select name="entity"></select>', '<br/>',
@@ -111,8 +111,8 @@ export class FlowEditorComponent implements OnInit {
                 return {
                     ...super.defaults,
                     type: 'folly.Node',
-                    inPorts: [],
-                    outPorts: [],
+                    inPorts: ['In'],
+                    outPorts: ['Out'],
                     attrs: {
                         '.': { magnet: false },
                         rect: {
@@ -199,6 +199,47 @@ export class FlowEditorComponent implements OnInit {
                 super.update(...arguments);
             }
         };
+
+        joint.shapes.folly.ConditionNode = class extends joint.shapes.folly.Node {
+            defaults() {
+                let superDefaults = super.defaults();
+                return {
+                    ...superDefaults,
+                    type: 'folly.ConditionNode',
+                    label: 'Condition',
+                    actions: ['Equal to', 'Greater than', 'Less than', 'Greater than or equal to', 'Less than or equal to'],
+                    inPorts: ['in'],
+                    outPorts: ['True', 'False']
+                };
+            }
+        };
+        joint.shapes.folly.ConditionNodeView = class extends joint.shapes.folly.NodeView {};
+
+        joint.shapes.folly.OperationNode = class extends joint.shapes.folly.Node {
+            defaults() {
+                let superDefaults = super.defaults();
+                return {
+                    ...superDefaults,
+                    type: 'folly.OperationNode',
+                    label: 'Operation',
+                    actions: ['Add', 'Subtract', 'Set']
+                };
+            }
+        };
+        joint.shapes.folly.OperationNodeView = class extends joint.shapes.folly.NodeView {};
+
+        joint.shapes.folly.ActionNode = class extends joint.shapes.folly.Node {
+            defaults() {
+                let superDefaults = super.defaults();
+                return {
+                    ...superDefaults,
+                    type: 'folly.ActionNode',
+                    label: 'Action',
+                    actions: ['???']
+                };
+            }
+        };
+        joint.shapes.folly.ActionNodeView = class extends joint.shapes.folly.NodeView {};
 
         if (this.flow.json != null) {
             this.flow.restore();
@@ -299,13 +340,9 @@ export class FlowEditorComponent implements OnInit {
     }
 
     addIfLogicNodeToEditor() {
-        var el = new joint.shapes.folly.Node({
+        var el = new joint.shapes.folly.ConditionNode({
             position: { x: 80, y: 80 },
-            size: { width: 240, height: 200 },
-            label: 'Condition',
-            actions: ['Equal to', 'Greater than', 'Less than', 'Greater than or equal to', 'Less than or equal to'],
-            inPorts: ['in'],
-            outPorts: ['true', 'false']
+            size: { width: 240, height: 200 }
         });
         this.flow.graph.addCells([el]);
     }
@@ -314,25 +351,17 @@ export class FlowEditorComponent implements OnInit {
     }
 
     addOperationLogicNodeToEditor() {
-        var el = new joint.shapes.folly.Node({
+        var el = new joint.shapes.folly.OperationNode({
             position: { x: 80, y: 80 },
-            size: { width: 240, height: 200 },
-            label: 'Operation',
-            actions: ['Add', 'Subtract', 'Set'],
-            inPorts: ['in'],
-            outPorts: ['out']
+            size: { width: 240, height: 200 }
         });
         this.flow.graph.addCells([el]);
     }
 
     addActionLogicNodeToEditor() {
-        var el = new joint.shapes.folly.Node({
+        var el = new joint.shapes.folly.ActionNode({
             position: { x: 80, y: 80 },
-            size: { width: 240, height: 200 },
-            label: 'Action',
-            actions: ['1', '2', '3', '4'],
-            inPorts: ['in'],
-            outPorts: ['out']
+            size: { width: 240, height: 200 }
         });
         this.flow.graph.addCells([el]);
     }
