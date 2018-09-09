@@ -56,9 +56,7 @@ export class DesignerService {
 		this.currentProject.entities.get(2).addComponent(3);
 
 		// Add flow
-		let flow = new DesignerFlow("New Flow", null);
-		flow.id = 0;
-		this.currentProject.flows.set(0, flow);
+		this.registerNewFlow(new DesignerFlow("New Flow", null));
 	}
 
 	newProject(name: string) {
@@ -271,6 +269,14 @@ export class DesignerService {
 		return id;
 	}
 
+	registerNewFlow(flow: DesignerFlow): number {
+		let id = this.currentProject.flow_gen.gen();
+		flow.id = id;
+		this.currentProject.flows.set(id, flow);
+
+		return id;
+	}
+
 	registerNewAsset(asset: DesignerAsset): number {
 		let id = this.currentProject.asset_gen.gen();
 		asset.id = id;
@@ -281,6 +287,10 @@ export class DesignerService {
 
 	destroyEntity(e_id: number) {
 		this.currentProject.entities.delete(e_id);
+	}
+
+	destroyFlow(id: number) {
+		this.currentProject.flows.delete(id);
 	}
 
 	destroyComponent(c_id: number) {
@@ -315,6 +325,7 @@ export class DesignerService {
 export class Project {
 	ent_gen: NumGen = new NumGen();
 	comp_gen: NumGen = new NumGen();
+	flow_gen: NumGen = new NumGen();
 	asset_gen: NumGen = new NumGen();
 	entities: Map<number, DesignerEntity> = new Map();
 	components: Map<number, DesignerComponent> = new Map();

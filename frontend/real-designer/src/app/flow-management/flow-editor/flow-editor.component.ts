@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnChanges, ViewEncapsulation } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 
 import { DesignerService } from '../../designer/designer.service';
@@ -19,7 +19,7 @@ declare var _: any;
     styleUrls: ['./flow-editor.component.css'],
     encapsulation: ViewEncapsulation.None
 })
-export class FlowEditorComponent implements OnInit {
+export class FlowEditorComponent implements OnChanges {
     @Input() flow: DesignerFlow;
 
     paper: any;
@@ -39,7 +39,7 @@ export class FlowEditorComponent implements OnInit {
     constructor(private designerService: DesignerService, public dialog: MatDialog) {
     }
 
-    ngOnInit() {
+    ngOnChanges() {
         let entities = this.designerService.getEntities();
         let entityEntries = Array.from(entities)
             .reduce((o, [key, value]) => {
@@ -56,6 +56,8 @@ export class FlowEditorComponent implements OnInit {
                 });
             });
         });
+
+        this.flow.graph = new joint.dia.Graph;
 
         this.paper = new joint.dia.Paper({
             el: $('.flow-paper'),
@@ -212,6 +214,10 @@ export class FlowEditorComponent implements OnInit {
                 const matrixRegex = /matrix\((-?\d*\.?\d+),\s*0,\s*0,\s*(-?\d*\.?\d+),\s*0,\s*0\)/;
                 let scale = $scalable.css('transform').match(matrixRegex);
 
+                if (scale == null) {
+                    return;
+                }
+
                 $scalable.find('foreignObject').css({
                     width: bbox.width,
                     height: bbox.height,
@@ -267,6 +273,7 @@ export class FlowEditorComponent implements OnInit {
             this.addIfLogicNodeToEditor();
             this.addOperationLogicNodeToEditor();
             this.addActionLogicNodeToEditor();
+            this.flow.save();
         }
 
         // Setup handlers

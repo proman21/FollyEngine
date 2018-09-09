@@ -39,11 +39,12 @@ export class FlowManagementComponent {
         }
     }
 
-    selectComponent(event: number) {
+    selectFlow(event: number) {
         this.selectedIndex = event;
     }
 
     newFlow() {
-        // TODO
+        this.designerService.registerNewFlow(new DesignerFlow('New Flow (' + this.flows.size + ')', null));
+        this.subscribeDesigner();
     }
 }
