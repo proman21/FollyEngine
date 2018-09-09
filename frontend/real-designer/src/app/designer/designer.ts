@@ -1,5 +1,3 @@
-declare var joint: any;
-
 export class DesignerEntity {
 	id: number; // unique ID
 	name: string;
@@ -92,25 +90,11 @@ export class DesignerAttribute {
 export class DesignerFlow {
 	id: number; // unique ID
 	name: string;
-	json: {};
-	graph: any;
+	cells: {}
 
-	constructor(name: string, json: {}) {
+	constructor(name: string, cells: {}) {
 		this.name = name;
-		this.json = json;
-		this.graph = new joint.dia.Graph();
-	}
-
-	getJSON() {
-		return this.json;
-	}
-
-	save() {
-		this.json = this.graph.toJSON();
-	}
-
-	restore() {
-		this.graph.fromJSON(this.json);
+		this.cells = cells;
 	}
 }
 

@@ -22,7 +22,10 @@ declare var _: any;
 export class FlowEditorComponent implements OnChanges {
     @Input() flow: DesignerFlow;
 
+    graph: any;
     paper: any;
+
+    private defaultCells: {};
 
     selected: any;
 
@@ -57,11 +60,10 @@ export class FlowEditorComponent implements OnChanges {
             });
         });
 
-        this.flow.graph = new joint.dia.Graph;
-
+        this.graph = new joint.dia.Graph();
         this.paper = new joint.dia.Paper({
             el: $('.flow-paper'),
-            model: this.flow.graph,
+            model: this.graph,
             width: 10000,
             height: 10000,
             gridSize: 10,
@@ -113,6 +115,7 @@ export class FlowEditorComponent implements OnChanges {
                 return {
                     ...super.defaults,
                     type: 'folly.Node',
+                    size: { width: 240, height: 200 },
                     inPorts: ['In'],
                     outPorts: ['Out'],
                     attrs: {
@@ -266,22 +269,45 @@ export class FlowEditorComponent implements OnChanges {
             }
         };
         joint.shapes.folly.ActionNodeView = class extends joint.shapes.folly.NodeView {};
+        
+        // JointJS serialises more than we probably need it to
+        // so we have to work out what we don't need
+        let graph = new joint.dia.Graph;
+        // for each object in the folly namespace
+        for (let name of Object.getOwnPropertyNames(joint.shapes.folly)) {
+            if (name.endsWith('View')) {
+                // we're only interested in the elements,
+                // not the views
+                continue;
+            }
+            // instantiate node
+            let node = new joint.shapes.folly[name]();
+            // add to temporary graph
+            graph.addCell(node);
+        }
+        this.defaultCells = graph.toJSON().cells.reduce((result, current) => {
+            result[current.type] = current;
+            // remove entries that may cause collisions
+            delete result[current.type].id;
+            delete result[current.type].position;
+            delete result[current.type].z;
+            delete result[current.type].type;
+            return result;
+        }, {});
 
-        if (this.flow.json != null) {
-            this.flow.restore();
+        if (this.flow.cells == null) {
+            this.newFlow();
         } else {
-            this.addIfLogicNodeToEditor();
-            this.addOperationLogicNodeToEditor();
-            this.addActionLogicNodeToEditor();
-            this.flow.save();
+            this.loadFlow();
         }
 
         // Setup handlers
 
-        this.flow.graph.on('change', _.debounce(_.bind(function() {
-            this.flow.save();
-            console.log(this.flow.json);
-        }, this), 100, {leading: true, trailing: true}));
+        // FIXME Probably not the most deterministic way to autosave,
+        //       nor the most efficient
+        this.graph.on('change', _.debounce(_.bind(function() {
+            this.saveFlow();
+        }, this), 250, {leading: true, trailing: true}));
 
         this.paper.on('blank:contextmenu', this.showBlankContextMenu.bind(this));
         this.paper.on('blank:pointerdown', this.hideBlankContextMenu.bind(this));
@@ -302,6 +328,44 @@ export class FlowEditorComponent implements OnChanges {
         window.addEventListener("mousemove", this.updateMouse.bind(this));
 
         window.setInterval(this.process.bind(this), 10);
+    }
+
+    newFlow() {
+        this.addIfLogicNodeToEditor();
+        this.addOperationLogicNodeToEditor();
+        this.addActionLogicNodeToEditor();
+        this.saveFlow();
+    }
+
+    saveFlow() {
+        let cells = [];
+        for (let cell of this.graph.toJSON().cells) {
+            if (cell.type == 'link') {
+                // TODO Should we optimise links?
+                cells.push(cell);
+                continue;
+            }
+
+            let defaultCell = this.defaultCells[cell.type];
+            for (let i in cell) {
+                if (_.isEqual(cell[i], defaultCell[i])) {
+                    delete cell[i];
+                }
+            }
+            cells.push(cell);
+        }
+        this.flow.cells = cells;
+    }
+
+    loadFlow() {
+        let cells = [];
+        for (let i in this.flow.cells) {
+            // restore default values
+            let cell = this.flow.cells[i];
+            let defaultCell = this.defaultCells[cell.type];
+            cells[i] = {...defaultCell, ...cell};
+        }
+        this.graph.fromJSON({cells: cells});
     }
 
     fireElementEvent(view, evt) {
@@ -368,10 +432,9 @@ export class FlowEditorComponent implements OnChanges {
 
     addIfLogicNodeToEditor() {
         var el = new joint.shapes.folly.ConditionNode({
-            position: { x: 80, y: 80 },
-            size: { width: 240, height: 200 }
+            position: { x: 80, y: 80 }
         });
-        this.flow.graph.addCells([el]);
+        this.graph.addCell(el);
     }
 
     addConstLogicNodeToEditor(value: string) {
@@ -379,18 +442,16 @@ export class FlowEditorComponent implements OnChanges {
 
     addOperationLogicNodeToEditor() {
         var el = new joint.shapes.folly.OperationNode({
-            position: { x: 80, y: 80 },
-            size: { width: 240, height: 200 }
+            position: { x: 80, y: 80 }
         });
-        this.flow.graph.addCells([el]);
+        this.graph.addCell(el);
     }
 
     addActionLogicNodeToEditor() {
         var el = new joint.shapes.folly.ActionNode({
-            position: { x: 80, y: 80 },
-            size: { width: 200, height: 240 }
+            position: { x: 80, y: 80 }
         });
-        this.flow.graph.addCells([el]);
+        this.graph.addCell(el);
     }
 
     addSubscription(id: string, func: any) {

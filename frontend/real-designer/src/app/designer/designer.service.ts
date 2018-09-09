@@ -99,10 +99,7 @@ export class DesignerService {
 			}, []);
 		let flows = Array.from(this.currentProject.flows)
 			.reduce((o, [key, value]) => {
-				o[key] = {};
-				o[key]["name"] = value.name;
-				o[key]["json"] = value.getJSON();
-				o[key]["id"] = value.id;
+				o[key] = value;
 				return o;
 			}, []);
 		let assets = Array.from(this.currentProject.assets)
@@ -127,7 +124,7 @@ export class DesignerService {
 			flows: flows,
 			assets: assets
 		});
-		console.log(state);
+		console.log(JSON.parse(state));
 		localStorage.setItem("localState", state);
 	}
 
@@ -233,9 +230,8 @@ export class DesignerService {
 		}
 
 		for (let entry of flows) {
-			let flow = new DesignerFlow(entry.name, entry.json);
-			flow.id = entry.id;
-			this.currentProject.flows.set(entry.id, flow);
+			let flow = new DesignerFlow(entry.name, entry.cells);
+			this.registerNewFlow(flow)
 		}
 
 		for (let entry of assets) {
