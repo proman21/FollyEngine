@@ -1,4 +1,4 @@
-# Real Engine: A Game Engine for the Real World
+# Real Engine: A Game Engine for the Real World.
 
 [![Build Status](https://travis-ci.org/RealEngine/Real_Engine.svg?branch=master)](https://travis-ci.org/RealEngine/Real_Engine)
 
