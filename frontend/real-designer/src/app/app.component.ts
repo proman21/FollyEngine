@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ProjectManagementComponent } from './project-management/project-management.component';
 import { EntityManagementComponent } from './entity-management/entity-management.component';
 import { ComponentManagementComponent } from './component-management/component-management.component';
+import { FlowManagementComponent } from './flow-management/flow-management.component';
 import { trigger, transition, style, animate, stagger } from "@angular/animations";
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 
@@ -103,6 +104,20 @@ displayAlert(message: string, action: string, duration: number) {
     @ViewChild(ComponentManagementComponent) componentManagement: ComponentManagementComponent;
     makeNewComponent() {
         this.componentManagement.newComponent();
+    }
+
+    @ViewChild(FlowManagementComponent) flowEditor: FlowManagementComponent;
+    addNewAction() {
+        this.flowEditor.newAction();
+    }
+    addNewTrigger() {
+        this.flowEditor.newTrigger();
+    }
+    addNewCondition() {
+        this.flowEditor.newCondition();
+    }
+    addNewOperation() {
+        this.flowEditor.newOperation();
     }
 
 }

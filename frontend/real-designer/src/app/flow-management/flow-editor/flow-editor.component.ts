@@ -331,9 +331,10 @@ export class FlowEditorComponent implements OnChanges {
     }
 
     newFlow() {
-        this.addIfLogicNodeToEditor();
-        this.addOperationLogicNodeToEditor();
-        this.addActionLogicNodeToEditor();
+        this.addActionNode();
+        this.addTriggerNode();
+        this.addConditionNode();
+        this.addOperationNode();
         this.saveFlow();
     }
 
@@ -424,31 +425,30 @@ export class FlowEditorComponent implements OnChanges {
         this.hideBlankContextMenu();
     }
 
-    addEntityToEditor(id: number) {
+    addActionNode() {
+        var el = new joint.shapes.folly.ActionNode({
+            position: { x: 80, y: 80 }
+        });
+        this.graph.addCell(el);
     }
 
-    addScanLogicNode() {
+    addTriggerNode() {
+        // FIXME
+        var el = new joint.shapes.folly.ActionNode({
+            position: { x: 80, y: 80 }
+        });
+        this.graph.addCell(el);
     }
 
-    addIfLogicNodeToEditor() {
+    addConditionNode() {
         var el = new joint.shapes.folly.ConditionNode({
             position: { x: 80, y: 80 }
         });
         this.graph.addCell(el);
     }
 
-    addConstLogicNodeToEditor(value: string) {
-    }
-
-    addOperationLogicNodeToEditor() {
+    addOperationNode() {
         var el = new joint.shapes.folly.OperationNode({
-            position: { x: 80, y: 80 }
-        });
-        this.graph.addCell(el);
-    }
-
-    addActionLogicNodeToEditor() {
-        var el = new joint.shapes.folly.ActionNode({
             position: { x: 80, y: 80 }
         });
         this.graph.addCell(el);
@@ -490,23 +490,6 @@ export class FlowEditorComponent implements OnChanges {
         });
 
         dialogRef.afterClosed().subscribe(id => {
-            /*if (id !== undefined) {
-                if (id == "If Node") {
-                    this.addIfLogicNodeToEditor();
-                }
-                else if (id == "Constant Node") {
-                    this.addConstLogicNodeToEditor("0");
-                }
-                else if (id == "Operation Node") {
-                    this.addOperationLogicNodeToEditor();
-                }
-                else if (id == "Action Node") {
-                    this.addActionLogicNodeToEditor();
-                }
-                else if (id == "Scan Node") {
-                    this.addScanLogicNode();
-                }
-            }*/
         });
         this.hideBlankContextMenu();
     }

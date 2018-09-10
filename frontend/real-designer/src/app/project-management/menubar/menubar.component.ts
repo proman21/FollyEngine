@@ -155,20 +155,28 @@ export class MenubarComponent implements OnInit {
         // Action to add entity to flow
     }
 
+    @Output() onPressAddAction = new EventEmitter<string>();
     pressedAddAction() {
         // Action to add action to flow
+        this.onPressAddAction.emit();
     }
 
+    @Output() onPressAddTrigger = new EventEmitter<string>();
     pressedAddTrigger() {
         // Action to add trigger to flow
+        this.onPressAddTrigger.emit();
     }
 
+    @Output() onPressAddCondition = new EventEmitter<string>();
     pressedAddCondition() {
         // Action to add condition to flow
+        this.onPressAddCondition.emit();
     }
 
+    @Output() onPressAddOperation = new EventEmitter<string>();
     pressedAddOperation() {
         // Action to add operation to flow
+        this.onPressAddOperation.emit();
     }
 
     /* Assets Menu Control */

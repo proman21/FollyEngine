@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { DesignerFlow } from '../designer/designer';
 import { DesignerService } from '../designer/designer.service';
+import { FlowEditorComponent } from './flow-editor/flow-editor.component';
 
 @Component({
   selector: 'flow-management',
@@ -46,5 +47,19 @@ export class FlowManagementComponent {
     newFlow() {
         this.designerService.registerNewFlow(new DesignerFlow('New Flow (' + this.flows.size + ')', null));
         this.subscribeDesigner();
+    }
+
+    @ViewChild(FlowEditorComponent) flowEditor: FlowEditorComponent;
+    newAction() {
+        this.flowEditor.addActionNode();
+    }
+    newTrigger() {
+        this.flowEditor.addTriggerNode();
+    }
+    newCondition() {
+        this.flowEditor.addConditionNode();
+    }
+    newOperation() {
+        this.flowEditor.addOperationNode();
     }
 }
