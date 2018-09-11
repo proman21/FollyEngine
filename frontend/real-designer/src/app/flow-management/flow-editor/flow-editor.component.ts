@@ -220,8 +220,8 @@ export class FlowEditorComponent implements OnChanges {
 
         joint.shapes.folly.ConditionNode = class ConditionNode extends joint.shapes.folly.Node {
             get template() {
-                let attrs = attributes[Object.keys(attributes)[0]];
-                let actions = [
+                const attrs = attributes[Object.keys(attributes)[0]];
+                const actions = [
                     'Equal to',
                     'Greater than',
                     'Less than',
@@ -252,8 +252,8 @@ export class FlowEditorComponent implements OnChanges {
 
         joint.shapes.folly.OperationNode = class OperationNode extends joint.shapes.folly.Node {
             get template() {
-                let attrs = attributes[Object.keys(attributes)[0]];
-                let actions = [
+                const attrs = attributes[Object.keys(attributes)[0]];
+                const actions = [
                     'Add',
                     'Subtract',
                     'Set'
@@ -275,8 +275,8 @@ export class FlowEditorComponent implements OnChanges {
 
         joint.shapes.folly.ActionNode = class ActionNode extends joint.shapes.folly.Node {
             get template() {
-                let attrs = attributes[Object.keys(attributes)[0]];
-                let actions = [
+                const attrs = attributes[Object.keys(attributes)[0]];
+                const actions = [
                     'OSC',
                     'DMX'
                 ];
@@ -297,7 +297,7 @@ export class FlowEditorComponent implements OnChanges {
 
         joint.shapes.folly.TriggerNode = class TriggerNode extends joint.shapes.folly.Node {
             get template() {
-                let trigger = [
+                const trigger = [
                     'RFID',
                     'Time'
                 ];
