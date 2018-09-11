@@ -518,11 +518,11 @@ export class FlowEditorComponent implements OnChanges {
             this.scrollX = this.mX;
             this.scrollY = this.mY;
 
-            let curX = $("#editor-container").scrollLeft();
-            let curY = $("#editor-container").scrollTop();
+            let curX = $(".flow-outer").scrollLeft();
+            let curY = $(".flow-outer").scrollTop();
 
-            $("#editor-container").scrollLeft(curX - diffX);
-            $("#editor-container").scrollTop(curY - diffY);
+            $(".flow-outer").scrollLeft(curX - diffX);
+            $(".flow-outer").scrollTop(curY - diffY);
         }
     }
 
