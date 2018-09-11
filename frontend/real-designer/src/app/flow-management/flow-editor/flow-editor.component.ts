@@ -136,7 +136,7 @@ export class FlowEditorComponent implements OnChanges {
                 var portClass = 'port' + index;
                 var portSelector = selector + '>.' + portClass;
                 var portCircleSelector = portSelector + '>circle';
-                attrs[portCircleSelector] = { port: { id: portName || _.uniqueId(type), type: type } };
+                attrs[portCircleSelector] = { port: { id: portName, type: type } };
                 attrs[portSelector] = { ref: 'rect', 'ref-y': (index + 0.5) * (1 / total) };
                 if (selector === '.outPorts') { attrs[portSelector]['ref-dx'] = 0; }
                 return attrs;
@@ -160,7 +160,7 @@ export class FlowEditorComponent implements OnChanges {
                 });
                 
                 // React on the input change and store the input data in the cell model.
-                this.$box.find('input,select').on('change', _.bind(function(evt) {
+                this.$box.find('input,select').on('change', function(evt) {
                     var $target = $(evt.target);
                     this.model.set($target.attr('name'), $target.val());
 
@@ -168,15 +168,15 @@ export class FlowEditorComponent implements OnChanges {
                         this.$box.find('select[name="attr"]')
                             .append(`<option>${attributes[this.model.get('entity')].join('</option><option>')}</option>`);
                     }
-                }, this));
-                this.$box.find('input,select').each(_.bind(function(index, element) {
+                }.bind(this));
+                this.$box.find('input,select').each(function(index, element) {
                     var $element = $(element);
                     var val = this.model.get($element.attr('name'));
                     if (val != undefined) {
                         $element.val(val);
                     }
-                }, this));
-                this.$box.find('.delete').on('click', _.bind(this.model.remove, this.model));
+                }.bind(this));
+                this.$box.find('.delete').on('click', this.model.remove.bind(this.model));
                 
                 // Update the box whenever the underlying model changes.
                 this.model.on('change', this.updateBox, this);
@@ -186,13 +186,15 @@ export class FlowEditorComponent implements OnChanges {
             }
 
             renderPorts() {
-                var $inPorts = this.$('.inPorts').empty();
-                var $outPorts = this.$('.outPorts').empty();
-
-                _.each(_.filter(this.model.ports, function (p) { return p.type === 'in' }), function (port, index) {
+                let inPorts = Object.values(this.model.ports).filter(p => p['type'] === 'in');
+                let $inPorts = this.$('.inPorts').empty();
+                inPorts.forEach(function (port, index) {
                     $inPorts.append(V(`<g class="port${index}"><circle/></g>`).node);
                 });
-                _.each(_.filter(this.model.ports, function (p) { return p.type === 'out' }), function (port, index) {
+
+                let outPorts = Object.values(this.model.ports).filter(p => p['type'] === 'out');
+                let $outPorts = this.$('.outPorts').empty();
+                outPorts.forEach(function (port, index) {
                     $outPorts.append(V(`<g class="port${index}"><circle/></g>`).node);
                 });
             }
@@ -385,9 +387,9 @@ export class FlowEditorComponent implements OnChanges {
 
         // FIXME Probably not the most deterministic way to autosave,
         //       nor the most efficient
-        this.graph.on('change', _.debounce(_.bind(function() {
+        this.graph.on('change', _.debounce(function() {
             this.saveFlow();
-        }, this), 250, {leading: true, trailing: true}));
+        }.bind(this), 250, {leading: true, trailing: true}));
 
         this.paper.on('blank:contextmenu', this.showBlankContextMenu.bind(this));
         this.paper.on('blank:pointerdown', this.hideBlankContextMenu.bind(this));
