@@ -74,12 +74,32 @@ export class ProjectManagementComponent {
 
     @Output() onMakeNewEntity = new EventEmitter<string>();
     makeNewEntity() {
-        this.onMakeNewEntity.emit()
+        this.onMakeNewEntity.emit();
     }
 
     @Output() onMakeNewComponent = new EventEmitter<string>();
     makeNewComponent() {
-        this.onMakeNewComponent.emit()
+        this.onMakeNewComponent.emit();
+    }
+
+    @Output() onAddNewAction = new EventEmitter<string>();
+    addNewAction() {
+        this.onAddNewAction.emit();
+    }
+
+    @Output() onAddNewTrigger = new EventEmitter<string>();
+    addNewTrigger() {
+        this.onAddNewTrigger.emit();
+    }
+
+    @Output() onAddNewCondition = new EventEmitter<string>();
+    addNewCondition() {
+        this.onAddNewCondition.emit();
+    }
+
+    @Output() onAddNewOperation = new EventEmitter<string>();
+    addNewOperation() {
+        this.onAddNewOperation.emit();
     }
 
 }

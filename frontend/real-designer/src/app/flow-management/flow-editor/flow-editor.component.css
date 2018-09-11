@@ -1,0 +1,82 @@
+.context-menu {
+	position: fixed;
+	z-index: 10;
+	display: none;
+}
+
+.context-menu ul {
+	display: block;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	box-shadow: 0px 0px 5px black;
+}
+
+.context-menu li {
+	display: block;
+	background: white;
+	border: 1px solid black;
+	padding: 10px;
+	text-decoration: none;
+	color: black;
+}
+
+.context-menu li:hover {
+	background: yellow;
+	cursor: pointer;
+}
+
+.context-menu ul .warn-context-button {
+	background: red;
+}
+
+.context-menu ul .warn-context-button:hover {
+	background: yellow;
+}
+
+.flow-outer {
+    overflow: hidden;
+    height: 100%;
+}
+
+.flow-paper {
+    position: relative;
+    display: inline-block;
+    background: transparent;
+    overflow: hidden;
+}
+.flow-paper svg {
+    background: transparent;
+}
+
+.flow-node {
+    background: #fff;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+    padding: 14px;
+    box-sizing: border-box;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+}
+.flow-node button.delete {
+    color: white;
+    border: none;
+    background-color: #f44336;
+    border-radius: 21px;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+    text-align: middle;
+    position: absolute;
+    top: -7px;
+    left: -7px;
+    padding: 0;
+    margin: 0;
+    font-weight: bold;
+    cursor: pointer;
+}
+.flow-node button.delete:hover {
+    width: 21px;
+    height: 21px;
+    line-height: 21px;
+}

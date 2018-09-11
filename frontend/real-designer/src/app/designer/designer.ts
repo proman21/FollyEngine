@@ -87,6 +87,17 @@ export class DesignerAttribute {
 
 }
 
+export class DesignerFlow {
+	id: number; // unique ID
+	name: string;
+	cells: {}
+
+	constructor(name: string, cells: {}) {
+		this.name = name;
+		this.cells = cells;
+	}
+}
+
 export class DesignerAsset {
 	id: number;
 	name: string;

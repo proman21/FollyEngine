@@ -10,6 +10,10 @@
     (onSave)="save()"
     (onMakeNewEntity)="makeNewEntity()"
     (onMakeNewComponent)="makeNewComponent()"
+    (onAddNewAction)="addNewAction()"
+    (onAddNewTrigger)="addNewTrigger()"
+    (onAddNewCondition)="addNewCondition()"
+    (onAddNewOperation)="addNewOperation()"
     ></project-management>
   </div>
 
@@ -32,7 +36,7 @@
                   <component-management [@fadeInAnimation]="bindingVar"></component-management>
               </div>
               <div *ngSwitchCase="2">
-                  <procedure-designer [@fadeInAnimation]="bindingVar"></procedure-designer>
+                  <flow-management [@fadeInAnimation]="bindingVar"></flow-management>
               </div>
               <div *ngSwitchCase="3">
                 <asset-management [@fadeInAnimation]="bindingVar"></asset-management>

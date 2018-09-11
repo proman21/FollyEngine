@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { HttpClient } from "@angular/common/http";
-import { DesignerEntity, DesignerComponent, DesignerAttribute, DesignerAsset } from '../designer/designer';
-import { Flow } from '../flow/flow';
+import { DesignerEntity, DesignerComponent, DesignerAttribute, DesignerFlow, DesignerAsset } from '../designer/designer';
 
 @Injectable()
 export class DesignerService {
@@ -56,6 +55,8 @@ export class DesignerService {
 		this.currentProject.entities.get(2).addComponent(1);
 		this.currentProject.entities.get(2).addComponent(3);
 
+		// Add flow
+		this.registerNewFlow(new DesignerFlow("New Flow", null));
 	}
 
 	newProject(name: string) {
@@ -96,6 +97,11 @@ export class DesignerService {
 				o[key] = value;
 				return o;
 			}, []);
+		let flows = Array.from(this.currentProject.flows)
+			.reduce((o, [key, value]) => {
+				o[key] = value;
+				return o;
+			}, []);
 		let assets = Array.from(this.currentProject.assets)
 			.reduce((o, [key, value]) => {
 				o[key] = value;
@@ -115,9 +121,10 @@ export class DesignerService {
 			project: project,
 			entities: entities,
 			components: components,
+			flows: flows,
 			assets: assets
 		});
-		console.log(state);
+		console.log(JSON.parse(state));
 		localStorage.setItem("localState", state);
 	}
 
@@ -203,6 +210,7 @@ export class DesignerService {
 		let state = JSON.parse(localStorage.getItem("localState"));
 		let components = state.components;
 		let entities = state.entities;
+		let flows = state.flows;
 		let assets = state.assets;
 
 		for (let entry of components) {
@@ -219,6 +227,11 @@ export class DesignerService {
 				entity.addComponent(entry.components[c]);
 			}
 			this.registerNewEntity(entity);
+		}
+
+		for (let entry of flows) {
+			let flow = new DesignerFlow(entry.name, entry.cells);
+			this.registerNewFlow(flow)
 		}
 
 		for (let entry of assets) {
@@ -252,6 +265,14 @@ export class DesignerService {
 		return id;
 	}
 
+	registerNewFlow(flow: DesignerFlow): number {
+		let id = this.currentProject.flow_gen.gen();
+		flow.id = id;
+		this.currentProject.flows.set(id, flow);
+
+		return id;
+	}
+
 	registerNewAsset(asset: DesignerAsset): number {
 		let id = this.currentProject.asset_gen.gen();
 		asset.id = id;
@@ -262,6 +283,10 @@ export class DesignerService {
 
 	destroyEntity(e_id: number) {
 		this.currentProject.entities.delete(e_id);
+	}
+
+	destroyFlow(id: number) {
+		this.currentProject.flows.delete(id);
 	}
 
 	destroyComponent(c_id: number) {
@@ -280,6 +305,10 @@ export class DesignerService {
 		return this.currentProject.components;
 	}
 
+	getFlows() {
+		return this.currentProject.flows;
+	}
+
 	getAssets() {
 		return this.currentProject.assets;
 	}
@@ -292,11 +321,12 @@ export class DesignerService {
 export class Project {
 	ent_gen: NumGen = new NumGen();
 	comp_gen: NumGen = new NumGen();
+	flow_gen: NumGen = new NumGen();
 	asset_gen: NumGen = new NumGen();
 	entities: Map<number, DesignerEntity> = new Map();
 	components: Map<number, DesignerComponent> = new Map();
+	flows: Map<number, DesignerFlow> = new Map();
 	assets: Map<number, DesignerAsset> = new Map();
-	flows: Map<Number, Flow> = new Map();
 }
 
 class NumGen {
