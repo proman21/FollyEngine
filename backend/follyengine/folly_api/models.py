@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
-
+from django.contrib.postgres.fields import JSONField
 
 # Create your models here.
 class Project(models.Model):
@@ -17,6 +17,46 @@ class Project(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Component(models.Model):
+    name = models.CharField(max_length=64, unique=True)
+    description = models.TextField()
+    project = models.ForeignKey(Project, related_name='components',
+                                on_delete=models.CASCADE)
+
+
+class Attribute(models.Model):
+    name = models.CharField(max_length=64, unique=True)
+    description = models.TextField()
+    attr_type = models.CharField(
+        max_length = 1,
+        choices = (
+            ('B', 'Boolean'),
+            ('I', 'Integer'),
+            ('F', 'Float'),
+            ('S', 'String')
+        ),
+        default = 'I'
+    )
+    component = models.ForeignKey(Component, related_name='attributes', on_delete=models.CASCADE)
+
+
+class Entity(models.Model):
+    name = models.CharField(max_length=64, unique=True)
+    slug = models.SlugField(max_length=64, allow_unicode=True, unique=True)
+    description = models.TextField()
+    project = models.ForeignKey(Project, related_name='entities',
+                                on_delete=models.CASCADE)
+    components = models.ManyToManyField(Component, related_name='implementers')
+
+
+class Flow(models.Model):
+    name = models.CharField(max_length=64, unique=True)
+    data = JSONField()
+    
+    def __str__(self):
+        return self.name
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
