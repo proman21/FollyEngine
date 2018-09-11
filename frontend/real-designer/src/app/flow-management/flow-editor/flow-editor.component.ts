@@ -88,8 +88,10 @@ export class FlowEditorComponent implements OnChanges {
             linkPinning: false
         });
 
+        joint.shapes.basic.PortsModel = joint.shapes.basic.Generic.extend(joint.shapes.basic.PortsModelInterface);
+
         joint.shapes.folly = {};
-        joint.shapes.folly.Node = class Node extends joint.shapes.basic.Generic.extend(joint.shapes.basic.PortsModelInterface) {
+        joint.shapes.folly.Node = class Node extends joint.shapes.basic.PortsModel {
             get markup() {
                 return `<g class="rotatable">
                             <g class="scalable">
