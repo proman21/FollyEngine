@@ -6,6 +6,7 @@ from django.utils.text import slugify
 from rest_framework.authtoken.models import Token
 from django.contrib.postgres.fields import JSONField
 
+
 # Create your models here.
 class Project(models.Model):
     title = models.CharField(max_length=64)
@@ -37,16 +38,17 @@ class Attribute(models.Model):
     name = models.CharField(max_length=64, unique=True)
     description = models.TextField()
     attr_type = models.CharField(
-        max_length = 1,
-        choices = (
+        max_length=1,
+        choices=(
             ('B', 'Boolean'),
             ('I', 'Integer'),
             ('F', 'Float'),
             ('S', 'String')
         ),
-        default = 'I'
+        default='I'
     )
-    component = models.ForeignKey(Component, related_name='attributes', on_delete=models.CASCADE)
+    component = models.ForeignKey(Component, related_name='attributes',
+                                  on_delete=models.CASCADE)
 
 
 class Entity(models.Model):
@@ -61,7 +63,7 @@ class Entity(models.Model):
 class Flow(models.Model):
     name = models.CharField(max_length=64, unique=True)
     data = JSONField()
-    
+
     def __str__(self):
         return self.name
 
