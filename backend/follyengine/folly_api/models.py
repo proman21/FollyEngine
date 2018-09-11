@@ -5,6 +5,7 @@ from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 from django.contrib.postgres.fields import JSONField
 
+
 # Create your models here.
 class Project(models.Model):
     title = models.CharField(max_length=64)
@@ -37,7 +38,7 @@ class Entity(models.Model):
 class Flow(models.Model):
     name = models.CharField(max_length=64, unique=True)
     data = JSONField()
-    
+
     def __str__(self):
         return self.name
 
