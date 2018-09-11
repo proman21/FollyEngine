@@ -20,15 +20,3 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Project
         fields = ('title', 'description', 'slug', 'created', 'modified')
-
-
-class EntitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Entity
-        fields = ('name', 'description')
-
-
-class ComponentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Component
-        fields = ('name', 'description')

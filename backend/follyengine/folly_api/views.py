@@ -32,19 +32,3 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
-
-
-class EntityViewSet(viewsets.ModelViewSet):
-    serializer_class = serializers.EntitySerializer
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def get_queryset(self):
-        return Entity.objects.filter(project=self.kwargs['project_pk'])
-
-
-class ComponentViewSet(viewsets.ModelViewSet):
-    serializer_class = serializers.ComponentSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def get_queryset(self):
-        return Component.objects.filter(project=self.kwargs['project_pk'])
