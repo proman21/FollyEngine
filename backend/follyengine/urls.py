@@ -28,6 +28,7 @@ router.register(r'projects', views.ProjectViewSet, base_name='project')
 
 project_router = routers.NestedDefaultRouter(router, r'projects',
                                              lookup='project')
+routers.register(r'entities', views.EntityViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),

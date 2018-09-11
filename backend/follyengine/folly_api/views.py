@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, permissions
 
+from follyengine.folly_api.models import Entity
 from follyengine.folly_api import serializers
 
 
@@ -49,3 +50,14 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+
+class EntityViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.EntitySerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        return Entity.objects.filter(project=self.kwargs['project_pk'])
+
+    def perform_create(self, serializer):
+        serializer.save(project=self.kwargs['project_pk'])
