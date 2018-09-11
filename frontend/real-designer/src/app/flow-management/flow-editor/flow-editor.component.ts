@@ -163,11 +163,6 @@ export class FlowEditorComponent implements OnChanges {
                 this.$box.find('input,select').on('change', function(evt) {
                     var $target = $(evt.target);
                     this.model.set($target.attr('name'), $target.val());
-
-                    if ($target.attr('name') == 'entity') {
-                        this.$box.find('select[name="attr"]')
-                            .append(`<option>${attributes[this.model.get('entity')].join('</option><option>')}</option>`);
-                    }
                 }.bind(this));
                 this.$box.find('input,select').each(function(index, element) {
                     var $element = $(element);
@@ -222,6 +217,11 @@ export class FlowEditorComponent implements OnChanges {
                     height: bbox.height,
                     transform: 'scale(' + (1 / scale[1]) + ',' + (1 / scale[2]) + ')'
                 });
+
+                if (this.model.get('entity')) {
+                    this.$box.find('select[name="attr"]')
+                        .html(`<option>${attributes[this.model.get('entity')].join('</option><option>')}</option>`);
+                }
             }
         };
 
