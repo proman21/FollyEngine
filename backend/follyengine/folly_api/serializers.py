@@ -30,15 +30,3 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 class ProjectCreateSerializer(ProjectSerializer):
     slug = serializers.SlugField(required=False)
-
-
-class EntitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Entity
-        fields = ('name', 'description', 'components')
-
-
-class ComponentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Component
-        fields = ('name', 'description')
