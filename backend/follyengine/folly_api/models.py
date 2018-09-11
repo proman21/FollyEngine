@@ -17,7 +17,7 @@ class Project(models.Model):
                               on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
-        if not self.id and not kwargs['slug']:
+        if not self.id and not kwargs.get('slug', None):
             self.slug = slugify(self.title)
 
         super(Project, self).save(*args, **kwargs)
