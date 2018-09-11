@@ -166,7 +166,8 @@ export class FlowEditorComponent implements OnChanges {
                     this.model.set($target.attr('name'), $target.val());
 
                     if ($target.attr('name') == 'entity') {
-                        this.$box.find('select[name="attr"]').append('<option>' + attributes[this.model.get('entity')].join('</option><option>') + '</option>');
+                        this.$box.find('select[name="attr"]')
+                            .append(`<option>${attributes[this.model.get('entity')].join('</option><option>')}</option>`);
                     }
                 }, this));
                 this.$box.find('input,select').each(_.bind(function(index, element) {
@@ -176,8 +177,10 @@ export class FlowEditorComponent implements OnChanges {
                         $element.val(val);
                     }
                 }, this));
-                this.$box.find('select[name="entity"]').append('<option>' + entityEntries.join('</option><option>') + '</option>');
-                this.$box.find('select[name="action"]').append('<option>' + this.model.get('actions').join('</option><option>') + '</option>');
+                this.$box.find('select[name="entity"]')
+                    .append(`<option>${entityEntries.join('</option><option>')}</option>`);
+                this.$box.find('select[name="action"]')
+                    .append(`<option>${this.model.get('actions').join('</option><option>')}</option>`);
                 this.$box.find('.delete').on('click', _.bind(this.model.remove, this.model));
                 
                 // Update the box whenever the underlying model changes.
