@@ -85,8 +85,6 @@ export class FlowEditorComponent implements OnChanges {
 
         joint.shapes.folly = {};
         joint.shapes.folly.Node = class Node extends joint.shapes.basic.Generic.extend(joint.shapes.basic.PortsModelInterface) {
-            portMarkup = '<g class="port<%= id %>"><circle/></g>';
-            
             get markup() {
                 return `<g class="rotatable">
                             <g class="scalable">
@@ -186,13 +184,11 @@ export class FlowEditorComponent implements OnChanges {
                 var $inPorts = this.$('.inPorts').empty();
                 var $outPorts = this.$('.outPorts').empty();
 
-                var portTemplate = _.template(this.model.portMarkup);
-
                 _.each(_.filter(this.model.ports, function (p) { return p.type === 'in' }), function (port, index) {
-                    $inPorts.append(V(portTemplate({ id: index, port: port })).node);
+                    $inPorts.append(V(`<g class="port${index}"><circle/></g>`).node);
                 });
                 _.each(_.filter(this.model.ports, function (p) { return p.type === 'out' }), function (port, index) {
-                    $outPorts.append(V(portTemplate({ id: index, port: port })).node);
+                    $outPorts.append(V(`<g class="port${index}"><circle/></g>`).node);
                 });
             }
 
