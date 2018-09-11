@@ -85,30 +85,28 @@ export class FlowEditorComponent implements OnChanges {
 
         joint.shapes.folly = {};
         joint.shapes.folly.Node = class extends joint.shapes.basic.Generic.extend(joint.shapes.basic.PortsModelInterface) {
-            markup = [
-                '<g class="rotatable">',
-                '<g class="scalable">',
-                '<rect/>',
-                '<foreignObject>',
-                '<div xmlns="http://www.w3.org/1999/xhtml" class="flow-node">',
-                '<button class="delete">x</button>',
-                '<span class="node-caption"></span>', '<br/>',
-                '<input name="name" type="text" value="New Node" />', '<br/>',
-                '<label>Entity</label>', '<br/>',
-                '<select name="entity"></select>', '<br/>',
-                '<label>Attribute</label>', '<br/>',
-                '<select name="attr"><option></option></select>', '<br/>',
-                '<label>Action</label>', '<br/>',
-                '<select name="action"></select>', '<br/>',
-                '<label>Value</label>', '<br/>',
-                '<input name="value" type="text" value="" />',
-                '</div>',
-                '</foreignObject>',
-                '</g>',
-                '<g class="inPorts"/>',
-                '<g class="outPorts"/>',
-                '</g>'
-            ].join('');
+            markup = `<g class="rotatable">
+                    <g class="scalable">
+                        <rect/>
+                        <foreignObject>
+                            <div xmlns="http://www.w3.org/1999/xhtml" class="flow-node">
+                                <button class="delete">x</button>
+                                <span class="node-caption"></span><br/>
+                                <input name="name" type="text" value="New Node"/><br/>
+                                <label>Entity</label><br/>
+                                <select name="entity"></select><br/>
+                                <label>Attribute</label><br/>
+                                <select name="attr"><option></option></select><br/>
+                                <label>Action</label><br/>
+                                <select name="action"></select><br/>
+                                <label>Value</label><br/>
+                                <input name="value" type="text" value=""/>
+                            </div>
+                        </foreignObject>
+                    </g>
+                    <g class="inPorts"/>
+                    <g class="outPorts"/>
+                </g>`
             portMarkup = '<g class="port<%= id %>"><circle/></g>';
 
             defaults() {
