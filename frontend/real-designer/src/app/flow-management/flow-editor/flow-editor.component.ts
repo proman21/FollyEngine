@@ -84,35 +84,30 @@ export class FlowEditorComponent implements OnChanges {
         });
 
         joint.shapes.folly = {};
-        joint.shapes.folly.Node = class extends joint.shapes.basic.Generic.extend(joint.shapes.basic.PortsModelInterface) {
-            markup = `<g class="rotatable">
-                    <g class="scalable">
-                        <rect/>
-                        <foreignObject>
-                            <div xmlns="http://www.w3.org/1999/xhtml" class="flow-node">
-                                <button class="delete">x</button>
-                                <span class="node-caption"></span><br/>
-                                <input name="name" type="text" value="New Node"/><br/>
-                                <label>Entity</label><br/>
-                                <select name="entity"></select><br/>
-                                <label>Attribute</label><br/>
-                                <select name="attr"><option></option></select><br/>
-                                <label>Action</label><br/>
-                                <select name="action"></select><br/>
-                                <label>Value</label><br/>
-                                <input name="value" type="text" value=""/>
-                            </div>
-                        </foreignObject>
-                    </g>
-                    <g class="inPorts"/>
-                    <g class="outPorts"/>
-                </g>`
-            portMarkup = '<g class="port<%= id %>"><circle/></g>';
+        joint.shapes.folly.Node = class Node extends joint.shapes.basic.Generic.extend(joint.shapes.basic.PortsModelInterface) {
+            get markup() {
+                return `<g class="rotatable">
+                            <g class="scalable">
+                                <rect/>
+                                <foreignObject>
+                                    <div xmlns="http://www.w3.org/1999/xhtml" class="flow-node">
+                                        ${this.template}
+                                    </div>
+                                </foreignObject>
+                            </g>
+                            <g class="inPorts"/>
+                            <g class="outPorts"/>
+                        </g>`;
+            }
+
+            get template() {
+                return 'hello, world';
+            }
 
             defaults() {
                 return {
                     ...super.defaults,
-                    type: 'folly.Node',
+                    type: 'folly.' + this.constructor.name,
                     size: { width: 240, height: 200 },
                     inPorts: ['In'],
                     outPorts: ['Out'],
@@ -160,7 +155,6 @@ export class FlowEditorComponent implements OnChanges {
                 });
                 
                 // React on the input change and store the input data in the cell model.
-                this.$box.find('.node-caption').html(this.model.get('label'));
                 this.$box.find('input,select').on('change', _.bind(function(evt) {
                     var $target = $(evt.target);
                     this.model.set($target.attr('name'), $target.val());
@@ -177,10 +171,6 @@ export class FlowEditorComponent implements OnChanges {
                         $element.val(val);
                     }
                 }, this));
-                this.$box.find('select[name="entity"]')
-                    .append(`<option>${entityEntries.join('</option><option>')}</option>`);
-                this.$box.find('select[name="action"]')
-                    .append(`<option>${this.model.get('actions').join('</option><option>')}</option>`);
                 this.$box.find('.delete').on('click', _.bind(this.model.remove, this.model));
                 
                 // Update the box whenever the underlying model changes.
@@ -194,13 +184,11 @@ export class FlowEditorComponent implements OnChanges {
                 var $inPorts = this.$('.inPorts').empty();
                 var $outPorts = this.$('.outPorts').empty();
 
-                var portTemplate = _.template(this.model.portMarkup);
-
                 _.each(_.filter(this.model.ports, function (p) { return p.type === 'in' }), function (port, index) {
-                    $inPorts.append(V(portTemplate({ id: index, port: port })).node);
+                    $inPorts.append(V(`<g class="port${index}"><circle/></g>`).node);
                 });
                 _.each(_.filter(this.model.ports, function (p) { return p.type === 'out' }), function (port, index) {
-                    $outPorts.append(V(portTemplate({ id: index, port: port })).node);
+                    $outPorts.append(V(`<g class="port${index}"><circle/></g>`).node);
                 });
             }
 
@@ -230,43 +218,79 @@ export class FlowEditorComponent implements OnChanges {
             }
         };
 
-        joint.shapes.folly.ConditionNode = class extends joint.shapes.folly.Node {
-            defaults() {
-                let superDefaults = super.defaults();
+        joint.shapes.folly.ConditionNode = class ConditionNode extends joint.shapes.folly.Node {
+            get template() {
+                let attrs = attributes[Object.keys(attributes)[0]];
+                let actions = [
+                    'Equal to',
+                    'Greater than',
+                    'Less than',
+                    'Greater than or equal to',
+                    'Less than or equal to'
+                ];
+                return `<button class="delete">x</button>
+                        <span class="node-caption">Condition</span><br/>
+                        <input name="name" type="text" value="New Condition"/><br/>
+                        <label>Entity</label><br/>
+                        <select name="entity"><option>${entityEntries.join('</option><option>')}</option></select><br/>
+                        <label>Attribute</label><br/>
+                        <select name="attr"><option>${attrs.join('</option><option>')}</option></select><br/>
+                        <label>Action</label><br/>
+                        <select name="action"><option>${actions.join('</option><option>')}</option></select><br/>
+                        <label>Value</label><br/>
+                        <input name="value" type="text" value=""/>`;
+            }
+
+            get defaults() {
                 return {
-                    ...superDefaults,
-                    type: 'folly.ConditionNode',
-                    label: 'Condition',
-                    actions: ['Equal to', 'Greater than', 'Less than', 'Greater than or equal to', 'Less than or equal to'],
-                    inPorts: ['in'],
+                    ...super.defaults(),
                     outPorts: ['True', 'False']
                 };
             }
         };
         joint.shapes.folly.ConditionNodeView = class extends joint.shapes.folly.NodeView {};
 
-        joint.shapes.folly.OperationNode = class extends joint.shapes.folly.Node {
-            defaults() {
-                let superDefaults = super.defaults();
-                return {
-                    ...superDefaults,
-                    type: 'folly.OperationNode',
-                    label: 'Operation',
-                    actions: ['Add', 'Subtract', 'Set']
-                };
+        joint.shapes.folly.OperationNode = class OperationNode extends joint.shapes.folly.Node {
+            get template() {
+                let attrs = attributes[Object.keys(attributes)[0]];
+                let actions = [
+                    'Add',
+                    'Subtract',
+                    'Set'
+                ];
+                return `<button class="delete">x</button>
+                        <span class="node-caption">Operation</span><br/>
+                        <input name="name" type="text" value="New Operation"/><br/>
+                        <label>Entity</label><br/>
+                        <select name="entity"><option>${entityEntries.join('</option><option>')}</option></select><br/>
+                        <label>Attribute</label><br/>
+                        <select name="attr"><option>${attrs.join('</option><option>')}</option></select><br/>
+                        <label>Action</label><br/>
+                        <select name="action"><option>${actions.join('</option><option>')}</option></select><br/>
+                        <label>Value</label><br/>
+                        <input name="value" type="text" value=""/>`;
             }
         };
         joint.shapes.folly.OperationNodeView = class extends joint.shapes.folly.NodeView {};
 
-        joint.shapes.folly.ActionNode = class extends joint.shapes.folly.Node {
-            defaults() {
-                let superDefaults = super.defaults();
-                return {
-                    ...superDefaults,
-                    type: 'folly.ActionNode',
-                    label: 'Action',
-                    actions: ['???']
-                };
+        joint.shapes.folly.ActionNode = class ActionNode extends joint.shapes.folly.Node {
+            get template() {
+                let attrs = attributes[Object.keys(attributes)[0]];
+                let actions = [
+                    'OSC',
+                    'DMX'
+                ];
+                return `<button class="delete">x</button>
+                        <span class="node-caption">Action</span><br/>
+                        <input name="name" type="text" value="New Action"/><br/>
+                        <label>Entity</label><br/>
+                        <select name="entity"><option>${entityEntries.join('</option><option>')}</option></select><br/>
+                        <label>Attribute</label><br/>
+                        <select name="attr"><option>${attrs.join('</option><option>')}</option></select><br/>
+                        <label>Action</label><br/>
+                        <select name="action"><option>${actions.join('</option><option>')}</option></select><br/>
+                        <label>Value</label><br/>
+                        <input name="value" type="text" value=""/>`;
             }
         };
         joint.shapes.folly.ActionNodeView = class extends joint.shapes.folly.NodeView {};
