@@ -298,6 +298,23 @@ export class FlowEditorComponent implements OnChanges {
             }
         };
         joint.shapes.folly.ActionNodeView = class extends joint.shapes.folly.NodeView {};
+
+        joint.shapes.folly.TriggerNode = class TriggerNode extends joint.shapes.folly.Node {
+            get template() {
+                let trigger = [
+                    'RFID',
+                    'Time'
+                ];
+                return `<button class="delete">x</button>
+                        <span class="node-caption">Trigger</span><br/>
+                        <input name="name" type="text" value="New Trigger"/><br/>
+                        <label>Type</label><br/>
+                        <select name="trigger"><option>${trigger.join('</option><option>')}</option></select><br/>
+                        <label>Entity</label><br/>
+                        <select name="entity"><option>${entityEntries.join('</option><option>')}</option></select><br/>`;
+            }
+        };
+        joint.shapes.folly.TriggerNodeView = class extends joint.shapes.folly.NodeView {};
         
         // JointJS serialises more than we probably need it to
         // so we have to work out what we don't need
@@ -462,8 +479,7 @@ export class FlowEditorComponent implements OnChanges {
     }
 
     addTriggerNode() {
-        // FIXME
-        var el = new joint.shapes.folly.ActionNode({
+        var el = new joint.shapes.folly.TriggerNode({
             position: { x: 80, y: 80 }
         });
         this.graph.addCell(el);
