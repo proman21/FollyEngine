@@ -18,7 +18,7 @@
 
 .flow-editor {
 	flex-grow: 7;
-	max-width: 70%;
+	max-width: 75%;
 	box-shadow: 0px 0px 4px #343434;
     overflow-x: hidden;
     margin: 20px;

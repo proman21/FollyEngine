@@ -50,13 +50,19 @@
 }
 
 .flow-node {
+    box-sizing: border-box;
     background: #fff;
     box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
-    padding: 14px;
+    padding: 14px 42px 0 21px;
     box-sizing: border-box;
     z-index: 2;
     width: 100%;
     height: 100%;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 11px;
+}
+.flow-node * {
+    box-sizing: inherit;
 }
 .flow-node button.delete {
     color: white;
@@ -79,4 +85,17 @@
     width: 21px;
     height: 21px;
     line-height: 21px;
+}
+.flow-node .input-group {
+    padding: .5em 0;
+}
+.flow-node .input-group label {
+    display: inline-block;
+    width: 35%;
+    float: left;
+}
+.flow-node .input-group input,
+.flow-node .input-group select {
+    display: inline-block;
+    width: 65%;
 }

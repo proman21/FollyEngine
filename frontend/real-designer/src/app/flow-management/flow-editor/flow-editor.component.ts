@@ -59,6 +59,11 @@ export class FlowEditorComponent implements OnChanges {
                 });
             });
         });
+        let assets = Array.from(this.designerService.getAssets())
+            .reduce((o, [key, value]) => {
+                o[key] = value.name;
+                return o;
+            }, []);
 
         this.graph = new joint.dia.Graph();
         this.paper = new joint.dia.Paper({
@@ -108,7 +113,7 @@ export class FlowEditorComponent implements OnChanges {
                 return {
                     ...super.defaults,
                     type: 'folly.' + this.constructor.name,
-                    size: { width: 240, height: 200 },
+                    size: { width: 220, height: 180 },
                     inPorts: ['In'],
                     outPorts: ['Out'],
                     attrs: {
@@ -228,17 +233,24 @@ export class FlowEditorComponent implements OnChanges {
                     'Greater than or equal to',
                     'Less than or equal to'
                 ];
-                return `<button class="delete">x</button>
-                        <span class="node-caption">Condition</span><br/>
-                        <input name="name" type="text" value="New Condition"/><br/>
-                        <label>Entity</label><br/>
-                        <select name="entity"><option>${entityEntries.join('</option><option>')}</option></select><br/>
-                        <label>Attribute</label><br/>
-                        <select name="attr"><option>${attrs.join('</option><option>')}</option></select><br/>
-                        <label>Action</label><br/>
-                        <select name="action"><option>${actions.join('</option><option>')}</option></select><br/>
-                        <label>Value</label><br/>
-                        <input name="value" type="text" value=""/>`;
+                return `<span class="node-caption">Condition</span>
+                        <div class="input-group">
+                            <input name="name" type="text" value="New Condition"/>
+                        </div>
+                        <div class="input-group">
+                            <label>Entity</label>
+                            <select name="entity"><option>${entityEntries.join('</option><option>')}</option></select>
+                            <label>Attribute</label>
+                            <select name="attr"><option>${attrs.join('</option><option>')}</option></select>
+                        </div>
+                        <div class="input-group">
+                            <label>is</label>
+                            <select name="action"><option>${actions.join('</option><option>')}</option></select>
+                        </div>
+                        <div class="input-group">
+                            <label>Value</label>
+                            <input name="value" type="text" value=""/>
+                        </div>`;
             }
 
             get defaults() {
@@ -258,17 +270,24 @@ export class FlowEditorComponent implements OnChanges {
                     'Subtract',
                     'Set'
                 ];
-                return `<button class="delete">x</button>
-                        <span class="node-caption">Operation</span><br/>
-                        <input name="name" type="text" value="New Operation"/><br/>
-                        <label>Entity</label><br/>
-                        <select name="entity"><option>${entityEntries.join('</option><option>')}</option></select><br/>
-                        <label>Attribute</label><br/>
-                        <select name="attr"><option>${attrs.join('</option><option>')}</option></select><br/>
-                        <label>Action</label><br/>
-                        <select name="action"><option>${actions.join('</option><option>')}</option></select><br/>
-                        <label>Value</label><br/>
-                        <input name="value" type="text" value=""/>`;
+                return `<span class="node-caption">Operation</span>
+                        <div class="input-group">
+                            <input name="name" type="text" value="New Operation"/>
+                        </div>
+                        <div class="input-group">
+                            <label>Entity</label>
+                            <select name="entity"><option>${entityEntries.join('</option><option>')}</option></select>
+                            <label>Attribute</label>
+                            <select name="attr"><option>${attrs.join('</option><option>')}</option></select>
+                        </div>
+                        <div class="input-group">
+                            <label>Action</label>
+                            <select name="action"><option>${actions.join('</option><option>')}</option></select>
+                        </div>
+                        <div class="input-group">
+                            <label>Value</label>
+                            <input name="value" type="text" value=""/>
+                        </div>`;
             }
         };
         joint.shapes.folly.OperationNodeView = class extends joint.shapes.folly.NodeView {};
@@ -280,17 +299,24 @@ export class FlowEditorComponent implements OnChanges {
                     'OSC',
                     'DMX'
                 ];
-                return `<button class="delete">x</button>
-                        <span class="node-caption">Action</span><br/>
-                        <input name="name" type="text" value="New Action"/><br/>
-                        <label>Entity</label><br/>
-                        <select name="entity"><option>${entityEntries.join('</option><option>')}</option></select><br/>
-                        <label>Attribute</label><br/>
-                        <select name="attr"><option>${attrs.join('</option><option>')}</option></select><br/>
-                        <label>Action</label><br/>
-                        <select name="action"><option>${actions.join('</option><option>')}</option></select><br/>
-                        <label>Value</label><br/>
-                        <input name="value" type="text" value=""/>`;
+                return `<span class="node-caption">Action</span>
+                        <div class="input-group">
+                            <input name="name" type="text" value="New Action"/>
+                        </div>
+                        <div class="input-group">
+                            <label>Entity</label>
+                            <select name="entity"><option>${entityEntries.join('</option><option>')}</option></select>
+                            <label>Attribute</label>
+                            <select name="attr"><option>${attrs.join('</option><option>')}</option></select>
+                        </div>
+                        <div class="input-group">
+                            <label>Action</label>
+                            <select name="action"><option>${actions.join('</option><option>')}</option></select>
+                        </div>
+                        <div class="input-group">
+                            <label>File</label>
+                            <select name="action"><option>${assets.join('</option><option>')}</option></select>
+                        </div>`;
             }
         };
         joint.shapes.folly.ActionNodeView = class extends joint.shapes.folly.NodeView {};
@@ -301,13 +327,25 @@ export class FlowEditorComponent implements OnChanges {
                     'RFID',
                     'Time'
                 ];
-                return `<button class="delete">x</button>
-                        <span class="node-caption">Trigger</span><br/>
-                        <input name="name" type="text" value="New Trigger"/><br/>
-                        <label>Type</label><br/>
-                        <select name="trigger"><option>${trigger.join('</option><option>')}</option></select><br/>
-                        <label>Entity</label><br/>
-                        <select name="entity"><option>${entityEntries.join('</option><option>')}</option></select><br/>`;
+                return `<span class="node-caption">Trigger</span>
+                        <div class="input-group">
+                            <input name="name" type="text" value="New Trigger"/>
+                        </div>
+                        <div class="input-group">
+                            <label>Type</label>
+                            <select name="trigger"><option>${trigger.join('</option><option>')}</option></select>
+                        </div>
+                        <div class="input-group">
+                            <label>Entity</label>
+                            <select name="entity"><option>${entityEntries.join('</option><option>')}</option></select>
+                        </div>`;
+            }
+
+            get defaults() {
+                return {
+                    ...super.defaults(),
+                    size: { width: 220, height: 130 }
+                };
             }
         };
         joint.shapes.folly.TriggerNodeView = class extends joint.shapes.folly.NodeView {};
