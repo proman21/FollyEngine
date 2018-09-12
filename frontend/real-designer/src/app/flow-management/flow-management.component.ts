@@ -62,4 +62,7 @@ export class FlowManagementComponent {
     newOperation() {
         this.flowEditor.addOperationNode();
     }
+    newNestedFlow() {
+        this.flowEditor.addNestedFlowNode();
+    }
 }

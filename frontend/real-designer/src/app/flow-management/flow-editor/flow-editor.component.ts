@@ -44,26 +44,30 @@ export class FlowEditorComponent implements OnChanges {
 
     ngOnChanges() {
         let entities = this.designerService.getEntities();
-        let entityEntries = Array.from(entities)
-            .reduce((o, [key, value]) => {
-                o[key] = value.name;
-                return o;
-            }, []);
+        let entityEntries = Array.from(entities).reduce((o, [key, value]) => {
+            o[key] = value.name;
+            return o;
+        }, []);
         let components = this.designerService.getComponents();
         let attributes = {};
-        entities.forEach(function(entity) {
-            attributes[entity.name] = [];
-            entity.components.forEach(function(c) {
+        entities.forEach((e) => {
+            attributes[e.name] = [];
+            e.components.forEach((c) => {
                 components.get(c).attributes.forEach(function(attr) {
-                    attributes[entity.name].push(attr.getName());
+                    attributes[e.name].push(attr.getName());
                 });
             });
         });
-        let assets = Array.from(this.designerService.getAssets())
-            .reduce((o, [key, value]) => {
+        let flows = Array.from(this.designerService.getFlows()).reduce((o, [key, value]) => {
+            if (key !== this.flow.id) {
                 o[key] = value.name;
-                return o;
-            }, []);
+            }
+            return o;
+        }, []);
+        let assets = Array.from(this.designerService.getAssets()).reduce((o, [key, value]) => {
+            o[key] = value.name;
+            return o;
+        }, []);
 
         this.graph = new joint.dia.Graph();
         this.paper = new joint.dia.Paper({
@@ -348,11 +352,28 @@ export class FlowEditorComponent implements OnChanges {
             get defaults() {
                 return {
                     ...super.defaults(),
-                    size: { width: 220, height: 130 }
+                    size: { width: 220, height: 140 }
                 };
             }
         };
         joint.shapes.folly.TriggerNodeView = class extends joint.shapes.folly.NodeView {};
+
+        joint.shapes.folly.NestedFlowNode = class NestedFlowNode extends joint.shapes.folly.Node {
+            get template() {
+                return `<div class="input-group">
+                            <label>Flow</label>
+                            <select name="flow"><option>${flows.join('</option><option>')}</option></select>
+                        </div>`;
+            }
+
+            get defaults() {
+                return {
+                    ...super.defaults(),
+                    size: { width: 220, height: 60 }
+                };
+            }
+        };
+        joint.shapes.folly.NestedFlowNodeView = class extends joint.shapes.folly.NodeView {};
         
         // JointJS serialises more than we probably need it to
         // so we have to work out what we don't need
@@ -419,6 +440,7 @@ export class FlowEditorComponent implements OnChanges {
         this.addTriggerNode();
         this.addConditionNode();
         this.addOperationNode();
+        this.addNestedFlowNode();
         this.saveFlow();
     }
 
@@ -510,31 +532,38 @@ export class FlowEditorComponent implements OnChanges {
     }
 
     addActionNode() {
-        var el = new joint.shapes.folly.ActionNode({
+        const cell = new joint.shapes.folly.ActionNode({
             position: { x: 80, y: 80 }
         });
-        this.graph.addCell(el);
+        this.graph.addCell(cell);
     }
 
     addTriggerNode() {
-        var el = new joint.shapes.folly.TriggerNode({
+        const cell = new joint.shapes.folly.TriggerNode({
             position: { x: 80, y: 80 }
         });
-        this.graph.addCell(el);
+        this.graph.addCell(cell);
     }
 
     addConditionNode() {
-        var el = new joint.shapes.folly.ConditionNode({
+        const cell = new joint.shapes.folly.ConditionNode({
             position: { x: 80, y: 80 }
         });
-        this.graph.addCell(el);
+        this.graph.addCell(cell);
     }
 
     addOperationNode() {
-        var el = new joint.shapes.folly.OperationNode({
+        const cell = new joint.shapes.folly.OperationNode({
             position: { x: 80, y: 80 }
         });
-        this.graph.addCell(el);
+        this.graph.addCell(cell);
+    }
+
+    addNestedFlowNode() {
+        const cell = new joint.shapes.folly.NestedFlowNode({
+            position: { x: 80, y: 80 }
+        });
+        this.graph.addCell(cell);
     }
 
     addSubscription(id: string, func: any) {

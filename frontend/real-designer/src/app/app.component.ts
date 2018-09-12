@@ -106,18 +106,21 @@ displayAlert(message: string, action: string, duration: number) {
         this.componentManagement.newComponent();
     }
 
-    @ViewChild(FlowManagementComponent) flowEditor: FlowManagementComponent;
+    @ViewChild(FlowManagementComponent) flowManagement: FlowManagementComponent;
     addNewAction() {
-        this.flowEditor.newAction();
+        this.flowManagement.newAction();
     }
     addNewTrigger() {
-        this.flowEditor.newTrigger();
+        this.flowManagement.newTrigger();
     }
     addNewCondition() {
-        this.flowEditor.newCondition();
+        this.flowManagement.newCondition();
     }
     addNewOperation() {
-        this.flowEditor.newOperation();
+        this.flowManagement.newOperation();
+    }
+    addNewNestedFlow() {
+        this.flowManagement.newNestedFlow();
     }
 
 }

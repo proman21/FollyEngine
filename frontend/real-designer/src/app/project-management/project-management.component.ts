@@ -102,4 +102,9 @@ export class ProjectManagementComponent {
         this.onAddNewOperation.emit();
     }
 
+    @Output() onAddNewNestedFlow = new EventEmitter<string>();
+    addNewNestedFlow() {
+        this.onAddNewNestedFlow.emit();
+    }
+
 }

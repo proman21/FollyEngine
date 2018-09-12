@@ -179,6 +179,12 @@ export class MenubarComponent implements OnInit {
         this.onPressAddOperation.emit();
     }
 
+    @Output() onPressAddNestedFlow = new EventEmitter<string>();
+    pressedAddNestedFlow() {
+        // Action to add another flow to a flow
+        this.onPressAddNestedFlow.emit();
+    }
+
     /* Assets Menu Control */
     pressedUploadFiles() {
         // Action to initiate uploading files
