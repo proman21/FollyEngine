@@ -180,7 +180,6 @@ export class FlowEditorComponent implements OnChanges {
                         $element.val(val);
                     }
                 }.bind(this));
-                this.$box.find('.delete').on('click', this.model.remove.bind(this.model));
                 
                 // Update the box whenever the underlying model changes.
                 this.model.on('change', this.updateBox, this);

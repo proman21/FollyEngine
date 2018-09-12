@@ -28,28 +28,6 @@
 .flow-node * {
     box-sizing: inherit;
 }
-.flow-node button.delete {
-    color: white;
-    border: none;
-    background-color: #f44336;
-    border-radius: 21px;
-    width: 14px;
-    height: 14px;
-    line-height: 14px;
-    text-align: middle;
-    position: absolute;
-    top: -7px;
-    left: -7px;
-    padding: 0;
-    margin: 0;
-    font-weight: bold;
-    cursor: pointer;
-}
-.flow-node button.delete:hover {
-    width: 21px;
-    height: 21px;
-    line-height: 21px;
-}
 .flow-node .input-group {
     padding: .5em 0;
 }
