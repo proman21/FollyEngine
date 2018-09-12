@@ -607,7 +607,9 @@ export class FlowEditorComponent implements OnChanges {
     }
 
     duplicateSelectedNode() {
-        // TODO actually have internal data state (i.e. use FlowNode etc.) Then we actually do this properly
+        let cell = this.selected.clone();
+        cell.translate(120, 90);
+        this.graph.addCell(cell);
         this.hideNodeContextMenu();
     }
 
