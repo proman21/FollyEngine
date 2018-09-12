@@ -45,8 +45,10 @@ export class FlowManagementComponent {
     }
 
     newFlow() {
-        this.designerService.registerNewFlow(new DesignerFlow('New Flow (' + this.flows.size + ')', null));
+        let flow = new DesignerFlow('New Flow (' + this.flows.size + ')', null);
+        this.designerService.registerNewFlow(flow);
         this.subscribeDesigner();
+        this.selectFlow(flow.id);
     }
 
     @ViewChild(FlowEditorComponent) flowEditor: FlowEditorComponent;
