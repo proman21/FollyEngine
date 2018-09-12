@@ -119,7 +119,7 @@ export class FlowEditorComponent implements OnChanges {
                 return {
                     ...super.defaults,
                     type: 'folly.' + this.constructor.name,
-                    size: { width: 220, height: 180 },
+                    size: { width: 240, height: 180 },
                     inPorts: ['In'],
                     outPorts: ['Out'],
                     attrs: {
