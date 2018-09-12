@@ -423,15 +423,20 @@ export class FlowEditorComponent implements OnChanges {
             return (evt.type === 'mousedown' && evt.buttons === 2);
         };
 
+        this.paper.on('cell:pointerdown', (cellView) => {
+            cellView.model.toFront();
+        });
+
         this.paper.on('blank:contextmenu', this.showBlankContextMenu.bind(this));
         this.paper.on('cell:contextmenu', this.showNodeContextMenu.bind(this));
 
         // Disable normal scrolling
         this.paper.on('blank:mousewheel', this.zoom.bind(this));
         //this.paper.on('cell:mousewheel', this.zoom.bind(this)); Brok :(
+        
         this.paper.on('blank:pointerdown', this.enableScrolling.bind(this));
-
         window.addEventListener("mouseup", this.disableScrolling.bind(this));
+        
         window.addEventListener("mousemove", this.updateMouse.bind(this));
     }
 
