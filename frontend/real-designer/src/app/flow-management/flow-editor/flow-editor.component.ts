@@ -436,11 +436,11 @@ export class FlowEditorComponent implements OnChanges {
     }
 
     newFlow() {
-        this.addActionNode();
+        /*this.addActionNode();
         this.addTriggerNode();
         this.addConditionNode();
         this.addOperationNode();
-        this.addNestedFlowNode();
+        this.addNestedFlowNode();*/
         this.saveFlow();
     }
 
