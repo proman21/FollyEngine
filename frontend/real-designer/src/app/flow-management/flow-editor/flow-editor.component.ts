@@ -1,5 +1,5 @@
-import { Component, Input, OnChanges, ViewEncapsulation } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material';
+import { Component, Input, OnChanges, QueryList, ViewChildren, ViewEncapsulation } from '@angular/core';
+import { MatMenuTrigger } from '@angular/material';
 
 import { DesignerService } from '../../designer/designer.service';
 import { DesignerEntity, DesignerComponent, DesignerFlow } from '../../designer/designer';
@@ -27,6 +27,9 @@ export class FlowEditorComponent implements OnChanges {
 
     private defaultCells: {};
 
+    contextMenuPosition = { x: 0, y: 0 };
+    newNodePosition = { x: 80, y: 80 };
+
     selected: any;
 
     scale: number = 1.0;
@@ -39,7 +42,7 @@ export class FlowEditorComponent implements OnChanges {
 
     subscribed: Map<string, any> = new Map<string, any>(); // Id -> Functions
 
-    constructor(private designerService: DesignerService, public dialog: MatDialog) {
+    constructor(private designerService: DesignerService) {
     }
 
     ngOnChanges() {
@@ -406,6 +409,7 @@ export class FlowEditorComponent implements OnChanges {
             this.loadFlow();
         }
 
+        
         // Setup handlers
 
         // FIXME Probably not the most deterministic way to autosave,
@@ -414,22 +418,20 @@ export class FlowEditorComponent implements OnChanges {
             this.saveFlow();
         }.bind(this), 250, {leading: true, trailing: true}));
 
-        this.paper.on('blank:contextmenu', this.showBlankContextMenu.bind(this));
-        this.paper.on('blank:pointerdown', this.hideBlankContextMenu.bind(this));
-        this.paper.on('cell:pointerdown', this.hideBlankContextMenu.bind(this));
+        // https://github.com/clientIO/joint/issues/879#issuecomment-388695519
+        this.paper.options.guard = function(evt) {
+            return (evt.type === 'mousedown' && evt.buttons === 2);
+        };
 
+        this.paper.on('blank:contextmenu', this.showBlankContextMenu.bind(this));
         this.paper.on('cell:contextmenu', this.showNodeContextMenu.bind(this));
-        this.paper.on('blank:pointerdown', this.hideNodeContextMenu.bind(this));
-        this.paper.on('cell:pointerdown', this.hideNodeContextMenu.bind(this));
 
         // Disable normal scrolling
         this.paper.on('blank:mousewheel', this.zoom.bind(this));
         //this.paper.on('cell:mousewheel', this.zoom.bind(this)); Brok :(
         this.paper.on('blank:pointerdown', this.enableScrolling.bind(this));
 
-        this.paper.on('element:button:pointerdown', this.fireElementEvent.bind(this));
         window.addEventListener("mouseup", this.disableScrolling.bind(this));
-
         window.addEventListener("mousemove", this.updateMouse.bind(this));
     }
 
@@ -473,19 +475,6 @@ export class FlowEditorComponent implements OnChanges {
         this.graph.fromJSON({cells: cells});
     }
 
-    fireElementEvent(view, evt) {
-        evt.stopPropagation();
-
-        let target = this.subscribed.get(view.model.cid);
-
-        if (target == undefined) {
-            console.log("Unhandled event on " + view.model.cid);
-        }
-        else {
-            target();
-        }
-    }
-
     checkConnection(cellViewS, source, cellViewD, dest, end, linkView) {
 
         if (source == undefined || dest == undefined) {
@@ -510,110 +499,49 @@ export class FlowEditorComponent implements OnChanges {
         return true;
     }
 
-    addEntityToEditorDialog() {
-        let dialogRef = this.dialog.open(GenericSelectDialog, {
-            width: '250px',
-            data: {
-                title: "Choose Entity",
-                description: "Choose an Entity:",
-                placeholder: "Entity",
-                elements: Array.from(this.designerService.getEntities().values())
-            }
-        });
-
-        dialogRef.afterClosed().subscribe(id => {
-            if (id !== undefined) {
-                //this.addEntityToEditor(id)
-            }
-        });
-        this.hideBlankContextMenu();
-    }
-
     addActionNode() {
         const cell = new joint.shapes.folly.ActionNode({
-            position: { x: 80, y: 80 }
+            position: {...this.newNodePosition}
         });
         this.graph.addCell(cell);
     }
 
     addTriggerNode() {
         const cell = new joint.shapes.folly.TriggerNode({
-            position: { x: 80, y: 80 }
+            position: {...this.newNodePosition}
         });
         this.graph.addCell(cell);
     }
 
     addConditionNode() {
         const cell = new joint.shapes.folly.ConditionNode({
-            position: { x: 80, y: 80 }
+            position: {...this.newNodePosition}
         });
         this.graph.addCell(cell);
     }
 
     addOperationNode() {
         const cell = new joint.shapes.folly.OperationNode({
-            position: { x: 80, y: 80 }
+            position: {...this.newNodePosition}
         });
         this.graph.addCell(cell);
     }
 
     addNestedFlowNode() {
         const cell = new joint.shapes.folly.NestedFlowNode({
-            position: { x: 80, y: 80 }
+            position: {...this.newNodePosition}
         });
         this.graph.addCell(cell);
-    }
-
-    addSubscription(id: string, func: any) {
-        this.subscribed.set(id, func);
-    }
-
-    addComponentToEditorDialog() {
-        this.hideBlankContextMenu();
-    }
-
-    addLogicNodeToEditorDialog() {
-        class NodeType {
-            id: string;
-            constructor(name: string) {
-                this.id = name;
-            }
-
-            getName(): string {
-                return this.id;
-            }
-        }
-
-        let dialogRef = this.dialog.open(GenericSelectDialog, {
-            width: '250px',
-            data: {
-                title: "Choose Node",
-                description: "Choose:",
-                placeholder: "Logic Node",
-                elements: [new NodeType("If Node"),
-                 new NodeType("Constant Node"),
-                 new NodeType("Operation Node"),
-                 new NodeType("Action Node"),
-                 new NodeType("Scan Node"),
-                 ]
-            }
-        });
-
-        dialogRef.afterClosed().subscribe(id => {
-        });
-        this.hideBlankContextMenu();
     }
 
     duplicateSelectedNode() {
         let cell = this.selected.clone();
         cell.translate(120, 90);
         this.graph.addCell(cell);
-        this.hideNodeContextMenu();
     }
 
     deleteSelectedNode() {
         this.selected.remove();
-        this.hideNodeContextMenu();
     }
 
     updateMouse(evt: any) {
@@ -634,26 +562,25 @@ export class FlowEditorComponent implements OnChanges {
         }
     }
 
-    showBlankContextMenu(evt, x, y) {
-        let cm = $("#blank-context-menu");
-        cm.css({ top: this.mY, left: this.mX, });
-        cm.show();
+    @ViewChildren(MatMenuTrigger) contextMenus: QueryList<MatMenuTrigger>;
+
+    showBlankContextMenu(event, x, y) {
+        event.preventDefault();
+        this.contextMenuPosition.x = event.clientX;
+        this.contextMenuPosition.y = event.clientY;
+        this.newNodePosition.x = x;
+        this.newNodePosition.y = y;
+        this.contextMenus.first.openMenu();
     }
 
-    hideBlankContextMenu() {
-        $("#blank-context-menu").hide()
-    }
-
-    showNodeContextMenu(cellView, evt, x, y) {
+    showNodeContextMenu(cellView, event, x, y) {
+        event.preventDefault();
+        this.contextMenuPosition.x = event.clientX;
+        this.contextMenuPosition.y = event.clientY;
+        this.newNodePosition.x = x;
+        this.newNodePosition.y = y;
         this.selected = cellView.model; // Model of the cellview is the actual cell
-
-        let cm = $("#node-context-menu");
-        cm.css({ top: this.mY, left: this.mX, });
-        cm.show();
-    }
-
-    hideNodeContextMenu() {
-        $("#node-context-menu").hide()
+        this.contextMenus.last.openMenu();
     }
 
     zoom(evt, x, y, delta) {

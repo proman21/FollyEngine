@@ -1,17 +1,29 @@
-	<div id="blank-context-menu" class="context-menu">
-		<ul>
-			<li (click)="addEntityToEditorDialog()"> Add Entity </li>
-			<li (click)="addComponentToEditorDialog()"> Add Component </li>
-			<li (click)="addLogicNodeToEditorDialog()"> Add Logic Node </li>
-		</ul>
-	</div>
-	<div id="node-context-menu" class="context-menu">
-		<ul>
-			<li (click)="duplicateSelectedNode()"> Duplicate </li>
-			<li (click)="deleteSelectedNode()" class="warn-context-button"> Delete </li>
-		</ul>
-	</div>
-	<div class="flow-outer">
-		<div class="flow-paper">
-		</div>
-	</div>
+<!-- Blank Context Menu -->
+<div style="position: fixed"
+  [style.left.px]="contextMenuPosition.x"
+  [style.top.px]="contextMenuPosition.y"
+  [matMenuTriggerFor]="blankContextMenu">
+</div>
+<mat-menu #blankContextMenu="matMenu">
+  <button mat-menu-item (click)="addActionNode()">Add Action</button>
+  <button mat-menu-item (click)="addTriggerNode()">Add Trigger</button>
+  <button mat-menu-item (click)="addConditionNode()">Add Condition</button>
+  <button mat-menu-item (click)="addOperationNode()">Add Operation</button>
+  <button mat-menu-item (click)="addNestedFlowNode()">Add Nested Flow</button>
+</mat-menu>
+
+<!-- Node Context Menu -->
+<div style="position: fixed"
+  [style.left.px]="contextMenuPosition.x"
+  [style.top.px]="contextMenuPosition.y"
+  [matMenuTriggerFor]="nodeContextMenu">
+</div>
+<mat-menu #nodeContextMenu="matMenu">
+  <button mat-menu-item (click)="duplicateSelectedNode()">Duplicate</button>
+  <button mat-menu-item (click)="deleteSelectedNode()">Delete</button>
+</mat-menu>
+
+<!-- Flow -->
+<div class="flow-outer">
+  <div class="flow-paper"></div>
+</div>
