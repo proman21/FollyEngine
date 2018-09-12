@@ -431,8 +431,6 @@ export class FlowEditorComponent implements OnChanges {
         window.addEventListener("mouseup", this.disableScrolling.bind(this));
 
         window.addEventListener("mousemove", this.updateMouse.bind(this));
-
-        window.setInterval(this.process.bind(this), 10);
     }
 
     newFlow() {
@@ -621,11 +619,7 @@ export class FlowEditorComponent implements OnChanges {
     updateMouse(evt: any) {
         this.mX = evt.clientX;
         this.mY = evt.clientY;
-    }
-
-    // Process stuff on this editor (scrolling etc.)
-    process() {
-        // Scroll
+        
         if (this.scrolling) {
             let diffX = this.mX - this.scrollX;
             let diffY = this.mY - this.scrollY;
