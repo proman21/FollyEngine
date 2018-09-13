@@ -5,7 +5,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { MatIconRegistry } from "@angular/material";
 import { DomSanitizer } from "@angular/platform-browser";
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { DesignerService } from '../designer/designer.service';
 
@@ -54,31 +54,35 @@ export class LoginScreenComponent {
   }
 
   signIn() {
-    const loginScreen = this;
+    const self = this;
 
     if (this.password.valid && this.username.valid) {
       const username = this.username.value;
       const password = this.password.value;
-      const self = this;
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type':  'application/json'
+        })
+      };
 
-      this.http.post('api/auth/token', {'username': username, 'password': password})
+      this.http.post('api/auth/token', {'username': username, 'password': password}, httpOptions)
         .subscribe((data) => {
           if (data['token']) {
-            loginScreen.welcomeName = username;
+            self.welcomeName = username;
             sessionStorage.setItem('username', username);
             sessionStorage.setItem('token', data['token']);
             self.designerService.loadAllProjects(); // Load all projects with this username
-            loginScreen.transition();
+            self.transition();
           } else {
-            loginScreen.username.reset();
-            loginScreen.password.reset();
+            self.username.reset();
+            self.password.reset();
             console.log("username or password incorrect");
           }
         });
     } else {
-        // show errors
-        this.username.markAsTouched();
-        this.password.markAsTouched();
+      // show errors
+      this.username.markAsTouched();
+      this.password.markAsTouched();
     }
   }
 
