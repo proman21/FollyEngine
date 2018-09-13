@@ -5,11 +5,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { MatIconRegistry } from "@angular/material";
 import { DomSanitizer } from "@angular/platform-browser";
-import { Http, Response } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 
 import { DesignerService } from '../designer/designer.service';
-
-declare var $: any;
 
 @Component({
   selector: 'login-screen',
@@ -24,11 +22,11 @@ export class LoginScreenComponent {
     private designerService: DesignerService,
     private domSanitizer: DomSanitizer,
     public matIconRegistry: MatIconRegistry,
-    /*private http: Http*/) {
+    private http: HttpClient) {
     // Add custom material icons
-    matIconRegistry.addSvgIcon('facebook', domSanitizer.bypassSecurityTrustResourceUrl("assets/icon/facebook.svg"));
-    matIconRegistry.addSvgIcon('googleplus', domSanitizer.bypassSecurityTrustResourceUrl("assets/icon/googleplus.svg"));
-    matIconRegistry.addSvgIcon('microsoft', domSanitizer.bypassSecurityTrustResourceUrl("assets/icon/microsoft.svg"));
+    //matIconRegistry.addSvgIcon('facebook', domSanitizer.bypassSecurityTrustResourceUrl("assets/icon/facebook.svg"));
+    //matIconRegistry.addSvgIcon('googleplus', domSanitizer.bypassSecurityTrustResourceUrl("assets/icon/googleplus.svg"));
+    //matIconRegistry.addSvgIcon('microsoft', domSanitizer.bypassSecurityTrustResourceUrl("assets/icon/microsoft.svg"));
   }
 
   // Variables
@@ -42,55 +40,46 @@ export class LoginScreenComponent {
   /* Sign In */
 
   hide = true;
-  email = new FormControl('', [Validators.required, Validators.email]);
-  password = new FormControl('', [Validators.required, Validators.minLength(8)]);
+  username = new FormControl('', [Validators.required]);
+  password = new FormControl('', [Validators.required]);
 
-  getEmailErrorMessage() {
-    return this.email.hasError('required') ? '' :
-        this.email.hasError('email') ? 'Not a valid email' :
+  getUsernameErrorMessage() {
+    return this.username.hasError('required') ? '' :
             '';
   }
 
   getPasswordErrorMessage() {
     return this.password.hasError('required') ? '' :
-        this.password.hasError('minlength') ? 'Must be at least 8 characters' :
             '';
   }
 
   signIn() {
     const loginScreen = this;
 
-      if (this.password.valid && this.email.valid) {
-        const email = this.email.value;
-        const password = this.password.value;
-        const self = this;
+    if (this.password.valid && this.username.valid) {
+      const username = this.username.value;
+      const password = this.password.value;
+      const self = this;
 
-        $.ajax({
-            url: 'sign-in.php',
-            type: 'POST',
-            data: {'email': email, 'password': password},
-            success: function(data) {
-              if (data == 'null') {
-                loginScreen.email.reset();
-                loginScreen.password.reset();
-                console.log("username or password incorrect");
-              } else {
-                loginScreen.welcomeName = JSON.parse(data);
-                sessionStorage.setItem('username', loginScreen.welcomeName);
-                sessionStorage.setItem('email', email);
-                self.designerService.loadAllProjects(); // Load all projects with this username
-                loginScreen.transition();
-              }
-
-            }
-
+      this.http.post('api/auth/token', {'username': username, 'password': password})
+        .subscribe((data) => {
+          if (data['token']) {
+            loginScreen.welcomeName = username;
+            sessionStorage.setItem('username', username);
+            sessionStorage.setItem('token', data['token']);
+            self.designerService.loadAllProjects(); // Load all projects with this username
+            loginScreen.transition();
+          } else {
+            loginScreen.username.reset();
+            loginScreen.password.reset();
+            console.log("username or password incorrect");
+          }
         });
-      } else {
-          // show errors
-          this.email.markAsTouched();
-          this.password.markAsTouched();
-      }
-
+    } else {
+        // show errors
+        this.username.markAsTouched();
+        this.password.markAsTouched();
+    }
   }
 
   /* Create Account */
@@ -122,7 +111,7 @@ export class LoginScreenComponent {
   }
 
   createAccount() {
-    const loginScreen = this;
+    /*const loginScreen = this;
     const xhttp = new XMLHttpRequest();
 
       if (this.makeUsername.valid && this.makeEmail.valid && this.makePassword.valid) {
@@ -157,12 +146,7 @@ export class LoginScreenComponent {
           this.makeUsername.markAsTouched();
           this.makeEmail.markAsTouched();
           this.makePassword.markAsTouched();
-      }
-  }
-
-  guestLogin() {
-    sessionStorage.setItem('username', 'Guest');
-    this.transition();
+      }*/
   }
 
   /* Transition */

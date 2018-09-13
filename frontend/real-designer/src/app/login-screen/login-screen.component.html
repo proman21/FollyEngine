@@ -12,19 +12,19 @@
 
         <!-- Log In -->
         <mat-card *ngIf="state" class="login-card">
-            <form (submit)="signIn()">
+            <form (ngSubmit)="signIn()">
                 <div>
-                    <mat-icon>mail</mat-icon>
+                    <mat-icon>person</mat-icon>
                     <mat-form-field>
-                        <input required matInput placeholder="Email" [formControl]="email">
-                        <mat-error *ngIf="email.invalid">{{ getEmailErrorMessage() }}</mat-error>
+                        <input matInput placeholder="Username" [formControl]="username">
+                        <mat-error *ngIf="username.invalid">{{ getUsernameErrorMessage() }}</mat-error>
                     </mat-form-field>
                 </div>
 
                 <div>
                     <mat-icon>lock</mat-icon>
                     <mat-form-field>
-                        <input required matInput placeholder="Password" [type]="hide ? 'password' : 'text'" [formControl]="password">
+                        <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" [formControl]="password">
                         <mat-icon class="eyeIcon" matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
                         <mat-error *ngIf="password.invalid">{{ getPasswordErrorMessage() }}</mat-error>
                     </mat-form-field>
@@ -32,7 +32,7 @@
 
                 <button id="signin-button" mat-raised-button color="primary" type="submit">Sign In</button>
 
-                <a href="#" (click)="guestLogin()">Forgot your password?</a>
+                <!--a href="#" (click)="guestLogin()">Forgot your password?</a-->
             </form>
         </mat-card>
 
@@ -70,20 +70,20 @@
         </mat-card>
 
         <!-- Social Media -->
-        <div id="services">
+        <!--div id="services">
             <button mat-raised-button style="background-color: #3B5998; color: white;"> <mat-icon svgIcon="facebook"></mat-icon> </button>
             <button mat-raised-button style="background-color: #DD4B39; color: white;"> <mat-icon svgIcon="googleplus"></mat-icon> </button>
             <button mat-raised-button style="background-color: #F2F2F2; color: darkgray;"> <mat-icon svgIcon="microsoft"></mat-icon> </button>
-        </div>
+        </div-->
 
         <!-- Make an Account -->
-        <div *ngIf="state">
+        <!--div *ngIf="state">
             <span id="assistMessage">Don't have an account?</span>&nbsp;<a id="assistAction" href="#" (click)="toggleState()">Create an account</a>
         </div>
 
         <div *ngIf="!state">
             <span id="assistMessage">Already have an account?</span>&nbsp;<a id="assistAction" href="#" (click)="toggleState()">Log In</a>
-        </div>
+        </div-->
 
     </div>
 </div>
