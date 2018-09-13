@@ -149,6 +149,11 @@ export class LoginScreenComponent {
       }*/
   }
 
+  guestLogin() {
+    sessionStorage.setItem('username', 'Guest');
+    this.transition();
+  }
+
   /* Transition */
 
   // If login or create account is successful, transition out of the login screen
