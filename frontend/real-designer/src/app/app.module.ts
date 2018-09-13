@@ -20,6 +20,7 @@ import { FlowManagementModule } from './flow-management/flow-management.module'
 import { AssetManagementModule } from './asset-management/asset-management.module'
 import { LoginScreenModule } from './login-screen/login-screen.module'
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { FormsModule } from '@angular/forms';
     AssetManagementModule,
     LoginScreenModule,
     FormsModule,
+    HttpClientModule,
   ],
   providers: [
     DesignerService,
