@@ -91,22 +91,22 @@ export class DesignerService {
 			.reduce((o, [key, value]) => {
 				o[key] = value;
 				return o;
-			}, []);
+			}, []).filter(o => o);
 		let components = Array.from(this.currentProject.components)
 			.reduce((o, [key, value]) => {
 				o[key] = value;
 				return o;
-			}, []);
+			}, []).filter(o => o);
 		let flows = Array.from(this.currentProject.flows)
 			.reduce((o, [key, value]) => {
 				o[key] = value;
 				return o;
-			}, []);
+			}, []).filter(o => o);
 		let assets = Array.from(this.currentProject.assets)
 			.reduce((o, [key, value]) => {
 				o[key] = value;
 				return o;
-			}, []);
+			}, []).filter(o => o);
 
 		// TODO
 		/*
