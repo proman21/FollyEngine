@@ -1,12 +1,16 @@
 FROM node
 
 WORKDIR /app
-COPY ./real-designer/package.json ./
-COPY ./real-designer/yarn.lock ./
 
 RUN yarn global add @angular/cli
-RUN yarn install --production=false
 
+COPY ./real-designer/package.json ./real-designer/yarn.lock /tmp/
+
+# Install packages
+RUN cd /tmp && yarn
+RUN mkdir -p /app && cd /app && ln -s /tmp/node_modules
+
+# Copy the code
 COPY ./real-designer .
 
 ENTRYPOINT ["ng", "build", "--prod"]
