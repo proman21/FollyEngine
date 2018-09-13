@@ -593,6 +593,11 @@ export class FlowEditorComponent implements OnChanges {
 
     showNodeContextMenu(cellView, event, x, y) {
         event.preventDefault();
+
+        if (cellView.model.attributes.type == 'link') {
+            return;
+        }
+
         this.contextMenuPosition.x = event.clientX;
         this.contextMenuPosition.y = event.clientY;
         this.newNodePosition.x = x;
