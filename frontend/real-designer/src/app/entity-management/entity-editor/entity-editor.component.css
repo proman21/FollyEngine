@@ -1,6 +1,6 @@
-
 .entity-name {
-	margin: 15px;
+	padding: 15px;
+	background: white;
 }
 
 .entity-name input {
@@ -11,5 +11,4 @@
 
 .entity-name button {
 	width: 15%;
-	float:right;
 }
