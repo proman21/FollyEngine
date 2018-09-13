@@ -48,6 +48,11 @@ export class FlowEditorComponent implements OnChanges {
     }
 
     ngOnChanges() {
+        if (this.flow === undefined) {
+            this.graph.clear();
+            return;
+        }
+
         let entities = this.designerService.getEntities();
         let entityEntries = Array.from(entities).reduce((o, [key, value]) => {
             o[key] = value.name;
