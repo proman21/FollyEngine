@@ -49,6 +49,7 @@ class EntitySerializer(serializers.ModelSerializer):
         default=serializers.CreateOnlyDefault(SlugDefault('name'))
     )
 
+
 class ComponentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Component

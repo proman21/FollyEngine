@@ -42,6 +42,7 @@ class EntityViewSet(viewsets.ModelViewSet):
         project = Project.objects.get(pk=self.kwargs['project_pk'])
         serializer.save(project=project)
 
+
 class ComponentViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ComponentSerializer
     permission_classes = (permissions.IsAuthenticated,)
