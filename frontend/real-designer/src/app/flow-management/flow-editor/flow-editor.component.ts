@@ -510,6 +510,7 @@ export class FlowEditorComponent implements OnChanges {
             position: {...this.newNodePosition}
         });
         this.graph.addCell(cell);
+        this.saveFlow();
     }
 
     addTriggerNode() {
@@ -517,6 +518,7 @@ export class FlowEditorComponent implements OnChanges {
             position: {...this.newNodePosition}
         });
         this.graph.addCell(cell);
+        this.saveFlow();
     }
 
     addConditionNode() {
@@ -524,6 +526,7 @@ export class FlowEditorComponent implements OnChanges {
             position: {...this.newNodePosition}
         });
         this.graph.addCell(cell);
+        this.saveFlow();
     }
 
     addOperationNode() {
@@ -531,6 +534,7 @@ export class FlowEditorComponent implements OnChanges {
             position: {...this.newNodePosition}
         });
         this.graph.addCell(cell);
+        this.saveFlow();
     }
 
     addNestedFlowNode() {
@@ -538,16 +542,19 @@ export class FlowEditorComponent implements OnChanges {
             position: {...this.newNodePosition}
         });
         this.graph.addCell(cell);
+        this.saveFlow();
     }
 
     duplicateSelectedNode() {
         let cell = this.selected.clone();
         cell.translate(120, 90);
         this.graph.addCell(cell);
+        this.saveFlow();
     }
 
     deleteSelectedNode() {
         this.selected.remove();
+        this.saveFlow();
     }
 
     updateMouse(evt: any) {
