@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, permissions
 
-from follyengine.folly_api.models import Entity, Project
+from follyengine.folly_api.models import Entity, Project, Component
 from follyengine.folly_api import serializers
 
 
