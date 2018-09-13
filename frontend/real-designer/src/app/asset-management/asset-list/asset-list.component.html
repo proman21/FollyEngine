@@ -1,6 +1,14 @@
 <div *ngIf="asset">
-	<div class="asset-name">
-		<input type="text" value={{asset.name}}
-		(keyup)="onNameChange.emit($event.target.value)">
-		<input type="text" value={{asset.file}}>
+  <mat-card>
+    <mat-form-field>
+      <input matInput placeholder="Name" type="text" value={{asset.name}}
+        (keyup)="onNameChange.emit($event.target.value)">
+    </mat-form-field>
+    <mat-card-content>
+      <mat-form-field>
+        <input matInput placeholder="File" type="text" value={{asset.file}}
+          (keyup)="onFileChange.emit($event.target.value)">
+      </mat-form-field>
+    </mat-card-content>
+  </mat-card>
 </div>

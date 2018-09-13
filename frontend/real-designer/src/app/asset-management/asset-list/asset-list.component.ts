@@ -10,6 +10,7 @@ export class AssetListComponent implements OnInit {
 
 	@Input() asset: DesignerAsset;
 	@Output() onNameChange = new EventEmitter<string>();
+	@Output() onFileChange = new EventEmitter<string>();
 
 	// nameChange(event: any) {
 	// 	console.log('workingish');
