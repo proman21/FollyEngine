@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, permissions
 
-from follyengine.folly_api.models import Entity
+from follyengine.folly_api.models import Entity, Project
 from follyengine.folly_api import serializers
 
 
@@ -29,9 +29,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return self.request.user.projects.all().order_by('-modified')
-
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
 
 
 class EntityViewSet(viewsets.ModelViewSet):

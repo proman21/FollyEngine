@@ -30,6 +30,10 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class ProjectSerializer(serializers.ModelSerializer):
+    owner = serializers.HiddenField(
+        default=serializers.CurrentUserDefault()
+    )
+
     class Meta:
         model = models.Project
         fields = ('title', 'description', 'slug', 'created', 'modified')
