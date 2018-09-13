@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils.text import slugify
 from rest_framework.authtoken.models import Token
 
 
@@ -9,11 +10,17 @@ from rest_framework.authtoken.models import Token
 class Project(models.Model):
     title = models.CharField(max_length=64)
     slug = models.SlugField(max_length=64, allow_unicode=True)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     owner = models.ForeignKey('auth.User', related_name='projects',
                               on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        if not self.id and not kwargs.get('slug', None):
+            self.slug = slugify(self.title)
+
+        super(Project, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.title
