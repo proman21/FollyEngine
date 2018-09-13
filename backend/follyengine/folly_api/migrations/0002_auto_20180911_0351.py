@@ -48,12 +48,6 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.AddField(
-            model_name='project',
-            name='slug',
-            field=models.SlugField(allow_unicode=True, default='default', max_length=64),
-            preserve_default=False,
-        ),
-        migrations.AddField(
             model_name='entity',
             name='project',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='entities', to='folly_api.Project'),
