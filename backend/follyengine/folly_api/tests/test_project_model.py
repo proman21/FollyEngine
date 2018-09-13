@@ -1,10 +1,11 @@
-from rest_framework.test import TestCaseAPI
+from rest_framework.test import APITestCase
 from follyengine.folly_api.models import Project
 from django.contrib.auth.models import User
 from datetime import datetime
 
 
-class ProjectModelTest(TestCaseAPI):
+class ProjectModelTest(APITestCase):
+    url = '/api/projects'
 
     @classmethod
     def setupTestData(cls):
