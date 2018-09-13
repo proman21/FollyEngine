@@ -285,6 +285,10 @@ export class DesignerService {
 		this.currentProject.entities.delete(e_id);
 	}
 
+	destroyAsset(id: number) {
+		this.currentProject.assets.delete(id);
+	}
+
 	destroyFlow(id: number) {
 		this.currentProject.flows.delete(id);
 	}

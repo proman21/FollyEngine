@@ -5,6 +5,7 @@
     class="asset-search-list">
   </search-list>
   <asset-list [asset]="assets.get(selected_index)" class="asset-list" (childEvent)="tests(message)"
-    (onNameChange)="changeName($event)" (onFileChange)="changeFile($event)">
+    (onNameChange)="changeName($event)" (onFileChange)="changeFile($event)"
+    (onDestroyAsset)="destroySelected()">
   </asset-list>
 </div>

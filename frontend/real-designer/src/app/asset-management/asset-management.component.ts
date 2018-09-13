@@ -76,6 +76,12 @@ export class AssetManagementComponent implements OnInit  {
 		this.subscribeDesigner();
 	}
 
+  destroySelected() {
+    this.designerService.destroyAsset(this.getSelected().id);
+    this.refreshSearchList();
+    this.subscribeDesigner();
+  }
+
   newFile(event) {
     var data = event.target.files[0];
     let fileReader = new FileReader();
