@@ -42,7 +42,9 @@ class ProjectSerializer(serializers.ModelSerializer):
 
 
 class ProjectCreateSerializer(ProjectSerializer):
-    slug = serializers.SlugField(required=False)
+    slug = serializers.SlugField(
+        default=serializers.CreateOnlyDefault(SlugDefault('title'))
+    )
 
 
 class EntitySerializer(serializers.ModelSerializer):
