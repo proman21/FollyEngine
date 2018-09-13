@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, QueryList, ViewChildren, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, QueryList, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material';
 
 import { DesignerService } from '../../designer/designer.service';
@@ -21,6 +21,8 @@ declare var _: any;
 })
 export class FlowEditorComponent implements OnChanges {
     @Input() flow: DesignerFlow;
+    @Output() onNameChange = new EventEmitter<string>();
+    @Output() onDestroyFlow = new EventEmitter<string>();
 
     graph: any;
     paper: any;
@@ -558,11 +560,11 @@ export class FlowEditorComponent implements OnChanges {
             this.scrollX = this.mX;
             this.scrollY = this.mY;
 
-            let curX = $(".flow-outer").scrollLeft();
-            let curY = $(".flow-outer").scrollTop();
+            let curX = $(".flow-inner").scrollLeft();
+            let curY = $(".flow-inner").scrollTop();
 
-            $(".flow-outer").scrollLeft(curX - diffX);
-            $(".flow-outer").scrollTop(curY - diffY);
+            $(".flow-inner").scrollLeft(curX - diffX);
+            $(".flow-inner").scrollTop(curY - diffY);
         }
     }
 

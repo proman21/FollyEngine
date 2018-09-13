@@ -25,5 +25,15 @@
 
 <!-- Flow -->
 <div class="flow-outer">
-  <div class="flow-paper"></div>
+    <div class="flow-name">
+      <input type="text" maxlength="50" class="name-field" value={{flow.name}}
+        (keyup)="onNameChange.emit($event.target.value)">
+      <!--button mat-button class="destroy-button" color="warn"
+        (click)="onDestroyFlow.emit()">
+        <mat-icon>delete</mat-icon>
+      </button-->
+    </div>
+    <div class="flow-inner">
+      <div class="flow-paper"></div>
+    </div>
 </div>
