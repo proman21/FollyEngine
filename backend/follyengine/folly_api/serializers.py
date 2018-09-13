@@ -48,3 +48,9 @@ class EntitySerializer(serializers.ModelSerializer):
     slug = serializers.SlugField(
         default=serializers.CreateOnlyDefault(SlugDefault('name'))
     )
+
+class ComponentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Component
+        fields = ('name', 'description',)
+        read_only_fields = ('project',)

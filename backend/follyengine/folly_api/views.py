@@ -41,3 +41,14 @@ class EntityViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         project = Project.objects.get(pk=self.kwargs['project_pk'])
         serializer.save(project=project)
+
+class ComponentViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.ComponentSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        return Component.objects.filter(project=self.kwargs['project_pk'])
+
+    def perform_create(self, serializer):
+        project = Project.objects.get(pk=self.kwargs['project_pk'])
+        serializer.save(project=project)
