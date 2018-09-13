@@ -42,4 +42,5 @@ class EntityViewSet(viewsets.ModelViewSet):
         return Entity.objects.filter(project=self.kwargs['project_pk'])
 
     def perform_create(self, serializer):
-        serializer.save(project=self.kwargs['project_pk'])
+        project = Project.objects.get(pk=self.kwargs['project_pk'])
+        serializer.save(project=project)
