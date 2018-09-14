@@ -72,7 +72,7 @@ export class DesignerAttribute {
 	constructor(name: string, description: string) {
 		this.name = name;
 		this.description = description;
-		this.type = "This is the type"
+		this.type = "Number";
 	}
 
 	getName() {
