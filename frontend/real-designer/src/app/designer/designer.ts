@@ -1,10 +1,12 @@
 export class DesignerEntity {
 	id: number; // unique ID
 	name: string;
+	description: string;
 	components: number[]; // Array of ids associated with components
 
 	constructor(name: string) {
 		this.name = name;
+		this.description = 'This is a description of the entity.';
 		this.components = [];
 	}
 

@@ -16,7 +16,7 @@
 						(keyup)="onDescriptionChangeAttribute.emit([i, $event.target.value])">
 				</mat-form-field>
 				<br>
-				<mat-form-field>
+				<mat-form-field class="entity-description">
 					<mat-select placeholder="Type" [(value)]="a.type">
 						<mat-option value="Number">Number</mat-option>
 						<mat-option value="String">String</mat-option>

@@ -8,12 +8,29 @@
 		(click)="onDestroyEntity.emit()">
 			 <mat-icon>delete</mat-icon>
 		  </button>
-
-
 	</div>
 	<div class="entity-components">
-		<description-display></description-display>
+		<mat-accordion>
+			<mat-expansion-panel hideToggle="true">
+				<mat-expansion-panel-header>
+					<mat-panel-title>
+						Description
+					</mat-panel-title>
+					<mat-panel-description>
+					</mat-panel-description>
+				</mat-expansion-panel-header>
+
+				<mat-card-content>
+					<mat-form-field class="entity-description">
+						<textarea matInput [(value)]="entity.description"></textarea>
+					</mat-form-field>
+				</mat-card-content>
+
+			</mat-expansion-panel>
+		</mat-accordion>
+		
 		<component-display [components]="component_list" (onDestroyComponent)="onDestroyComponent.emit($event)"></component-display>
+		
 		<!--procedures-display></procedures-display-->
 	</div>
 </div>
