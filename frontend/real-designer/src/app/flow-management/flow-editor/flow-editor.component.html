@@ -28,8 +28,10 @@
     <div *ngIf="flow" class="flow-name">
       <input type="text" maxlength="50" class="name-field" value={{flow.name}}
         (keyup)="onNameChange.emit($event.target.value)">
-      <button mat-button class="destroy-button" color="warn"
-        (click)="onDestroyFlow.emit()">
+      <button mat-button color="primary" class="add-button" (click)="showBlankContextMenu($event)">
+        <mat-icon>add box</mat-icon>
+      </button>
+      <button mat-button class="destroy-button" color="warn" (click)="onDestroyFlow.emit()">
         <mat-icon>delete</mat-icon>
       </button>
     </div>
