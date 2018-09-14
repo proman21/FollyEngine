@@ -61,10 +61,10 @@ export class FlowEditorComponent implements OnChanges {
         let components = this.designerService.getComponents();
         let attributeOptions = {};
         entities.forEach((e) => {
-            attributeOptions[e.name] = '';
+            attributeOptions[e.id] = '';
             e.components.forEach((c) => {
                 components.get(c).attributes.forEach(function(attr) {
-                    attributeOptions[e.name] += `<option>${attr.name}</option>`;
+                    attributeOptions[e.id] += `<option>${attr.name}</option>`;
                 });
             });
         });
