@@ -241,7 +241,7 @@ export class FlowEditorComponent implements OnChanges {
                 if (this.model.get('entity') !== null) {
                     const attrs = attributeOptions[this.model.get('entity')];
                     const attrSelect = this.$box.find('select[name="attr"]');
-                    if (attrs !== attrSelect.html()) {
+                    if (attrs != attrSelect.html()) {
                         attrSelect.html(attrs);
                     }
                 }
