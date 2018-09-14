@@ -320,13 +320,6 @@ export class FlowEditorComponent implements OnChanges {
 
         joint.shapes.folly.ActionNode = class ActionNode extends joint.shapes.folly.Node {
             get template() {
-                const actionOptions = [
-                    'OSC',
-                    'DMX'
-                ].reduce<string>((s, value) => {
-                    s += `<option>${value}</option>`;
-                    return s;
-                }, '');
                 return `<span class="node-caption">Action</span>
                         <div class="input-group">
                             <input name="name" type="text" value="New Action"/>
@@ -338,13 +331,16 @@ export class FlowEditorComponent implements OnChanges {
                             <select name="attr">${attributeOptions[Object.keys(attributeOptions)[0]]}</select>
                         </div>
                         <div class="input-group">
-                            <label>Action</label>
-                            <select name="action">${actionOptions}</select>
-                        </div>
-                        <div class="input-group">
                             <label>File</label>
                             <select name="action">${assetOptions}</select>
                         </div>`;
+            }
+
+            get defaults() {
+                return {
+                    ...super.defaults(),
+                    size: { width: 240, height: 160 }
+                };
             }
         };
         joint.shapes.folly.ActionNodeView = class extends joint.shapes.folly.NodeView {};
