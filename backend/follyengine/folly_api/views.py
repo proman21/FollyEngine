@@ -71,3 +71,15 @@ class ComponentViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         project = Project.objects.get(pk=self.kwargs['project_pk'])
         serializer.save(project=project)
+
+
+class FlowViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.FlowSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        return Flow.objects.filter(project=self.kwargs['project_pk'])
+
+    def perform_create(self, serializer):
+        project = Project.objects.get(pk=self.kwargs['project_pk'])
+        serializer.save(project=project)

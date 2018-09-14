@@ -61,5 +61,11 @@ class EntitySerializer(serializers.ModelSerializer):
 class ComponentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Component
-        fields = ('name', 'description',)
+        fields = ('name', 'description')
         read_only_fields = ('project',)
+
+
+class FlowSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Component
+        fields = ('name', 'data')

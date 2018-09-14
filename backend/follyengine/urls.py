@@ -30,6 +30,8 @@ project_router = routers.NestedDefaultRouter(router, r'projects',
                                              lookup='project')
 project_router.register(r'entities', views.EntityViewSet, base_name='entity')
 
+project_router.register(r'flows', views.FlowViewSet, base_name='flow')
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^api/', include(router.urls)),
