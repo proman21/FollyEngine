@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, Output, QueryList, ViewChildren, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, QueryList, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material';
 
 import { DesignerService } from '../../designer/designer.service';
@@ -44,12 +44,15 @@ export class FlowEditorComponent implements OnChanges {
 
     subscribed: Map<string, any> = new Map<string, any>(); // Id -> Functions
 
-    constructor(private designerService: DesignerService) {
+    constructor(private designerService: DesignerService, private elementRef:ElementRef) {
     }
 
     ngOnChanges() {
         if (this.flow === undefined) {
             this.graph.clear();
+            this.paper.remove();
+            var flowInner = this.elementRef.nativeElement.querySelector('.flow-inner');
+            flowInner.insertAdjacentHTML('beforeend', '<div class="flow-paper"></div>');
             return;
         }
 
