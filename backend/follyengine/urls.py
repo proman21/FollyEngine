@@ -29,6 +29,8 @@ router.register(r'projects', views.ProjectViewSet, base_name='project')
 project_router = routers.NestedDefaultRouter(router, r'projects',
                                              lookup='project')
 project_router.register(r'entities', views.EntityViewSet, base_name='entity')
+project_router.register(r'components', views.ComponentViewSet,
+                        base_name='component')
 
 project_router.register(r'flows', views.FlowViewSet, base_name='flow')
 

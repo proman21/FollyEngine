@@ -1,20 +1,10 @@
 from django.contrib.auth.models import User, Group
-from django.utils.text import slugify
 from rest_framework_json_api import serializers
+from rest_framework_json_api.views import RelationshipView
+from voluptuous import Required, All, Length, Any, Optional
 
 from follyengine.folly_api import models
-
-
-class SlugDefault(object):
-    def __init__(self, source):
-        self.source = source
-
-    def __call__(self):
-        return slugify(self._field)
-
-    def set_context(self, field):
-        self._field = field.parent.initial_data[self.source]
-        print(self._field)
+from follyengine.folly_api.utils import SlugDefault, JSONSchemaField
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -36,22 +26,22 @@ class ProjectSerializer(serializers.ModelSerializer):
                   'owner')
 
     slug = serializers.SlugField(read_only=True)
-    owner = serializers.PrimaryKeyRelatedField(
-        read_only=True,
-        default=serializers.CurrentUserDefault())
+    owner = serializers.ResourceRelatedField(read_only=True)
 
 
 class ProjectCreateSerializer(ProjectSerializer):
     slug = serializers.SlugField(
         default=serializers.CreateOnlyDefault(SlugDefault('title'))
     )
+    owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
 
 class EntitySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Entity
-        fields = ('name', 'slug', 'description',)
+        fields = ('name', 'slug', 'description', 'components')
         read_only_fields = ('project',)
+        extra_kwargs = {'components': {'required': False}}
 
     slug = serializers.SlugField(
         default=serializers.CreateOnlyDefault(SlugDefault('name'))
@@ -61,11 +51,3 @@ class EntitySerializer(serializers.ModelSerializer):
 class ComponentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Component
-        fields = ('name', 'description')
-        read_only_fields = ('project',)
-
-
-class FlowSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Component
-        fields = ('name', 'data')
