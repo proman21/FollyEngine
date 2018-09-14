@@ -238,9 +238,12 @@ export class FlowEditorComponent implements OnChanges {
                     transform: 'scale(' + (1 / scale[1]) + ',' + (1 / scale[2]) + ')'
                 });
 
-                if (this.model.get('entity')) {
-                    this.$box.find('select[name="attr"]')
-                        .html(attributeOptions[this.model.get('entity')]);
+                if (this.model.get('entity') !== null) {
+                    const attrs = attributeOptions[this.model.get('entity')];
+                    const attrSelect = this.$box.find('select[name="attr"]');
+                    if (attrs !== attrSelect.html()) {
+                        attrSelect.html(attrs);
+                    }
                 }
             }
         };
