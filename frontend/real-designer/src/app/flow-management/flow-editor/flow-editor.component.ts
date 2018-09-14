@@ -431,9 +431,11 @@ export class FlowEditorComponent implements OnChanges {
             return (evt.type === 'mousedown' && evt.buttons === 2);
         };
 
+        /*
         this.paper.on('cell:pointerdown', (cellView) => {
             cellView.model.toFront();
         });
+        */
 
         this.paper.on('blank:contextmenu', this.showBlankContextMenu.bind(this));
         this.paper.on('cell:contextmenu', this.showNodeContextMenu.bind(this));
