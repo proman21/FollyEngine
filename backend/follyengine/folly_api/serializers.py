@@ -51,3 +51,15 @@ class EntitySerializer(serializers.ModelSerializer):
 class ComponentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Component
+        fields = ('name', 'description', 'attributes')
+        read_only_fields = ('project',)
+
+    attributes = serializers.JSONField()
+    # attributes = JSONSchemaField([{
+    #     Required('name'): All(str, Length(max=64)),
+    #     Optional('description', default=''): str,
+    #     Required('type'): All(
+    #         str,
+    #         Any('int', 'float', 'bool', 'str')
+    #     )
+    # }])
