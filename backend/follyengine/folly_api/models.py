@@ -29,32 +29,16 @@ class Project(models.Model):
 
 class Component(models.Model):
     name = models.CharField(max_length=64, unique=True)
-    description = models.TextField()
+    description = models.TextField(blank=True)
+    attributes = JSONField(default=list)
     project = models.ForeignKey(Project, related_name='components',
                                 on_delete=models.CASCADE)
-
-
-class Attribute(models.Model):
-    name = models.CharField(max_length=64, unique=True)
-    description = models.TextField()
-    attr_type = models.CharField(
-        max_length=1,
-        choices=(
-            ('B', 'Boolean'),
-            ('I', 'Integer'),
-            ('F', 'Float'),
-            ('S', 'String')
-        ),
-        default='I'
-    )
-    component = models.ForeignKey(Component, related_name='attributes',
-                                  on_delete=models.CASCADE)
 
 
 class Entity(models.Model):
     name = models.CharField(max_length=64, unique=True)
     slug = models.SlugField(max_length=64, allow_unicode=True, unique=True)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     project = models.ForeignKey(Project, related_name='entities',
                                 on_delete=models.CASCADE)
     components = models.ManyToManyField(Component, related_name='implementers')
