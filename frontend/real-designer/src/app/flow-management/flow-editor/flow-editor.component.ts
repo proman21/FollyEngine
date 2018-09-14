@@ -142,7 +142,8 @@ export class FlowEditorComponent implements OnChanges {
                             magnet: true
                         },
                         '.inPorts circle': { fill: 'green', magnet: 'passive', type: 'input'},
-                        '.outPorts circle': { fill: 'red', type: 'output'}
+                        '.outPorts circle': { fill: 'red', type: 'output'},
+                        '.outPorts text': { dx: '-12px', dy: '4px', 'text-anchor': 'end' }
                     }
                 };
             }
@@ -205,7 +206,8 @@ export class FlowEditorComponent implements OnChanges {
                 let outPorts = Object.values(this.model.ports).filter(p => p['type'] === 'out');
                 let $outPorts = this.$('.outPorts').empty();
                 outPorts.forEach(function (port, index) {
-                    $outPorts.append(V(`<g class="port${index}"><circle/></g>`).node);
+                    const id = outPorts.length > 1 ? port['id'] : '';
+                    $outPorts.append(V(`<g class="port${index}"><circle/><text>${id}</text></g>`).node);
                 });
             }
 

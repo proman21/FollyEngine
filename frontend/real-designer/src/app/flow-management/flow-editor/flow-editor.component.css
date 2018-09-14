@@ -35,12 +35,16 @@
 .flow-paper svg {
     background: transparent;
 }
+.flow-paper svg text {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 11px;
+}
 
 .flow-node {
     box-sizing: border-box;
     background: #fff;
     box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
-    padding: 14px 52px 0 21px;
+    padding: 14px 54px 0 21px;
     box-sizing: border-box;
     z-index: 2;
     width: 100%;
