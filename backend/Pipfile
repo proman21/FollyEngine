@@ -12,6 +12,7 @@ djangorestframework-jsonapi = "~=2.5.0"
 drf-nested-routers = "*"
 gunicorn = "*"
 "psycopg2" = "*"
+voluptuous = "*"
 
 [requires]
 python_version = "3.6"
