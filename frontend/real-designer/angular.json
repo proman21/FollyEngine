@@ -21,6 +21,7 @@
               "src/favicon.png"
             ],
             "styles": [
+              "node_modules/jointjs/dist/joint.css",
               "src/styles.css"
             ],
             "scripts": []

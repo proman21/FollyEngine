@@ -1,17 +1,13 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, QueryList, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material';
 
+import * as $ from 'jquery'
+import * as _ from 'lodash';
+import * as joint from 'jointjs';
+
 import { DesignerService } from '../../designer/designer.service';
 import { DesignerEntity, DesignerComponent, DesignerFlow } from '../../designer/designer';
 import { GenericSelectDialog } from "../../dialogs/dialogs.component";
-
-// JointJS
-declare var joint: any;
-declare var V: any;
-// jQuery
-declare var $: any;
-// lodash
-declare var _: any;
 
 @Component({
     selector: 'flow-editor',
@@ -105,10 +101,10 @@ export class FlowEditorComponent implements OnChanges {
             linkPinning: false
         });
 
-        joint.shapes.basic.PortsModel = joint.shapes.basic.Generic.extend(joint.shapes.basic.PortsModelInterface);
+        joint.shapes.basic['PortsModel'] = joint.shapes.basic.Generic.extend(joint.shapes.basic['PortsModelInterface']);
 
-        joint.shapes.folly = {};
-        joint.shapes.folly.Node = class Node extends joint.shapes.basic.PortsModel {
+        joint.shapes['folly'] = {};
+        joint.shapes['folly'].Node = class Node extends joint.shapes.basic['PortsModel'] {
             get markup() {
                 return `<g class="rotatable">
                             <g class="scalable">
@@ -163,14 +159,17 @@ export class FlowEditorComponent implements OnChanges {
             }
         };
 
-        joint.shapes.folly.NodeView = class extends joint.dia.ElementView {
+        joint.shapes['folly'].NodeView = class extends joint.dia.ElementView {
+            paper: any;
+            $box: any;
+
             constructor() {
                 super(...arguments);
                 this.listenTo(this.model, 'process:ports', this.update);
             }
 
             render() {
-                super.render(...arguments);
+                joint.dia.ElementView.prototype.render.apply(this, arguments);
 
                 this.$box = this.paper.$el.find('[model-id="' + this.model.id + '"]');
                 
@@ -200,17 +199,17 @@ export class FlowEditorComponent implements OnChanges {
             }
 
             renderPorts() {
-                let inPorts = Object.values(this.model.ports).filter(p => p['type'] === 'in');
+                let inPorts = Object.values(this.model['ports']).filter(p => p['type'] === 'in');
                 let $inPorts = this.$('.inPorts').empty();
                 inPorts.forEach(function (port, index) {
-                    $inPorts.append(V(`<g class="port${index}"><circle/></g>`).node);
+                    $inPorts.append(joint.V(`<g class="port${index}"><circle/></g>`).node);
                 });
 
-                let outPorts = Object.values(this.model.ports).filter(p => p['type'] === 'out');
+                let outPorts = Object.values(this.model['ports']).filter(p => p['type'] === 'out');
                 let $outPorts = this.$('.outPorts').empty();
                 outPorts.forEach(function (port, index) {
                     const id = outPorts.length > 1 ? port['id'] : '';
-                    $outPorts.append(V(`<g class="port${index}"><circle/><text>${id}</text></g>`).node);
+                    $outPorts.append(joint.V(`<g class="port${index}"><circle/><text>${id}</text></g>`).node);
                 });
             }
 
@@ -218,7 +217,7 @@ export class FlowEditorComponent implements OnChanges {
                 // First render ports so that `attrs` can be applied to those newly created DOM elements
                 // in `ElementView.prototype.update()`.
                 this.renderPorts();
-                super.update(...arguments);
+                joint.dia.ElementView.prototype.update.apply(this, arguments);
             }
 
             updateBox() {
@@ -248,7 +247,7 @@ export class FlowEditorComponent implements OnChanges {
             }
         };
 
-        joint.shapes.folly.ConditionNode = class ConditionNode extends joint.shapes.folly.Node {
+        joint.shapes['folly'].ConditionNode = class ConditionNode extends joint.shapes['folly'].Node {
             get template() {
                 const conditionOptions = [
                     'Equal to',
@@ -287,9 +286,9 @@ export class FlowEditorComponent implements OnChanges {
                 };
             }
         };
-        joint.shapes.folly.ConditionNodeView = class extends joint.shapes.folly.NodeView {};
+        joint.shapes['folly'].ConditionNodeView = class extends joint.shapes['folly'].NodeView {};
 
-        joint.shapes.folly.OperationNode = class OperationNode extends joint.shapes.folly.Node {
+        joint.shapes['folly'].OperationNode = class OperationNode extends joint.shapes['folly'].Node {
             get template() {
                 const operationOptions = [
                     'Add',
@@ -319,9 +318,9 @@ export class FlowEditorComponent implements OnChanges {
                         </div>`;
             }
         };
-        joint.shapes.folly.OperationNodeView = class extends joint.shapes.folly.NodeView {};
+        joint.shapes['folly'].OperationNodeView = class extends joint.shapes['folly'].NodeView {};
 
-        joint.shapes.folly.ActionNode = class ActionNode extends joint.shapes.folly.Node {
+        joint.shapes['folly'].ActionNode = class ActionNode extends joint.shapes['folly'].Node {
             get template() {
                 return `<span class="node-caption">Action</span>
                         <div class="input-group">
@@ -346,9 +345,9 @@ export class FlowEditorComponent implements OnChanges {
                 };
             }
         };
-        joint.shapes.folly.ActionNodeView = class extends joint.shapes.folly.NodeView {};
+        joint.shapes['folly'].ActionNodeView = class extends joint.shapes['folly'].NodeView {};
 
-        joint.shapes.folly.TriggerNode = class TriggerNode extends joint.shapes.folly.Node {
+        joint.shapes['folly'].TriggerNode = class TriggerNode extends joint.shapes['folly'].Node {
             get template() {
                 const triggerOptions = [
                     'RFID'
@@ -377,9 +376,9 @@ export class FlowEditorComponent implements OnChanges {
                 };
             }
         };
-        joint.shapes.folly.TriggerNodeView = class extends joint.shapes.folly.NodeView {};
+        joint.shapes['folly'].TriggerNodeView = class extends joint.shapes['folly'].NodeView {};
 
-        joint.shapes.folly.NestedFlowNode = class NestedFlowNode extends joint.shapes.folly.Node {
+        joint.shapes['folly'].NestedFlowNode = class NestedFlowNode extends joint.shapes['folly'].Node {
             get template() {
                 return `<div class="input-group">
                             <label>Flow</label>
@@ -394,20 +393,20 @@ export class FlowEditorComponent implements OnChanges {
                 };
             }
         };
-        joint.shapes.folly.NestedFlowNodeView = class extends joint.shapes.folly.NodeView {};
+        joint.shapes['folly'].NestedFlowNodeView = class extends joint.shapes['folly'].NodeView {};
         
         // JointJS serialises more than we probably need it to
         // so we have to work out what we don't need
         let graph = new joint.dia.Graph;
         // for each object in the folly namespace
-        for (let name of Object.getOwnPropertyNames(joint.shapes.folly)) {
+        for (let name of Object.getOwnPropertyNames(joint.shapes['folly'])) {
             if (name.endsWith('View')) {
                 // we're only interested in the elements,
                 // not the views
                 continue;
             }
             // instantiate node
-            let node = new joint.shapes.folly[name]();
+            let node = new joint.shapes['folly'][name]();
             // add to temporary graph
             graph.addCell(node);
         }
@@ -525,7 +524,7 @@ export class FlowEditorComponent implements OnChanges {
     }
 
     addActionNode() {
-        const cell = new joint.shapes.folly.ActionNode({
+        const cell = new joint.shapes['folly'].ActionNode({
             position: {...this.newNodePosition}
         });
         this.graph.addCell(cell);
@@ -533,7 +532,7 @@ export class FlowEditorComponent implements OnChanges {
     }
 
     addTriggerNode() {
-        const cell = new joint.shapes.folly.TriggerNode({
+        const cell = new joint.shapes['folly'].TriggerNode({
             position: {...this.newNodePosition}
         });
         this.graph.addCell(cell);
@@ -541,7 +540,7 @@ export class FlowEditorComponent implements OnChanges {
     }
 
     addConditionNode() {
-        const cell = new joint.shapes.folly.ConditionNode({
+        const cell = new joint.shapes['folly'].ConditionNode({
             position: {...this.newNodePosition}
         });
         this.graph.addCell(cell);
@@ -549,7 +548,7 @@ export class FlowEditorComponent implements OnChanges {
     }
 
     addOperationNode() {
-        const cell = new joint.shapes.folly.OperationNode({
+        const cell = new joint.shapes['folly'].OperationNode({
             position: {...this.newNodePosition}
         });
         this.graph.addCell(cell);
@@ -557,7 +556,7 @@ export class FlowEditorComponent implements OnChanges {
     }
 
     addNestedFlowNode() {
-        const cell = new joint.shapes.folly.NestedFlowNode({
+        const cell = new joint.shapes['folly'].NestedFlowNode({
             position: {...this.newNodePosition}
         });
         this.graph.addCell(cell);
