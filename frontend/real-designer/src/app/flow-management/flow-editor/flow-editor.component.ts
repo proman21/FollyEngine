@@ -20,8 +20,8 @@ export class FlowEditorComponent implements OnChanges {
     @Output() onNameChange = new EventEmitter<string>();
     @Output() onDestroyFlow = new EventEmitter<string>();
 
-    graph: any;
-    paper: any;
+    graph: joint.dia.Graph;
+    paper: joint.dia.Paper;
 
     private defaultCells: {};
 
