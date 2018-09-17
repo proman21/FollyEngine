@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User, Group
+
 from rest_framework import viewsets, permissions
+from rest_framework_json_api.views import RelationshipView
 
 from follyengine.folly_api.models import Entity, Project, Component
 from follyengine.folly_api import serializers
@@ -61,6 +63,11 @@ class EntityViewSet(viewsets.ModelViewSet):
         serializer.save(project=project)
 
 
+class EntityRelationshipView(RelationshipView):
+    def get_queryset(self):
+        return Entity.objects.filter(project=self.kwargs['project_pk'])
+
+
 class ComponentViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ComponentSerializer
     permission_classes = (permissions.IsAuthenticated,)
@@ -73,13 +80,13 @@ class ComponentViewSet(viewsets.ModelViewSet):
         serializer.save(project=project)
 
 
-class FlowViewSet(viewsets.ModelViewSet):
-    serializer_class = serializers.FlowSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-
-    def get_queryset(self):
-        return Flow.objects.filter(project=self.kwargs['project_pk'])
-
-    def perform_create(self, serializer):
-        project = Project.objects.get(pk=self.kwargs['project_pk'])
-        serializer.save(project=project)
+# class FlowViewSet(viewsets.ModelViewSet):
+#     serializer_class = serializers.FlowSerializer
+#     permission_classes = (permissions.IsAuthenticated,)
+#
+#     def get_queryset(self):
+#         return Flow.objects.filter(project=self.kwargs['project_pk'])
+#
+#     def perform_create(self, serializer):
+#         project = Project.objects.get(pk=self.kwargs['project_pk'])
+#         serializer.save(project=project)

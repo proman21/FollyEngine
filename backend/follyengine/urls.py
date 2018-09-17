@@ -20,19 +20,22 @@ from rest_framework.authtoken import views as rest_views
 from rest_framework_nested import routers
 
 from follyengine.folly_api import views
+from follyengine.folly_api.routers import NestedDefaultRouter
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'projects', views.ProjectViewSet, base_name='project')
 
-project_router = routers.NestedDefaultRouter(router, r'projects',
+project_router = NestedDefaultRouter(router, r'projects',
                                              lookup='project')
-project_router.register(r'entities', views.EntityViewSet, base_name='entity')
+project_router.register(r'entities', views.EntityViewSet,
+                        relationship_view=views.EntityRelationshipView,
+                        base_name='entity')
 project_router.register(r'components', views.ComponentViewSet,
                         base_name='component')
 
-project_router.register(r'flows', views.FlowViewSet, base_name='flow')
+# project_router.register(r'flows', views.FlowViewSet, base_name='flow')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
