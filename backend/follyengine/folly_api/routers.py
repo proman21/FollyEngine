@@ -5,37 +5,41 @@ from rest_framework_nested.routers import NestedMixin
 
 
 class DefaultRouter(routers.DefaultRouter):
+    relationships_route = routers.Route(
+        url=r'^{prefix}/{lookup}/relationships/{rel_lookup}{trailing_slash}$',
+        name='{basename}-relationships',
+        detail=True,
+        mapping={},
+        initkwargs={}
+    )
+
     def __init__(self, *args, **kwargs):
-        self.routes += [
-            routers.Route(
-                url=r'^{prefix}/{lookup}/relationships/{rel_lookup}{trailing_slash}$',
-                name='{basename}-relationships',
-                detail=True,
-                mapping={},
-                initkwargs={}
-            )
-        ]
+        self.routes.append(self.relationships_route)
+        self.relationship_registry = dict()
         super().__init__(*args, **kwargs)
 
-    def register(self, prefix, viewset, relationship_view=None,
-                 base_name=None):
+    def register(self, prefix, viewset, base_name=None,
+                 relationship_view=None):
         if base_name is None:
             base_name = self.get_default_base_name(viewset)
-        self.registry.append((prefix, viewset, relationship_view, base_name))
+        if relationship_view:
+            self.relationship_registry[prefix] = relationship_view
+        self.registry.append((prefix, viewset, base_name))
 
     def get_urls(self):
         ret = []
 
-        for prefix, viewset, relationship_view, basename in self.registry:
+        for prefix, viewset, basename in self.registry:
             lookup = self.get_lookup_regex(viewset)
             routes = self.get_routes(viewset)
-            rel_name = '{basename}-relationships'.format(basename=basename)
+            rel_name = self.relationships_route.name.format(basename=basename)
 
             for route in routes:
                 name = route.name.format(basename=basename)
 
                 if name == rel_name:
-                    if relationship_view:
+                    if prefix in self.relationship_registry:
+                        relationship_view = self.relationship_registry[prefix]
                         rel_regex = route.url.format(
                             prefix=prefix,
                             lookup=lookup,

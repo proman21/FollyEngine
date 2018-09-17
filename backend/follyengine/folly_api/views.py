@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User, Group
 
 from rest_framework import viewsets, permissions
-from rest_framework_json_api.views import RelationshipView
+from rest_framework_json_api import views
 
 from follyengine.folly_api.models import Entity, Project, Component
 from follyengine.folly_api import serializers
@@ -25,7 +25,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAdminUser,)
 
 
-class ProjectViewSet(viewsets.ModelViewSet):
+class ProjectViewSet(views.ModelViewSet):
     """
     retrieve:
     Get more details about a specific project. This includes entities,
@@ -40,6 +40,11 @@ class ProjectViewSet(viewsets.ModelViewSet):
     """
     serializer_class = serializers.ProjectSerializer
     permission_classes = (permissions.IsAuthenticated,)
+    prefetch_for_includes = {
+        '__all__': [],
+        'entities': ['__all__'],
+        'components': ['__all__']
+    }
 
     def get_serializer_class(self):
         serializer = self.serializer_class
@@ -49,6 +54,11 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return self.request.user.projects.all().order_by('-modified')
+
+
+class ProjectRelationshipView(views.RelationshipView):
+    def get_queryset(self):
+        return self.request.user.projects.all()
 
 
 class EntityViewSet(viewsets.ModelViewSet):
@@ -63,7 +73,7 @@ class EntityViewSet(viewsets.ModelViewSet):
         serializer.save(project=project)
 
 
-class EntityRelationshipView(RelationshipView):
+class EntityRelationshipView(views.RelationshipView):
     def get_queryset(self):
         return Entity.objects.filter(project=self.kwargs['project_pk'])
 
