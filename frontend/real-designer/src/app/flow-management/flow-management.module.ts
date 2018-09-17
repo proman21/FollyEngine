@@ -8,6 +8,7 @@ import { FlowEditorComponent } from './flow-editor/flow-editor.component';
 // Libs
 
 // Services
+import { FlowNodeService } from './flow-node/flow-node.service';
 
 // Module
 import { MaterialModule } from './../material.module';
@@ -27,6 +28,7 @@ import { SharedUiModule } from '../shared-ui/shared-ui.module';
   	FlowEditorComponent
   ],
   providers: [
+    FlowNodeService
   ]
 })
 export class FlowManagementModule { }
