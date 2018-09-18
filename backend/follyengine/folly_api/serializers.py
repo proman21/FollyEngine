@@ -1,10 +1,9 @@
 from django.contrib.auth.models import User, Group
 from rest_framework_json_api import serializers
 from rest_framework_nested import relations
-from voluptuous import Required, All, Length, Any, Optional
 
 from follyengine.folly_api import models
-from follyengine.folly_api.utils import SlugDefault, JSONSchemaField
+from follyengine.folly_api.utils import SlugDefault
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -64,15 +63,18 @@ class ComponentSerializer(serializers.HyperlinkedModelSerializer):
     # }])
 
 
+class FlowSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.Flow
+        fields = ('name', 'data')
+
+
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Project
         fields = ('url', 'title', 'description', 'slug', 'owner', 'entities',
                   'components')
         read_only_fields = ('created', 'modified')
-
-    class JSONAPIMeta:
-        included_resources = ['entities', 'components']
 
     slug = serializers.SlugField(read_only=True)
     owner = serializers.ResourceRelatedField(
@@ -95,7 +97,8 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
 
     included_serializers = {
         'entities': EntitySerializer,
-        'components': ComponentSerializer
+        'components': ComponentSerializer,
+        'flows': FlowSerializer
     }
 
 

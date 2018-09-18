@@ -32,8 +32,7 @@ project_router.register(r'entities', views.EntityViewSet, base_name='entity',
                         relationship_view=views.EntityRelationshipView,)
 project_router.register(r'components', views.ComponentViewSet,
                         base_name='component')
-
-# project_router.register(r'flows', views.FlowViewSet, base_name='flow')
+project_router.register(r'flows', views.FlowViewSet, base_name='flow')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
