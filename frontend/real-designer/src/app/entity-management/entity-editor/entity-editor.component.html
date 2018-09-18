@@ -1,36 +1,36 @@
 <div *ngIf="entity">
-	<div class="entity-name">
-		<input type="text" maxlength="50" class="name-field" value={{entity.name}} (keyup)="nameChange($event)">
-		<button mat-button color="primary" class="add-button" (click)="addComponent()">
-			<mat-icon>add box</mat-icon>
-		</button>
-		<button mat-button class="destroy-button" color="warn"
-		(click)="onDestroyEntity.emit()">
-			 <mat-icon>delete</mat-icon>
-		  </button>
-	</div>
-	<div class="entity-components">
-		<mat-accordion>
-			<mat-expansion-panel hideToggle="true">
-				<mat-expansion-panel-header>
-					<mat-panel-title>
-						Description
-					</mat-panel-title>
-					<mat-panel-description>
-					</mat-panel-description>
-				</mat-expansion-panel-header>
+  <div class="entity-name">
+    <input type="text" maxlength="50" class="name-field" value={{entity.name}}
+      (keyup)="nameChange($event)">
+    <button mat-button color="primary" class="add-button" (click)="addComponent()">
+      <mat-icon>add box</mat-icon>
+    </button>
+    <button mat-button class="destroy-button" color="warn" (click)="onDestroyEntity.emit()">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+  <div class="entity-components">
+    <mat-accordion>
+      <mat-expansion-panel hideToggle="true">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Description
+          </mat-panel-title>
+          <mat-panel-description>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
 
-				<mat-card-content>
-					<mat-form-field class="entity-description">
-						<textarea matInput [(value)]="entity.description"></textarea>
-					</mat-form-field>
-				</mat-card-content>
+        <mat-card-content>
+          <mat-form-field class="entity-description">
+            <textarea matInput [(value)]="entity.description"></textarea>
+          </mat-form-field>
+        </mat-card-content>
 
-			</mat-expansion-panel>
-		</mat-accordion>
-		
-		<component-display [components]="component_list" (onDestroyComponent)="onDestroyComponent.emit($event)"></component-display>
-		
-		<!--procedures-display></procedures-display-->
-	</div>
+      </mat-expansion-panel>
+    </mat-accordion>
+
+    <component-display [components]="component_list" (onDestroyComponent)="onDestroyComponent.emit($event)"></component-display>
+
+    <!--procedures-display></procedures-display-->
+  </div>
 </div>

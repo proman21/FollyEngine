@@ -2,8 +2,7 @@
   <div class="asset-name">
     <input type="text" maxlength="50" class="name-field" value={{asset.name}}
       (keyup)="onNameChange.emit($event.target.value)">
-    <button mat-button class="destroy-button" color="warn"
-      (click)="onDestroyAsset.emit()">
+    <button mat-button class="destroy-button" color="warn" (click)="onDestroyAsset.emit()">
       <mat-icon>delete</mat-icon>
     </button>
   </div>

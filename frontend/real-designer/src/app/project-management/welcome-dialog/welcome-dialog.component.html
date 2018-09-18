@@ -1,58 +1,59 @@
 <div [ngSwitch]="currentView">
-    <div class="start" *ngSwitchCase="0">
-            <div class="welcome">
+  <div class="start" *ngSwitchCase="0">
+    <div class="welcome">
 
-                <h1 mat-dialog-title>Folly Designer</h1>
-                <span>Version 0.0.1 Beta</span>
-                <mat-dialog-actions>
-                    <button mat-raised-button color="primary" (click)="newProject()"><mat-icon class="icon">description</mat-icon>Create New Project</button>
-                </mat-dialog-actions>
-                <a href=#>Check out the tutorial</a>
-                <a href=#>Explore the FD Forum</a>
-
-            </div>
-
-            <div class="open">
-                <div *ngFor="let e of getAllProjects()">
-                    <button (click)="loadProject(e)" class="load-btn" mat-raised-button color="primary">
-                        {{e}}
-                    </button>
-                </div>
-            </div>
-    </div>
-
-    <div class="create" *ngSwitchCase="1">
-        <h2 mat-dialog-title>New Project</h2>
-
-        <mat-form-field>
-            <input matInput [formControl]="projectName" placeholder="Project Name">
-        </mat-form-field>
-
-        <mat-form-field>
-            <textarea matInput [formControl]="projectDescription" placeholder="Description" class="textDescription"></textarea>
-        </mat-form-field>
-
-        <mat-form-field>
-            <mat-chip-list #chipList>
-                <mat-chip *ngFor="let tag of tags"
-                    [selectable]="selectable"
-                    [removable]="removable"
-                    (removed)="removeTag(tag)">
-                    {{ tag.name }}
-                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-                </mat-chip>
-                <input placeholder="tags"
-                    [matChipInputFor]="chipList"
-                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                    [matChipInputAddOnBlur]="addOnBlur"
-                    (matChipInputTokenEnd)="addTag($event)"/>
-            </mat-chip-list>
-        </mat-form-field>
-
-        <div>
-            <button mat-raised-button color="primary" (click)="createProject()">Start Project</button>
-            <button mat-raised-button (click)="cancelNewProject()">Cancel</button>
-        </div>
+      <h1 mat-dialog-title>Folly Designer</h1>
+      <span>Version 0.0.1 Beta</span>
+      <mat-dialog-actions>
+        <button mat-raised-button color="primary" (click)="newProject()">
+          <mat-icon class="icon">description</mat-icon>Create New Project
+        </button>
+      </mat-dialog-actions>
+      <a href=#>Check out the tutorial</a>
+      <a href=#>Explore the FD Forum</a>
 
     </div>
+
+    <div class="open">
+      <div *ngFor="let e of getAllProjects()">
+        <button (click)="loadProject(e)" class="load-btn" mat-raised-button
+          color="primary">
+          {{e}}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="create" *ngSwitchCase="1">
+    <h2 mat-dialog-title>New Project</h2>
+
+    <mat-form-field>
+      <input matInput [formControl]="projectName" placeholder="Project Name">
+    </mat-form-field>
+
+    <mat-form-field>
+      <textarea matInput [formControl]="projectDescription" placeholder="Description"
+        class="textDescription"></textarea>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-chip-list #chipList>
+        <mat-chip *ngFor="let tag of tags" [selectable]="selectable"
+          [removable]="removable" (removed)="removeTag(tag)">
+          {{ tag.name }}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input placeholder="tags" [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="addTag($event)" />
+      </mat-chip-list>
+    </mat-form-field>
+
+    <div>
+      <button mat-raised-button color="primary" (click)="createProject()">Start
+        Project</button>
+      <button mat-raised-button (click)="cancelNewProject()">Cancel</button>
+    </div>
+
+  </div>
 </div>

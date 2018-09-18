@@ -1,8 +1,8 @@
 <div class="page-container">
-  <search-list [data]="searchData" (onSelectCallback)="selectFlow($event)" (onPressAddButton)="newFlow()"
-    class="flow-search-list">
+  <search-list [data]="searchData" (onSelectCallback)="selectFlow($event)"
+    (onPressAddButton)="newFlow()" class="flow-search-list">
   </search-list>
-  <flow-editor [flow]="flows.get(selectedIndex)" (onNameChange)="changeName($event)" (onDestroyFlow)="destroySelected()"
-    class="flow-editor">
+  <flow-editor [flow]="flows.get(selectedIndex)" (onNameChange)="changeName($event)"
+    (onDestroyFlow)="destroySelected()" class="flow-editor">
   </flow-editor>
 </div>

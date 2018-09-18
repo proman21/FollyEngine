@@ -1,13 +1,9 @@
 <div class="page-container">
-<search-list [data]="search_data"
-(onSelectCallback)="selectEntity($event)"
-(onPressAddButton)="newEntity()"
-class="entity-search-list">
-</search-list>
-<entity-editor [entity]="entities.get(selected_index)" [components]="components"
-(onNameChange)="entityNameChange($event)"
-(onDestroyComponent)="destroyComponentFromSelected($event)"
-(onNewComponent)="newComponent()"
-(onDestroyEntity)="destroySelected()"
-class="entity-editor"></entity-editor>
+  <search-list [data]="search_data" (onSelectCallback)="selectEntity($event)"
+    (onPressAddButton)="newEntity()" class="entity-search-list">
+  </search-list>
+  <entity-editor [entity]="entities.get(selected_index)" [components]="components"
+    (onNameChange)="entityNameChange($event)" (onDestroyComponent)="destroyComponentFromSelected($event)"
+    (onNewComponent)="newComponent()" (onDestroyEntity)="destroySelected()"
+    class="entity-editor"></entity-editor>
 </div>

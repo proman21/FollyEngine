@@ -1,8 +1,6 @@
 <!-- Blank Context Menu -->
-<div style="position: fixed"
-  [style.left.px]="contextMenuPosition.x"
-  [style.top.px]="contextMenuPosition.y"
-  [matMenuTriggerFor]="blankContextMenu">
+<div style="position: fixed" [style.left.px]="contextMenuPosition.x"
+  [style.top.px]="contextMenuPosition.y" [matMenuTriggerFor]="blankContextMenu">
 </div>
 <mat-menu #blankContextMenu="matMenu">
   <button mat-menu-item (click)="addActionNode()">Add Action</button>
@@ -13,10 +11,8 @@
 </mat-menu>
 
 <!-- Node Context Menu -->
-<div style="position: fixed"
-  [style.left.px]="contextMenuPosition.x"
-  [style.top.px]="contextMenuPosition.y"
-  [matMenuTriggerFor]="nodeContextMenu">
+<div style="position: fixed" [style.left.px]="contextMenuPosition.x"
+  [style.top.px]="contextMenuPosition.y" [matMenuTriggerFor]="nodeContextMenu">
 </div>
 <mat-menu #nodeContextMenu="matMenu">
   <button mat-menu-item (click)="duplicateSelectedNode()">Duplicate</button>
@@ -25,17 +21,17 @@
 
 <!-- Flow -->
 <div class="flow-outer">
-    <div *ngIf="flow" class="flow-name">
-      <input type="text" maxlength="50" class="name-field" value={{flow.name}}
-        (keyup)="onNameChange.emit($event.target.value)">
-      <button mat-button color="primary" class="add-button" (click)="showBlankContextMenu($event)">
-        <mat-icon>add box</mat-icon>
-      </button>
-      <button mat-button class="destroy-button" color="warn" (click)="onDestroyFlow.emit()">
-        <mat-icon>delete</mat-icon>
-      </button>
-    </div>
-    <div class="flow-inner">
-      <div class="flow-paper"></div>
-    </div>
+  <div *ngIf="flow" class="flow-name">
+    <input type="text" maxlength="50" class="name-field" value={{flow.name}}
+      (keyup)="onNameChange.emit($event.target.value)">
+    <button mat-button color="primary" class="add-button" (click)="showBlankContextMenu($event)">
+      <mat-icon>add box</mat-icon>
+    </button>
+    <button mat-button class="destroy-button" color="warn" (click)="onDestroyFlow.emit()">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+  <div class="flow-inner">
+    <div class="flow-paper"></div>
+  </div>
 </div>

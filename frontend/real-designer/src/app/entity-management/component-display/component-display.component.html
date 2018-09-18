@@ -1,43 +1,45 @@
 <mat-accordion>
-	<mat-expansion-panel hideToggle="true">
-		<mat-expansion-panel-header>
-			<mat-panel-title>
-				Components
-			</mat-panel-title>
-		</mat-expansion-panel-header>
+  <mat-expansion-panel hideToggle="true">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Components
+      </mat-panel-title>
+    </mat-expansion-panel-header>
 
-		<mat-card-content>
-			<mat-accordion>
-				<div class="component" *ngFor="let component of components">
-					<mat-expansion-panel>
-						<mat-expansion-panel-header>
-							<mat-panel-title>
-								{{component.name}}
-							</mat-panel-title>
-							<!--mat-panel-description>
+    <mat-card-content>
+      <mat-accordion>
+        <div class="component" *ngFor="let component of components">
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{component.name}}
+              </mat-panel-title>
+              <!--mat-panel-description>
 								This would be the description of the component
 							</mat-panel-description-->
-						</mat-expansion-panel-header>
-						<div class="attribute" *ngFor="let a of component.attributes">
-							<mat-card class="component-card">
-								<div class="component-name">{{a.getName()}}</div>
-								<mat-card-content>
-									<div class="component-description">{{a.getDescription()}}</div>
-									<div class="component-type">{{a.getType()}}</div>
-								</mat-card-content>
-							</mat-card>
-						</div>
+            </mat-expansion-panel-header>
+            <div class="attribute" *ngFor="let a of component.attributes">
+              <mat-card class="component-card">
+                <div class="component-name">{{a.getName()}}</div>
+                <mat-card-content>
+                  <div class="component-description">{{a.getDescription()}}</div>
+                  <div class="component-type">{{a.getType()}}</div>
+                </mat-card-content>
+              </mat-card>
+            </div>
 
-						<mat-action-row>
-							<button mat-button color="primary"><mat-icon>create</mat-icon></button>
-							<button mat-button color="warn" class="destroy-button" (click)="onDestroyComponent.emit(component.id)">
-								<mat-icon>delete</mat-icon>
-							</button>
-						</mat-action-row>
-					</mat-expansion-panel>
-				</div>
-			</mat-accordion>
-		</mat-card-content>
+            <mat-action-row>
+              <button mat-button color="primary">
+                <mat-icon>create</mat-icon>
+              </button>
+              <button mat-button color="warn" class="destroy-button" (click)="onDestroyComponent.emit(component.id)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </mat-action-row>
+          </mat-expansion-panel>
+        </div>
+      </mat-accordion>
+    </mat-card-content>
 
-	</mat-expansion-panel>
+  </mat-expansion-panel>
 </mat-accordion>
