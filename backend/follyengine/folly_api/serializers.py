@@ -34,7 +34,6 @@ class EntitySerializer(serializers.HyperlinkedModelSerializer):
     )
     components = serializers.ResourceRelatedField(
         read_only=True,
-        queryset=models.Component.objects,
         many=True,
         related_link_view_name='component-list',
         related_link_url_kwarg='project_pk'
@@ -85,14 +84,12 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     )
     entities = serializers.ResourceRelatedField(
         read_only=True,
-        queryset=models.Entity.objects,
         many=True,
         related_link_view_name='entity-list',
         related_link_url_kwarg='project_pk'
     )
     components = serializers.ResourceRelatedField(
         read_only=True,
-        queryset=models.Component.objects,
         many=True,
         related_link_view_name='component-list',
         related_link_url_kwarg='project_pk'
