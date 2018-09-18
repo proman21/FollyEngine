@@ -4,14 +4,8 @@ import { SearchListComponent, IterablePipe } from './search-list/search-list.com
 import { MaterialModule } from './../material.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MaterialModule
-  ],
-  exports: [
-  	SearchListComponent, IterablePipe
-  ],
-  declarations: [SearchListComponent, IterablePipe],
-
+  imports: [CommonModule, MaterialModule],
+  exports: [SearchListComponent, IterablePipe],
+  declarations: [SearchListComponent, IterablePipe]
 })
-export class SharedUiModule { }
+export class SharedUiModule {}

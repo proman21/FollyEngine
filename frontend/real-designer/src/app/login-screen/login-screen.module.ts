@@ -10,18 +10,8 @@ import { MaterialModule } from './../material.module';
 import { LoginScreenComponent } from './login-screen.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    MaterialModule,
-  ],
-  exports: [
-      LoginScreenComponent
-  ],
-  declarations: [
-      LoginScreenComponent
-  ]
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule, MaterialModule],
+  exports: [LoginScreenComponent],
+  declarations: [LoginScreenComponent]
 })
-export class LoginScreenModule { }
+export class LoginScreenModule {}

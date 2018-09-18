@@ -14,19 +14,8 @@ import { FolderComponent } from './folder/folder.component';
 import { FileComponent } from './file/file.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedUiModule,
-    MaterialModule,
-  ],
-  exports: [
-    AssetManagementComponent,
-  ],
-  declarations: [
-  	AssetManagementComponent,
-    AssetListComponent,
-  	FolderComponent,
-  	FileComponent,
-  ]
+  imports: [CommonModule, SharedUiModule, MaterialModule],
+  exports: [AssetManagementComponent],
+  declarations: [AssetManagementComponent, AssetListComponent, FolderComponent, FileComponent]
 })
-export class AssetManagementModule { }
+export class AssetManagementModule {}

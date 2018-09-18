@@ -15,22 +15,15 @@ import { DescriptionDisplayComponent } from './description-display/description-d
 import { ProceduresDisplayComponent } from './procedures-display/procedures-display.component';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        SharedUiModule,
-        MaterialModule,
-    ],
-    exports: [
-        EntityManagementComponent,
-    ],
-    providers: [
-    ],
-    declarations: [
-        EntityManagementComponent,
-        EntityEditorComponent,
-        ComponentDisplayComponent,
-        DescriptionDisplayComponent,
-        ProceduresDisplayComponent,
-    ],
+  imports: [CommonModule, SharedUiModule, MaterialModule],
+  exports: [EntityManagementComponent],
+  providers: [],
+  declarations: [
+    EntityManagementComponent,
+    EntityEditorComponent,
+    ComponentDisplayComponent,
+    DescriptionDisplayComponent,
+    ProceduresDisplayComponent
+  ]
 })
-export class EntityManagementModule { }
+export class EntityManagementModule {}

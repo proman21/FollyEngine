@@ -7,14 +7,17 @@ import { DesignerEntity, DesignerComponent, DesignerAttribute } from '../../desi
   styleUrls: ['./attribute-display.component.css']
 })
 export class AttributeDisplayComponent implements OnInit {
-	@Input() attributes: DesignerAttribute[];
+  @Input()
+  attributes: DesignerAttribute[];
 
-	@Output() onDestroyAttribute = new EventEmitter<number>();
-	@Output() onNameChangeAttribute = new EventEmitter<[number, string]>();
-	@Output() onDescriptionChangeAttribute = new EventEmitter<[number, string]>();
+  @Output()
+  onDestroyAttribute = new EventEmitter<number>();
+  @Output()
+  onNameChangeAttribute = new EventEmitter<[number, string]>();
+  @Output()
+  onDescriptionChangeAttribute = new EventEmitter<[number, string]>();
 
-	constructor() { }
+  constructor() {}
 
-	ngOnInit() {
-	}
+  ngOnInit() {}
 }

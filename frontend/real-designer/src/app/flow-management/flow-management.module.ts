@@ -15,20 +15,9 @@ import { MaterialModule } from './../material.module';
 import { SharedUiModule } from '../shared-ui/shared-ui.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedUiModule,
-    MaterialModule
-  ],
-  exports: [
-    FlowManagementComponent,
-  ],
-  declarations: [
-  	FlowManagementComponent,
-  	FlowEditorComponent
-  ],
-  providers: [
-    FlowNodeService
-  ]
+  imports: [CommonModule, SharedUiModule, MaterialModule],
+  exports: [FlowManagementComponent],
+  declarations: [FlowManagementComponent, FlowEditorComponent],
+  providers: [FlowNodeService]
 })
-export class FlowManagementModule { }
+export class FlowManagementModule {}

@@ -7,15 +7,13 @@ import { DesignerEntity, DesignerComponent } from '../../designer/designer';
   styleUrls: ['./component-display.component.css']
 })
 export class ComponentDisplayComponent implements OnInit {
+  @Input()
+  components: DesignerComponent[];
 
-	@Input() components: DesignerComponent[];
+  @Output()
+  onDestroyComponent = new EventEmitter<number>();
 
-	@Output() onDestroyComponent = new EventEmitter<number>();
+  constructor() {}
 
-	constructor() { }
-
-	ngOnInit() {
-	}
-
-
+  ngOnInit() {}
 }

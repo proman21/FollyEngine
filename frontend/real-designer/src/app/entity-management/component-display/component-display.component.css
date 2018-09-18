@@ -1,18 +1,18 @@
 .component-name {
-	font-size: 1.3em;
+  font-size: 1.3em;
 }
 
 .component-description {
-	display: inline;
-	float: left;
+  display: inline;
+  float: left;
 }
 
 .component-type {
-	display: inline;
-	float: right;
+  display: inline;
+  float: right;
 }
 
-.mat-expansion-panel-header-title, 
+.mat-expansion-panel-header-title,
 .mat-expansion-panel-header-description {
   flex-basis: 0;
 }

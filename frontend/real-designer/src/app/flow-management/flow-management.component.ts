@@ -9,78 +9,80 @@ import { FlowEditorComponent } from './flow-editor/flow-editor.component';
   styleUrls: ['./flow-management.component.css']
 })
 export class FlowManagementComponent {
-    title = 'Real Designer';
-    flows: Map<number, DesignerFlow> = new Map();
-    searchData: Map<number, string> = new Map();
-    selectedIndex: number = 0;
+  title = 'Real Designer';
+  flows: Map<number, DesignerFlow> = new Map();
+  searchData: Map<number, string> = new Map();
+  selectedIndex = 0;
 
-    constructor(private designerService: DesignerService) {
-    }
+  constructor(private designerService: DesignerService) {}
 
-    ngOnInit() {
-        this.subscribeDesigner();
-    }
+  ngOnInit() {
+    this.subscribeDesigner();
+  }
 
-    subscribeDesigner() {
-        // HACK fix
-        this.flows = new Map(this.designerService.getFlows());
-        this.refreshSearchList();
-    }
+  subscribeDesigner() {
+    // HACK fix
+    this.flows = new Map(this.designerService.getFlows());
+    this.refreshSearchList();
+  }
 
-    refreshSearchList() {
-        this.searchData = new Map();
+  refreshSearchList() {
+    this.searchData = new Map();
 
-        // Sort our data alphabetically
-        this.flows = new Map([...Array.from(this.flows.entries())].sort(function(a, b) {
-            return a[1].name.localeCompare(b[1].name);
-        }));
+    // Sort our data alphabetically
+    this.flows = new Map(
+      [...Array.from(this.flows.entries())].sort(function(a, b) {
+        return a[1].name.localeCompare(b[1].name);
+      })
+    );
 
-        for (let entry of Array.from(this.flows.entries())) {
-            this.searchData.set(entry[0], entry[1].name);
-        }
+    for (const entry of Array.from(this.flows.entries())) {
+      this.searchData.set(entry[0], entry[1].name);
     }
+  }
 
-    getSelected() {
-        return this.flows.get(this.selectedIndex);
-    }
+  getSelected() {
+    return this.flows.get(this.selectedIndex);
+  }
 
-    newFlow() {
-        let flow = new DesignerFlow('New Flow', null);
-        this.designerService.registerNewFlow(flow);
-        this.subscribeDesigner();
-        this.selectFlow(flow.id);
-    }
+  newFlow() {
+    const flow = new DesignerFlow('New Flow', null);
+    this.designerService.registerNewFlow(flow);
+    this.subscribeDesigner();
+    this.selectFlow(flow.id);
+  }
 
-    changeName(name: string) {
-        this.getSelected().name = name;
-        this.refreshSearchList();
-        this.subscribeDesigner();
-    }
+  changeName(name: string) {
+    this.getSelected().name = name;
+    this.refreshSearchList();
+    this.subscribeDesigner();
+  }
 
-    destroySelected() {
-        this.designerService.destroyFlow(this.getSelected().id);
-        this.refreshSearchList();
-        this.subscribeDesigner();
-    }
+  destroySelected() {
+    this.designerService.destroyFlow(this.getSelected().id);
+    this.refreshSearchList();
+    this.subscribeDesigner();
+  }
 
-    selectFlow(event: number) {
-        this.selectedIndex = event;
-    }
+  selectFlow(event: number) {
+    this.selectedIndex = event;
+  }
 
-    @ViewChild(FlowEditorComponent) flowEditor: FlowEditorComponent;
-    newAction() {
-        this.flowEditor.addActionNode();
-    }
-    newTrigger() {
-        this.flowEditor.addTriggerNode();
-    }
-    newCondition() {
-        this.flowEditor.addConditionNode();
-    }
-    newOperation() {
-        this.flowEditor.addOperationNode();
-    }
-    newNestedFlow() {
-        this.flowEditor.addNestedFlowNode();
-    }
+  @ViewChild(FlowEditorComponent)
+  flowEditor: FlowEditorComponent;
+  newAction() {
+    this.flowEditor.addActionNode();
+  }
+  newTrigger() {
+    this.flowEditor.addTriggerNode();
+  }
+  newCondition() {
+    this.flowEditor.addConditionNode();
+  }
+  newOperation() {
+    this.flowEditor.addOperationNode();
+  }
+  newNestedFlow() {
+    this.flowEditor.addNestedFlowNode();
+  }
 }

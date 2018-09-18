@@ -14,26 +14,16 @@ import { SettingsNotificationsComponent } from './settings-dialog/settings-notif
 // Services
 
 @NgModule({
-  imports: [
-    CommonModule,
-    MaterialModule,
-    FormsModule,
-    ReactiveFormsModule
-  ],
-  exports: [
-  	ProjectManagementComponent
-  ],
+  imports: [CommonModule, MaterialModule, FormsModule, ReactiveFormsModule],
+  exports: [ProjectManagementComponent],
   declarations: [
-  	ProjectManagementComponent,
-  	WelcomeDialogComponent,
-  	MenubarComponent,
-  	SettingsDialogComponent,
-  	SettingsPersonalComponent,
-  	SettingsNotificationsComponent
+    ProjectManagementComponent,
+    WelcomeDialogComponent,
+    MenubarComponent,
+    SettingsDialogComponent,
+    SettingsPersonalComponent,
+    SettingsNotificationsComponent
   ],
-  entryComponents: [
-      WelcomeDialogComponent,
-      SettingsDialogComponent
-  ]
+  entryComponents: [WelcomeDialogComponent, SettingsDialogComponent]
 })
-export class ProjectManagementModule { }
+export class ProjectManagementModule {}

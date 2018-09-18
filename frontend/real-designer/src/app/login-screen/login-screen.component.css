@@ -6,52 +6,56 @@ Google Plus Red:    #DD4B39;
 MicrosoftGrey:      #F2F2F2;
 */
 
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro');
-h1, h2, button, a, span {
-	font-family: "Source Sans Pro", sans-serif;
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro");
+h1,
+h2,
+button,
+a,
+span {
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 .middle {
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 #content {
-    text-align: center;
+  text-align: center;
 }
 
 #loading {
-	text-align: center;
-	padding-bottom: 50px;
+  text-align: center;
+  padding-bottom: 50px;
 }
 
 #loading > * {
-	margin: 0 auto;
+  margin: 0 auto;
 }
 
 #loading > span {
-	position: relative;
-	color: grey;
-	font-size: 3em;
-	top: 1em;
+  position: relative;
+  color: grey;
+  font-size: 3em;
+  top: 1em;
 }
 
 h1 {
-	margin-top: 0;
-    font-size: 6em;
+  margin-top: 0;
+  font-size: 6em;
 }
 
 h2 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
+  font-size: 1.5em;
+  margin-bottom: 10px;
 }
 
 .login-card {
-    max-width: 360px;
-    max-height: 320px;
-    margin: 0 auto;
+  max-width: 360px;
+  max-height: 320px;
+  margin: 0 auto;
 }
 
 .login-card > form > * {
@@ -59,45 +63,45 @@ h2 {
 }
 
 .login-card div > mat-icon {
-    float: left;
-    position: relative;
-    top: 15px;
-    margin-right: 20px;
-    transform: scale(1.2);
+  float: left;
+  position: relative;
+  top: 15px;
+  margin-right: 20px;
+  transform: scale(1.2);
 }
 
 .eyeIcon {
-    transform: scale(0.7);
-    position: relative;
-    top: 7.5px;
+  transform: scale(0.7);
+  position: relative;
+  top: 7.5px;
 }
 
 .login-card div > mat-form-field {
-    display: flex;
-    flex-direction: column;
-    margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
 }
 
 .login-card button {
-    margin: 25px 0;
+  margin: 25px 0;
 }
 
 a {
-    color: #0071BC;
-    font-size: 1em;
-    text-decoration: none;
+  color: #0071bc;
+  font-size: 1em;
+  text-decoration: none;
 }
 
 a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 #services {
-    margin: 20px;
+  margin: 20px;
 }
 
 #services > button {
-    margin: 12px;
-    width: 100px;
-    height: 60px;
+  margin: 12px;
+  width: 100px;
+  height: 60px;
 }

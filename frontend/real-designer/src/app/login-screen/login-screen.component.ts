@@ -3,8 +3,8 @@ import { FormControl } from '@angular/forms';
 import { Validators } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { MatIconRegistry } from "@angular/material";
-import { DomSanitizer } from "@angular/platform-browser";
+import { MatIconRegistry } from '@angular/material';
+import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { DesignerService } from '../designer/designer.service';
@@ -15,14 +15,15 @@ import { DesignerService } from '../designer/designer.service';
   styleUrls: ['./login-screen.component.css']
 })
 export class LoginScreenComponent {
+  @Output()
+  login = new EventEmitter<any>();
 
-  @Output() login = new EventEmitter<any>();
-
-  public constructor (
+  public constructor(
     private designerService: DesignerService,
     private domSanitizer: DomSanitizer,
     public matIconRegistry: MatIconRegistry,
-    private http: HttpClient) {
+    private http: HttpClient
+  ) {
     // Add custom material icons
     //matIconRegistry.addSvgIcon('facebook', domSanitizer.bypassSecurityTrustResourceUrl("assets/icon/facebook.svg"));
     //matIconRegistry.addSvgIcon('googleplus', domSanitizer.bypassSecurityTrustResourceUrl("assets/icon/googleplus.svg"));
@@ -34,7 +35,7 @@ export class LoginScreenComponent {
   welcomeName = 'Guest'; // The name displayed when logging in
 
   toggleState() {
-      this.state = !this.state;
+    this.state = !this.state;
   }
 
   /* Sign In */
@@ -44,13 +45,11 @@ export class LoginScreenComponent {
   password = new FormControl('', [Validators.required]);
 
   getUsernameErrorMessage() {
-    return this.username.hasError('required') ? '' :
-            '';
+    return this.username.hasError('required') ? '' : '';
   }
 
   getPasswordErrorMessage() {
-    return this.password.hasError('required') ? '' :
-            '';
+    return this.password.hasError('required') ? '' : '';
   }
 
   signIn() {
@@ -61,24 +60,23 @@ export class LoginScreenComponent {
       const password = this.password.value;
       const httpOptions = {
         headers: new HttpHeaders({
-          'Content-Type':  'application/json'
+          'Content-Type': 'application/json'
         })
       };
 
-      this.http.post('api/auth/token', {'username': username, 'password': password}, httpOptions)
-        .subscribe((data) => {
-          if (data['token']) {
-            self.welcomeName = username;
-            sessionStorage.setItem('username', username);
-            sessionStorage.setItem('token', data['token']);
-            self.designerService.loadAllProjects(); // Load all projects with this username
-            self.transition();
-          } else {
-            self.username.reset();
-            self.password.reset();
-            console.log("username or password incorrect");
-          }
-        });
+      this.http.post('api/auth/token', { username: username, password: password }, httpOptions).subscribe(data => {
+        if (data['token']) {
+          self.welcomeName = username;
+          sessionStorage.setItem('username', username);
+          sessionStorage.setItem('token', data['token']);
+          self.designerService.loadAllProjects(); // Load all projects with this username
+          self.transition();
+        } else {
+          self.username.reset();
+          self.password.reset();
+          console.log('username or password incorrect');
+        }
+      });
     } else {
       // show errors
       this.username.markAsTouched();
@@ -98,21 +96,23 @@ export class LoginScreenComponent {
   }
 
   getMakeEmailErrorMessage() {
-    return this.makeEmail.hasError('required') ? 'Enter your email' :
-        this.makeEmail.hasError('email') ? 'Enter a valid email' :
-            '';
+    return this.makeEmail.hasError('required')
+      ? 'Enter your email'
+      : this.makeEmail.hasError('email')
+        ? 'Enter a valid email'
+        : '';
   }
 
   // Gets error messaged depending on what isn't satisfied
   getMakePasswordErrorMessage() {
-    return this.makePassword.hasError('required') ? 'Enter a password' :
-        this.makePassword.hasError('minlength') ? 'Must be at least 8 characters' :
-            '';
+    return this.makePassword.hasError('required')
+      ? 'Enter a password'
+      : this.makePassword.hasError('minlength')
+        ? 'Must be at least 8 characters'
+        : '';
   }
 
-  addToDatabase(name, email, password) {
-
-  }
+  addToDatabase(name, email, password) {}
 
   createAccount() {
     /*const loginScreen = this;
@@ -162,28 +162,27 @@ export class LoginScreenComponent {
 
   // If login or create account is successful, transition out of the login screen
   transition() {
-      var loginScreen = this;
+    const loginScreen = this;
 
-      // Show loading indicator
-      document.getElementById("loading").style.display = 'block';
-      // Fade out controls
-      document.getElementById("content").style.transition = '0.5s';
-      document.getElementById("content").style.opacity = '0';
+    // Show loading indicator
+    document.getElementById('loading').style.display = 'block';
+    // Fade out controls
+    document.getElementById('content').style.transition = '0.5s';
+    document.getElementById('content').style.opacity = '0';
 
-      // Hide the controls after fading
-      setTimeout(function() {
-          document.getElementById("content").style.display = 'none';
-      }, 500);
+    // Hide the controls after fading
+    setTimeout(function() {
+      document.getElementById('content').style.display = 'none';
+    }, 500);
 
-      // After loading for a bit, hide the login-screen
-      setTimeout(function() {
-          document.getElementById("login-view").style.transition = '0.5s';
-          document.getElementById("login-view").style.opacity = '0';
-      }, 1500);
+    // After loading for a bit, hide the login-screen
+    setTimeout(function() {
+      document.getElementById('login-view').style.transition = '0.5s';
+      document.getElementById('login-view').style.opacity = '0';
+    }, 1500);
 
-      setTimeout(function() {
-          loginScreen.login.emit(); // fire login event!
-      }, 2000);
+    setTimeout(function() {
+      loginScreen.login.emit(); // fire login event!
+    }, 2000);
   }
-
 }

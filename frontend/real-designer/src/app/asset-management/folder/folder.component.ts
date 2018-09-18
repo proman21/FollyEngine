@@ -6,10 +6,9 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./folder.component.css']
 })
 export class FolderComponent implements OnInit {
-	@Input() folderName: String;
-  constructor() { }
+  @Input()
+  folderName: String;
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

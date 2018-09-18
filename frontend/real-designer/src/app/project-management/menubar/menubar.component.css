@@ -1,53 +1,56 @@
 .menu-bar {
-	height: 40px;
-	overflow: hidden;
-	box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+  height: 40px;
+  overflow: hidden;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 
 .menu-toolbar {
-	background-color: #DDD;
+  background-color: #ddd;
 }
 
 .menu-toolbar-row {
-	height: 40px;
+  height: 40px;
 }
 
-.menus, .project-name, .profile {
-	height: 100%;
-	min-width: 0;
+.menus,
+.project-name,
+.profile {
+  height: 100%;
+  min-width: 0;
 }
 
-.menus > button, .profile > button {
-	height: 100%;
-	min-width: 0;
-	margin: 0;
+.menus > button,
+.profile > button {
+  height: 100%;
+  min-width: 0;
+  margin: 0;
 }
 
 .hotkey {
-	float: right;
-	margin-left: 40px;
-	text-align: right;
-	color: grey;
-	font-size: 0.8em;
+  float: right;
+  margin-left: 40px;
+  text-align: right;
+  color: grey;
+  font-size: 0.8em;
 }
 
 .project-name {
-	position: absolute;
-	left: 50%;
-	transform: translateX(-50%);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .project-name > span {
-	font-size: 14px;
-	line-height: 36px;
+  font-size: 14px;
+  line-height: 36px;
 }
 
 .menus {
-	flex: 1 1 auto;
+  flex: 1 1 auto;
 }
 
 @media only screen and (max-width: 1000px) {
-	.project-name {
-		display: none;
-	}
+  .project-name {
+    display: none;
+  }
 }

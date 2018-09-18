@@ -6,11 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./settings-personal.component.css']
 })
 export class SettingsPersonalComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   step = -1;
 
@@ -25,5 +23,4 @@ export class SettingsPersonalComponent implements OnInit {
   prevStep() {
     this.step--;
   }
-
 }

@@ -6,68 +6,67 @@ import { EntityManagementModule } from './entity-management.module';
 import { By } from '@angular/platform-browser';
 
 describe('EntityManagementComponent', () => {
-    let comp: EntityManagementComponent;
-    let fixture: ComponentFixture<EntityManagementComponent>;
-    let designer: DesignerService;
+  let comp: EntityManagementComponent;
+  let fixture: ComponentFixture<EntityManagementComponent>;
+  let designer: DesignerService;
 
-    // Junk data to work with
-	let a;
-	let b;
-	let c;
+  // Junk data to work with
+  let a;
+  let b;
+  let c;
 
-    beforeEach(() => {
-        TestBed.configureTestingModule({
-            imports: [ EntityManagementModule, ],
-            providers: [DesignerService]
-        }).compileComponents();
-        fixture = TestBed.createComponent(EntityManagementComponent);
-        comp = fixture.componentInstance;
-        designer = TestBed.get(DesignerService);
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [EntityManagementModule],
+      providers: [DesignerService]
+    }).compileComponents();
+    fixture = TestBed.createComponent(EntityManagementComponent);
+    comp = fixture.componentInstance;
+    designer = TestBed.get(DesignerService);
 
-        // Init junk data
-		a = new DesignerEntity("A");
-		b = new DesignerEntity("B");
-		c = new DesignerEntity("C");
+    // Init junk data
+    a = new DesignerEntity('A');
+    b = new DesignerEntity('B');
+    c = new DesignerEntity('C');
 
-    	// Make junk project
-    	designer.currentProject = new Project();
-    	designer.registerNewEntity(c); // 0
-    	designer.registerNewEntity(a); // 1
-    	designer.registerNewEntity(b); // 2
+    // Make junk project
+    designer.currentProject = new Project();
+    designer.registerNewEntity(c); // 0
+    designer.registerNewEntity(a); // 1
+    designer.registerNewEntity(b); // 2
 
-    	// Sync with designer
-    	comp.subscribeDesigner();
-    });
+    // Sync with designer
+    comp.subscribeDesigner();
+  });
 
-    it('refresh search list', () => {
-    	comp.refreshSearchList();
-    	let expected = new Map();
-    	expected.set(1, a.getName());
-    	expected.set(2, b.getName());
-    	expected.set(0, c.getName());
-    	expect(comp.search_data).toEqual(expected);
-    });
+  it('refresh search list', () => {
+    comp.refreshSearchList();
+    const expected = new Map();
+    expected.set(1, a.getName());
+    expected.set(2, b.getName());
+    expected.set(0, c.getName());
+    expect(comp.search_data).toEqual(expected);
+  });
 
-    it('selected index updates correctly', () => {
-    	expect(comp.getSelected()).toBe(c);
-    	comp.selected_index = 1;
-    	expect(comp.getSelected()).toBe(a);
-    });
+  it('selected index updates correctly', () => {
+    expect(comp.getSelected()).toBe(c);
+    comp.selected_index = 1;
+    expect(comp.getSelected()).toBe(a);
+  });
 
-    it('check entity tries to register', () => {
-    	const spy = spyOn(designer, "registerNewEntity");
-    	comp.newEntity();
-    	expect(spy).toHaveBeenCalledWith(new DesignerEntity("New Entity"));
-    });
+  it('check entity tries to register', () => {
+    const spy = spyOn(designer, 'registerNewEntity');
+    comp.newEntity();
+    expect(spy).toHaveBeenCalledWith(new DesignerEntity('New Entity'));
+  });
 
-    it('check destroy tries to destroy', () => {
-    	const spy = spyOn(designer, "destroyEntity");
-    	comp.destroySelected();
-    	expect(spy).toHaveBeenCalledWith(c.id);
-    });
+  it('check destroy tries to destroy', () => {
+    const spy = spyOn(designer, 'destroyEntity');
+    comp.destroySelected();
+    expect(spy).toHaveBeenCalledWith(c.id);
+  });
 
-    it('check select button updates index', () => {
-    });
+  it('check select button updates index', () => {});
 });
 // 	destroySelected() {
 // 		this.designerService.destroyEntity(this.getSelected().id);

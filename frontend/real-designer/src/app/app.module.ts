@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Components
-import { AppComponent } from './app.component'
-import { GenericSelectDialog } from "./dialogs/dialogs.component";
+import { AppComponent } from './app.component';
+import { GenericSelectDialog } from './dialogs/dialogs.component';
 
 // Angular material
 import { MaterialModule } from './material.module';
@@ -13,23 +13,18 @@ import { MaterialModule } from './material.module';
 import { DesignerService } from './designer/designer.service';
 
 // Modules
-import { ProjectManagementModule } from './project-management/project-management.module'
-import { EntityManagementModule } from './entity-management/entity-management.module'
-import { ComponentManagementModule } from './component-management/component-management.module'
-import { FlowManagementModule } from './flow-management/flow-management.module'
-import { AssetManagementModule } from './asset-management/asset-management.module'
-import { LoginScreenModule } from './login-screen/login-screen.module'
+import { ProjectManagementModule } from './project-management/project-management.module';
+import { EntityManagementModule } from './entity-management/entity-management.module';
+import { ComponentManagementModule } from './component-management/component-management.module';
+import { FlowManagementModule } from './flow-management/flow-management.module';
+import { AssetManagementModule } from './asset-management/asset-management.module';
+import { LoginScreenModule } from './login-screen/login-screen.module';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    GenericSelectDialog,
-  ],
-  entryComponents: [
-    GenericSelectDialog,
-  ],
+  declarations: [AppComponent, GenericSelectDialog],
+  entryComponents: [GenericSelectDialog],
   imports: [
     MaterialModule,
     BrowserModule,
@@ -41,11 +36,9 @@ import { HttpClientModule } from '@angular/common/http';
     AssetManagementModule,
     LoginScreenModule,
     FormsModule,
-    HttpClientModule,
+    HttpClientModule
   ],
-  providers: [
-    DesignerService,
-  ],
+  providers: [DesignerService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

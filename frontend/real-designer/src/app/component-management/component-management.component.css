@@ -1,30 +1,30 @@
 .page-container {
-	display: flex;
-	position: absolute;
-	top: 40px;
-    left: 0%;
-    width: 100%;
-    height: calc(100% - 40px);
+  display: flex;
+  position: absolute;
+  top: 40px;
+  left: 0%;
+  width: 100%;
+  height: calc(100% - 40px);
 }
 
 .component-search-list {
-	flex: 1;
-	max-width: 25%;
-	box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
-    overflow-x: hidden;
-    margin: 20px;
-    margin-right: 10px;
+  flex: 1;
+  max-width: 25%;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  overflow-x: hidden;
+  margin: 20px;
+  margin-right: 10px;
 }
 
 .component-editor {
-	flex: 1;
-	max-width: 75%;
-	box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
-    overflow-x: hidden;
-    margin: 20px;
-    margin-left: 10px;
+  flex: 1;
+  max-width: 75%;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+  overflow-x: hidden;
+  margin: 20px;
+  margin-left: 10px;
 }
 
 .new-component-btn {
-	width: 100%;
+  width: 100%;
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import * as $ from 'jquery'
+import * as $ from 'jquery';
 import * as joint from 'jointjs';
 
 import { DesignerService } from './../../designer/designer.service';
@@ -30,7 +30,7 @@ export class FlowNodeService {
     // ConditionNode
     this.define(
       'ConditionNode',
-      (options) => {
+      options => {
         const conditionOptions = [
           'Equal to',
           'Greater than',
@@ -66,18 +66,12 @@ export class FlowNodeService {
     );
 
     // OperationNode
-    this.define(
-      'OperationNode',
-      (options) => {
-        const operationOptions = [
-          'Add',
-          'Subtract',
-          'Set'
-        ].reduce<string>((s, value) => {
-          s += `<option>${value}</option>`;
-          return s;
-        }, '');
-        return `<span class="node-caption">Operation</span>
+    this.define('OperationNode', options => {
+      const operationOptions = ['Add', 'Subtract', 'Set'].reduce<string>((s, value) => {
+        s += `<option>${value}</option>`;
+        return s;
+      }, '');
+      return `<span class="node-caption">Operation</span>
           <div class="input-group">
             <input name="name" type="text" value="New Operation"/>
           </div>
@@ -95,13 +89,12 @@ export class FlowNodeService {
             <label>Value</label>
             <input name="value" type="text" value=""/>
           </div>`;
-      }
-    );
+    });
 
     // ActionNode
     this.define(
       'ActionNode',
-      (options) => {
+      options => {
         return `<span class="node-caption">Action</span>
           <div class="input-group">
             <input name="name" type="text" value="New Action"/>
@@ -125,10 +118,8 @@ export class FlowNodeService {
     // TriggerNode
     this.define(
       'TriggerNode',
-      (options) => {
-        const triggerOptions = [
-          'RFID'
-        ].reduce<string>((s, value) => {
+      options => {
+        const triggerOptions = ['RFID'].reduce<string>((s, value) => {
           s += `<option>${value}</option>`;
           return s;
         }, '');
@@ -153,7 +144,7 @@ export class FlowNodeService {
     // NestedFlowNode
     this.define(
       'NestedFlowNode',
-      (options) => {
+      options => {
         return `<div class="input-group">
           <label>Flow</label>
           <select name="flow">${options.flows}</select>
@@ -175,22 +166,24 @@ export class FlowNodeService {
       defaultAttributes = {};
     }
     Object.defineProperty(joint.shapes['folly'][type].prototype, 'defaults', {
-      get: () => { return {
-        ...joint.shapes.basic['PortsModel'].prototype.defaults,
-        type: `folly.${type}`,
-        size: { width: 240, height: 180 },
-        inPorts: ['In'],
-        outPorts: ['Out'],
-        attrs: {
-          '.': { magnet: false },
-          rect: { stroke: 'none', 'fill-opacity': 0, width: '100%', height: '100%' },
-          circle: { r: 8, magnet: true },
-          '.inPorts circle': { fill: 'green', magnet: 'passive', type: 'input' },
-          '.outPorts circle': { fill: 'red', type: 'output' },
-          '.outPorts text': { dx: '-12px', dy: '4px', 'text-anchor': 'end' }
-        },
-        ...defaultAttributes
-      }}
+      get: () => {
+        return {
+          ...joint.shapes.basic['PortsModel'].prototype.defaults,
+          type: `folly.${type}`,
+          size: { width: 240, height: 180 },
+          inPorts: ['In'],
+          outPorts: ['Out'],
+          attrs: {
+            '.': { magnet: false },
+            rect: { stroke: 'none', 'fill-opacity': 0, width: '100%', height: '100%' },
+            circle: { r: 8, magnet: true },
+            '.inPorts circle': { fill: 'green', magnet: 'passive', type: 'input' },
+            '.outPorts circle': { fill: 'red', type: 'output' },
+            '.outPorts text': { dx: '-12px', dy: '4px', 'text-anchor': 'end' }
+          },
+          ...defaultAttributes
+        };
+      }
     });
 
     // store defaults
@@ -216,12 +209,12 @@ export class FlowNodeService {
 
     joint.shapes['folly'][type].prototype.getPortAttrs = function(portName, index, total, selector, type) {
       return FlowNodeService.getPortAttrs.apply(this, arguments);
-    }
+    };
 
     // define view class
     joint.shapes['folly'][`${type}View`] = function() {
       return FlowNodeView.apply(this, arguments);
-    }
+    };
     joint.shapes['folly'][`${type}View`].prototype = Object.create(FlowNodeView.prototype, {
       constructor: {
         value: joint.shapes['folly'][`${type}View`],
@@ -242,26 +235,26 @@ export class FlowNodeService {
       s += `<option value="${value.id}">${value.name}</option>`;
       return s;
     }, '');
-    
-    let attributeOptions = {};
-    entities.forEach((e) => {
+
+    const attributeOptions = {};
+    entities.forEach(e => {
       attributeOptions[e.id] = '';
-      e.components.forEach((c) => {
+      e.components.forEach(c => {
         components.get(c).attributes.forEach(function(attr) {
           attributeOptions[e.id] += `<option>${attr.name}</option>`;
         });
       });
     });
     this.options.attributes = attributeOptions;
-    
+
     this.options.flows = Array.from(flows).reduce<string>((s, [key, value]) => {
       // TODO
       //if (key !== this.flow.id) {
-        s += `<option value="${value.id}">${value.name}</option>`;
+      s += `<option value="${value.id}">${value.name}</option>`;
       //}
       return s;
     }, '');
-    
+
     this.options.assets = Array.from(assets).reduce<string>((s, [key, value]) => {
       s += `<option value="${value.id}">${value.name}</option>`;
       return s;
@@ -269,15 +262,17 @@ export class FlowNodeService {
   }
 
   static getPortAttrs(portName, index, total, selector, type) {
-    var attrs = {};
-    var portClass = 'port' + index;
-    var portSelector = selector + '>.' + portClass;
-    var portCircleSelector = portSelector + '>circle';
+    const attrs = {};
+    const portClass = 'port' + index;
+    const portSelector = selector + '>.' + portClass;
+    const portCircleSelector = portSelector + '>circle';
 
     attrs[portCircleSelector] = { port: { id: portName, type: type } };
     attrs[portSelector] = { ref: 'rect', 'ref-y': (index + 0.5) * (1 / total) };
 
-    if (selector === '.outPorts') { attrs[portSelector]['ref-dx'] = 0; }
+    if (selector === '.outPorts') {
+      attrs[portSelector]['ref-dx'] = 0;
+    }
 
     return attrs;
   }

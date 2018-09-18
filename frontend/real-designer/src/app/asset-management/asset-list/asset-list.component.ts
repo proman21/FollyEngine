@@ -7,19 +7,20 @@ import { DesignerAsset } from '../../designer/designer';
   styleUrls: ['./asset-list.component.css']
 })
 export class AssetListComponent implements OnInit {
+  @Input()
+  asset: DesignerAsset;
+  @Output()
+  onNameChange = new EventEmitter<string>();
+  @Output()
+  onFileChange = new EventEmitter<string>();
+  @Output()
+  onDestroyAsset = new EventEmitter<string>();
 
-	@Input() asset: DesignerAsset;
-	@Output() onNameChange = new EventEmitter<string>();
-	@Output() onFileChange = new EventEmitter<string>();
-	@Output() onDestroyAsset = new EventEmitter<string>();
+  // nameChange(event: any) {
+  // 	console.log('workingish');
+  // 	this.onNameChange.emit(event.target.value);
+  // }
+  constructor() {}
 
-	// nameChange(event: any) {
-	// 	console.log('workingish');
-	// 	this.onNameChange.emit(event.target.value);
-	// }
-	constructor() { }
-
-	ngOnInit() {
-	}
-
+  ngOnInit() {}
 }

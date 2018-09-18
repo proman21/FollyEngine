@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // Components
-import { ComponentManagementComponent, } from './component-management.component';
+import { ComponentManagementComponent } from './component-management.component';
 
 // Services
 
@@ -13,20 +13,9 @@ import { ComponentEditorComponent } from './component-editor/component-editor.co
 import { AttributeDisplayComponent } from './attribute-display/attribute-display.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    SharedUiModule,
-    MaterialModule
-  ],
-  exports: [
-  	ComponentManagementComponent,
-  ],
-  providers: [
-  ],
-  declarations: [
-  	ComponentManagementComponent,
-  	ComponentEditorComponent,
-  	AttributeDisplayComponent,
-  ],
+  imports: [CommonModule, SharedUiModule, MaterialModule],
+  exports: [ComponentManagementComponent],
+  providers: [],
+  declarations: [ComponentManagementComponent, ComponentEditorComponent, AttributeDisplayComponent]
 })
-export class ComponentManagementModule { }
+export class ComponentManagementModule {}

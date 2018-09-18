@@ -1,7 +1,7 @@
-import * as $ from 'jquery'
+import * as $ from 'jquery';
 import * as joint from 'jointjs';
 
-export class FlowNodeView extends joint.dia.ElementView { 
+export class FlowNodeView extends joint.dia.ElementView {
   paper: joint.dia.Paper;
   $box: any;
 
@@ -14,25 +14,30 @@ export class FlowNodeView extends joint.dia.ElementView {
     super.render.apply(this, arguments);
 
     this.$box = this.paper.$el.find('[model-id="' + this.model.id + '"]');
-    
+
     // Prevent paper from handling pointerdown.
     this.$box.find('input,select').on('mousedown click', function(evt) {
       evt.stopPropagation();
     });
-    
+
     // React on the input change and store the input data in the cell model.
-    this.$box.find('input,select').on('change', function(evt) {
-      var $target = $(evt.target);
-      this.model.set($target.attr('name'), $target.val());
-    }.bind(this));
-    this.$box.find('input,select').each(function(index, element) {
-      var $element = $(element);
-      var val = this.model.get($element.attr('name'));
-      if (val != undefined) {
-        $element.val(val);
-      }
-    }.bind(this));
-    
+    this.$box.find('input,select').on(
+      'change',
+      function(evt) {
+        const $target = $(evt.target);
+        this.model.set($target.attr('name'), $target.val());
+      }.bind(this)
+    );
+    this.$box.find('input,select').each(
+      function(index, element) {
+        const $element = $(element);
+        const val = this.model.get($element.attr('name'));
+        if (val != undefined) {
+          $element.val(val);
+        }
+      }.bind(this)
+    );
+
     // Update the box whenever the underlying model changes.
     this.model.on('change', this.updateBox, this);
     this.updateBox();
@@ -42,7 +47,9 @@ export class FlowNodeView extends joint.dia.ElementView {
 
   renderPorts() {
     // FIXME
-    this.$('.inPorts').empty().append(joint.V('<g class="port0"><circle/></g>').node);
+    this.$('.inPorts')
+      .empty()
+      .append(joint.V('<g class="port0"><circle/></g>').node);
     const outPorts = Object.values(this.model['ports']).filter(p => p['type'] === 'out');
     const $outPorts = this.$('.outPorts').empty();
     const multipleOutPorts = outPorts.length > 1 ? true : false;
@@ -60,11 +67,11 @@ export class FlowNodeView extends joint.dia.ElementView {
   }
 
   updateBox() {
-    let $scalable = this.$box.find('.scalable');
-    let bbox = this.model.getBBox();
+    const $scalable = this.$box.find('.scalable');
+    const bbox = this.model.getBBox();
 
     const matrixRegex = /matrix\((-?\d*\.?\d+),\s*0,\s*0,\s*(-?\d*\.?\d+),\s*0,\s*0\)/;
-    let scale = $scalable.css('transform').match(matrixRegex);
+    const scale = $scalable.css('transform').match(matrixRegex);
 
     if (scale == null) {
       return;
@@ -73,7 +80,7 @@ export class FlowNodeView extends joint.dia.ElementView {
     $scalable.find('foreignObject').css({
       width: bbox.width,
       height: bbox.height,
-      transform: 'scale(' + (1 / scale[1]) + ',' + (1 / scale[2]) + ')'
+      transform: 'scale(' + 1 / scale[1] + ',' + 1 / scale[2] + ')'
     });
   }
 }
