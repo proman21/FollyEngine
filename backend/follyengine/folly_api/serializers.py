@@ -21,7 +21,8 @@ class GroupSerializer(serializers.ModelSerializer):
 class EntitySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Entity
-        fields = ('url', 'name', 'slug', 'description', 'components')
+        fields = ('url', 'name', 'slug', 'description')
+        read_only_fields = ('components',)
 
     url = relations.NestedHyperlinkedIdentityField(
         view_name='entity-detail',
@@ -72,9 +73,8 @@ class FlowSerializer(serializers.HyperlinkedModelSerializer):
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Project
-        fields = ('url', 'title', 'description', 'slug', 'owner', 'entities',
-                  'components')
-        read_only_fields = ('created', 'modified')
+        fields = ('url', 'title', 'description', 'slug', 'owner')
+        read_only_fields = ('created', 'modified', 'entities', 'components')
 
     slug = serializers.SlugField(read_only=True)
     owner = serializers.ResourceRelatedField(
