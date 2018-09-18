@@ -1,10 +1,12 @@
 export class DesignerEntity {
 	id: number; // unique ID
 	name: string;
+	description: string;
 	components: number[]; // Array of ids associated with components
 
 	constructor(name: string) {
 		this.name = name;
+		this.description = 'This is a description of the entity.';
 		this.components = [];
 	}
 
@@ -70,7 +72,7 @@ export class DesignerAttribute {
 	constructor(name: string, description: string) {
 		this.name = name;
 		this.description = description;
-		this.type = "This is the type"
+		this.type = "Number";
 	}
 
 	getName() {

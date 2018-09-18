@@ -40,15 +40,31 @@ export class FlowManagementComponent {
         }
     }
 
-    selectFlow(event: number) {
-        this.selectedIndex = event;
+    getSelected() {
+        return this.flows.get(this.selectedIndex);
     }
 
     newFlow() {
-        let flow = new DesignerFlow('New Flow (' + this.flows.size + ')', null);
+        let flow = new DesignerFlow('New Flow', null);
         this.designerService.registerNewFlow(flow);
         this.subscribeDesigner();
         this.selectFlow(flow.id);
+    }
+
+    changeName(name: string) {
+        this.getSelected().name = name;
+        this.refreshSearchList();
+        this.subscribeDesigner();
+    }
+
+    destroySelected() {
+        this.designerService.destroyFlow(this.getSelected().id);
+        this.refreshSearchList();
+        this.subscribeDesigner();
+    }
+
+    selectFlow(event: number) {
+        this.selectedIndex = event;
     }
 
     @ViewChild(FlowEditorComponent) flowEditor: FlowEditorComponent;

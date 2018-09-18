@@ -12,12 +12,10 @@ services:
   front:
     build: ./frontend
     volumes:
-      - ./frontend/real-designer:/app
-    entrypoint:
-      - ng
-      - serve
-      - --host
-      - "0.0.0.0"
+      - ./frontend/real-designer/src:/app/src
+    environment:
+      - NODE_ENV=development
+    entrypoint: ["ng", "serve", "--host", "0.0.0.0"]
 
   web:
     volumes:

@@ -91,22 +91,22 @@ export class DesignerService {
 			.reduce((o, [key, value]) => {
 				o[key] = value;
 				return o;
-			}, []);
+			}, []).filter(o => o);
 		let components = Array.from(this.currentProject.components)
 			.reduce((o, [key, value]) => {
 				o[key] = value;
 				return o;
-			}, []);
+			}, []).filter(o => o);
 		let flows = Array.from(this.currentProject.flows)
 			.reduce((o, [key, value]) => {
 				o[key] = value;
 				return o;
-			}, []);
+			}, []).filter(o => o);
 		let assets = Array.from(this.currentProject.assets)
 			.reduce((o, [key, value]) => {
 				o[key] = value;
 				return o;
-			}, []);
+			}, []).filter(o => o);
 
 		// TODO
 		/*
@@ -283,6 +283,10 @@ export class DesignerService {
 
 	destroyEntity(e_id: number) {
 		this.currentProject.entities.delete(e_id);
+	}
+
+	destroyAsset(id: number) {
+		this.currentProject.assets.delete(id);
 	}
 
 	destroyFlow(id: number) {

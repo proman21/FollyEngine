@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, QueryList, ViewChildren, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, Output, QueryList, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material';
 
 import { DesignerService } from '../../designer/designer.service';
@@ -21,6 +21,8 @@ declare var _: any;
 })
 export class FlowEditorComponent implements OnChanges {
     @Input() flow: DesignerFlow;
+    @Output() onNameChange = new EventEmitter<string>();
+    @Output() onDestroyFlow = new EventEmitter<string>();
 
     graph: any;
     paper: any;
@@ -42,35 +44,43 @@ export class FlowEditorComponent implements OnChanges {
 
     subscribed: Map<string, any> = new Map<string, any>(); // Id -> Functions
 
-    constructor(private designerService: DesignerService) {
+    constructor(private designerService: DesignerService, private elementRef:ElementRef) {
     }
 
     ngOnChanges() {
+        if (this.flow === undefined) {
+            this.graph.clear();
+            this.paper.remove();
+            var flowInner = this.elementRef.nativeElement.querySelector('.flow-inner');
+            flowInner.insertAdjacentHTML('beforeend', '<div class="flow-paper"></div>');
+            return;
+        }
+
         let entities = this.designerService.getEntities();
-        let entityEntries = Array.from(entities).reduce((o, [key, value]) => {
-            o[key] = value.name;
-            return o;
-        }, []);
+        let entityOptions = Array.from(entities).reduce<string>((s, [key, value]) => {
+            s += `<option value="${value.id}">${value.name}</option>`;
+            return s;
+        }, '');
         let components = this.designerService.getComponents();
-        let attributes = {};
+        let attributeOptions = {};
         entities.forEach((e) => {
-            attributes[e.name] = [];
+            attributeOptions[e.id] = '';
             e.components.forEach((c) => {
                 components.get(c).attributes.forEach(function(attr) {
-                    attributes[e.name].push(attr.getName());
+                    attributeOptions[e.id] += `<option>${attr.name}</option>`;
                 });
             });
         });
-        let flows = Array.from(this.designerService.getFlows()).reduce((o, [key, value]) => {
+        let flowOptions = Array.from(this.designerService.getFlows()).reduce<string>((s, [key, value]) => {
             if (key !== this.flow.id) {
-                o[key] = value.name;
+                s += `<option value="${value.id}">${value.name}</option>`;
             }
-            return o;
-        }, []);
-        let assets = Array.from(this.designerService.getAssets()).reduce((o, [key, value]) => {
-            o[key] = value.name;
-            return o;
-        }, []);
+            return s;
+        }, '');
+        let assetOptions = Array.from(this.designerService.getAssets()).reduce<string>((s, [key, value]) => {
+            s += `<option value="${value.id}">${value.name}</option>`;
+            return s;
+        }, '');
 
         this.graph = new joint.dia.Graph();
         this.paper = new joint.dia.Paper({
@@ -135,7 +145,8 @@ export class FlowEditorComponent implements OnChanges {
                             magnet: true
                         },
                         '.inPorts circle': { fill: 'green', magnet: 'passive', type: 'input'},
-                        '.outPorts circle': { fill: 'red', type: 'output'}
+                        '.outPorts circle': { fill: 'red', type: 'output'},
+                        '.outPorts text': { dx: '-12px', dy: '4px', 'text-anchor': 'end' }
                     }
                 };
             }
@@ -198,7 +209,8 @@ export class FlowEditorComponent implements OnChanges {
                 let outPorts = Object.values(this.model.ports).filter(p => p['type'] === 'out');
                 let $outPorts = this.$('.outPorts').empty();
                 outPorts.forEach(function (port, index) {
-                    $outPorts.append(V(`<g class="port${index}"><circle/></g>`).node);
+                    const id = outPorts.length > 1 ? port['id'] : '';
+                    $outPorts.append(V(`<g class="port${index}"><circle/><text>${id}</text></g>`).node);
                 });
             }
 
@@ -226,36 +238,41 @@ export class FlowEditorComponent implements OnChanges {
                     transform: 'scale(' + (1 / scale[1]) + ',' + (1 / scale[2]) + ')'
                 });
 
-                if (this.model.get('entity')) {
-                    this.$box.find('select[name="attr"]')
-                        .html(`<option>${attributes[this.model.get('entity')].join('</option><option>')}</option>`);
+                if (this.model.get('entity') !== null) {
+                    const attrs = attributeOptions[this.model.get('entity')];
+                    const attrSelect = this.$box.find('select[name="attr"]');
+                    if (attrs != attrSelect.html()) {
+                        attrSelect.html(attrs);
+                    }
                 }
             }
         };
 
         joint.shapes.folly.ConditionNode = class ConditionNode extends joint.shapes.folly.Node {
             get template() {
-                const attrs = attributes[Object.keys(attributes)[0]];
-                const actions = [
+                const conditionOptions = [
                     'Equal to',
                     'Greater than',
                     'Less than',
                     'Greater than or equal to',
                     'Less than or equal to'
-                ];
+                ].reduce<string>((s, value) => {
+                    s += `<option>${value}</option>`;
+                    return s;
+                }, '');
                 return `<span class="node-caption">Condition</span>
                         <div class="input-group">
                             <input name="name" type="text" value="New Condition"/>
                         </div>
                         <div class="input-group">
                             <label>Entity</label>
-                            <select name="entity"><option>${entityEntries.join('</option><option>')}</option></select>
+                            <select name="entity">${entityOptions}</select>
                             <label>Attribute</label>
-                            <select name="attr"><option>${attrs.join('</option><option>')}</option></select>
+                            <select name="attr">${attributeOptions[Object.keys(attributeOptions)[0]]}</select>
                         </div>
                         <div class="input-group">
                             <label>is</label>
-                            <select name="action"><option>${actions.join('</option><option>')}</option></select>
+                            <select name="action">${conditionOptions}</select>
                         </div>
                         <div class="input-group">
                             <label>Value</label>
@@ -274,25 +291,27 @@ export class FlowEditorComponent implements OnChanges {
 
         joint.shapes.folly.OperationNode = class OperationNode extends joint.shapes.folly.Node {
             get template() {
-                const attrs = attributes[Object.keys(attributes)[0]];
-                const actions = [
+                const operationOptions = [
                     'Add',
                     'Subtract',
                     'Set'
-                ];
+                ].reduce<string>((s, value) => {
+                    s += `<option>${value}</option>`;
+                    return s;
+                }, '');
                 return `<span class="node-caption">Operation</span>
                         <div class="input-group">
                             <input name="name" type="text" value="New Operation"/>
                         </div>
                         <div class="input-group">
                             <label>Entity</label>
-                            <select name="entity"><option>${entityEntries.join('</option><option>')}</option></select>
+                            <select name="entity">${entityOptions}</select>
                             <label>Attribute</label>
-                            <select name="attr"><option>${attrs.join('</option><option>')}</option></select>
+                            <select name="attr">${attributeOptions[Object.keys(attributeOptions)[0]]}</select>
                         </div>
                         <div class="input-group">
                             <label>Action</label>
-                            <select name="action"><option>${actions.join('</option><option>')}</option></select>
+                            <select name="action">${operationOptions}</select>
                         </div>
                         <div class="input-group">
                             <label>Value</label>
@@ -304,50 +323,50 @@ export class FlowEditorComponent implements OnChanges {
 
         joint.shapes.folly.ActionNode = class ActionNode extends joint.shapes.folly.Node {
             get template() {
-                const attrs = attributes[Object.keys(attributes)[0]];
-                const actions = [
-                    'OSC',
-                    'DMX'
-                ];
                 return `<span class="node-caption">Action</span>
                         <div class="input-group">
                             <input name="name" type="text" value="New Action"/>
                         </div>
                         <div class="input-group">
                             <label>Entity</label>
-                            <select name="entity"><option>${entityEntries.join('</option><option>')}</option></select>
+                            <select name="entity">${entityOptions}</select>
                             <label>Attribute</label>
-                            <select name="attr"><option>${attrs.join('</option><option>')}</option></select>
-                        </div>
-                        <div class="input-group">
-                            <label>Action</label>
-                            <select name="action"><option>${actions.join('</option><option>')}</option></select>
+                            <select name="attr">${attributeOptions[Object.keys(attributeOptions)[0]]}</select>
                         </div>
                         <div class="input-group">
                             <label>File</label>
-                            <select name="action"><option>${assets.join('</option><option>')}</option></select>
+                            <select name="action">${assetOptions}</select>
                         </div>`;
+            }
+
+            get defaults() {
+                return {
+                    ...super.defaults(),
+                    size: { width: 240, height: 160 }
+                };
             }
         };
         joint.shapes.folly.ActionNodeView = class extends joint.shapes.folly.NodeView {};
 
         joint.shapes.folly.TriggerNode = class TriggerNode extends joint.shapes.folly.Node {
             get template() {
-                const trigger = [
-                    'RFID',
-                    'Time'
-                ];
+                const triggerOptions = [
+                    'RFID'
+                ].reduce<string>((s, value) => {
+                    s += `<option>${value}</option>`;
+                    return s;
+                }, '');
                 return `<span class="node-caption">Trigger</span>
                         <div class="input-group">
                             <input name="name" type="text" value="New Trigger"/>
                         </div>
                         <div class="input-group">
                             <label>Type</label>
-                            <select name="trigger"><option>${trigger.join('</option><option>')}</option></select>
+                            <select name="trigger">${triggerOptions}</select>
                         </div>
                         <div class="input-group">
                             <label>Entity</label>
-                            <select name="entity"><option>${entityEntries.join('</option><option>')}</option></select>
+                            <select name="entity">${entityOptions}</select>
                         </div>`;
             }
 
@@ -364,7 +383,7 @@ export class FlowEditorComponent implements OnChanges {
             get template() {
                 return `<div class="input-group">
                             <label>Flow</label>
-                            <select name="flow"><option>${flows.join('</option><option>')}</option></select>
+                            <select name="flow">${flowOptions}</select>
                         </div>`;
             }
 
@@ -422,9 +441,11 @@ export class FlowEditorComponent implements OnChanges {
             return (evt.type === 'mousedown' && evt.buttons === 2);
         };
 
+        /*
         this.paper.on('cell:pointerdown', (cellView) => {
             cellView.model.toFront();
         });
+        */
 
         this.paper.on('blank:contextmenu', this.showBlankContextMenu.bind(this));
         this.paper.on('cell:contextmenu', this.showNodeContextMenu.bind(this));
@@ -508,6 +529,7 @@ export class FlowEditorComponent implements OnChanges {
             position: {...this.newNodePosition}
         });
         this.graph.addCell(cell);
+        this.saveFlow();
     }
 
     addTriggerNode() {
@@ -515,6 +537,7 @@ export class FlowEditorComponent implements OnChanges {
             position: {...this.newNodePosition}
         });
         this.graph.addCell(cell);
+        this.saveFlow();
     }
 
     addConditionNode() {
@@ -522,6 +545,7 @@ export class FlowEditorComponent implements OnChanges {
             position: {...this.newNodePosition}
         });
         this.graph.addCell(cell);
+        this.saveFlow();
     }
 
     addOperationNode() {
@@ -529,6 +553,7 @@ export class FlowEditorComponent implements OnChanges {
             position: {...this.newNodePosition}
         });
         this.graph.addCell(cell);
+        this.saveFlow();
     }
 
     addNestedFlowNode() {
@@ -536,16 +561,19 @@ export class FlowEditorComponent implements OnChanges {
             position: {...this.newNodePosition}
         });
         this.graph.addCell(cell);
+        this.saveFlow();
     }
 
     duplicateSelectedNode() {
         let cell = this.selected.clone();
         cell.translate(120, 90);
         this.graph.addCell(cell);
+        this.saveFlow();
     }
 
     deleteSelectedNode() {
         this.selected.remove();
+        this.saveFlow();
     }
 
     updateMouse(evt: any) {
@@ -558,11 +586,11 @@ export class FlowEditorComponent implements OnChanges {
             this.scrollX = this.mX;
             this.scrollY = this.mY;
 
-            let curX = $(".flow-outer").scrollLeft();
-            let curY = $(".flow-outer").scrollTop();
+            let curX = $(".flow-inner").scrollLeft();
+            let curY = $(".flow-inner").scrollTop();
 
-            $(".flow-outer").scrollLeft(curX - diffX);
-            $(".flow-outer").scrollTop(curY - diffY);
+            $(".flow-inner").scrollLeft(curX - diffX);
+            $(".flow-inner").scrollTop(curY - diffY);
         }
     }
 
@@ -579,6 +607,11 @@ export class FlowEditorComponent implements OnChanges {
 
     showNodeContextMenu(cellView, event, x, y) {
         event.preventDefault();
+
+        if (cellView.model.attributes.type == 'link') {
+            return;
+        }
+
         this.contextMenuPosition.x = event.clientX;
         this.contextMenuPosition.y = event.clientY;
         this.newNodePosition.x = x;
