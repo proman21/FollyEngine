@@ -47,6 +47,8 @@ class Entity(models.Model):
 class Flow(models.Model):
     name = models.CharField(max_length=64, unique=True)
     data = JSONField()
+    project = models.ForeignKey(Project, related_name='flows',
+                                on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
