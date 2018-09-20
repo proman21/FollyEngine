@@ -34,7 +34,7 @@ class Component(models.Model):
     class JSONAPIMeta:
         resource_name = 'components'
 
-    name = models.CharField(max_length=64, unique=True)
+    name = models.CharField(max_length=64)
     description = models.TextField(blank=True)
     attributes = JSONField(default=list)
     project = models.ForeignKey(Project, related_name='components',
@@ -45,8 +45,8 @@ class Entity(models.Model):
     class JSONAPIMeta:
         resource_name = 'entities'
 
-    name = models.CharField(max_length=64, unique=True)
-    slug = models.SlugField(max_length=64, allow_unicode=True, unique=True)
+    name = models.CharField(max_length=64)
+    slug = models.SlugField(max_length=64, allow_unicode=True)
     description = models.TextField(blank=True)
     project = models.ForeignKey(Project, related_name='entities',
                                 on_delete=models.CASCADE)
@@ -57,7 +57,7 @@ class Flow(models.Model):
     class JSONAPIMeta:
         resource_name = 'flows'
     
-    name = models.CharField(max_length=64, unique=True)
+    name = models.CharField(max_length=64)
     data = JSONField()
     project = models.ForeignKey(Project, related_name='flows',
                                 on_delete=models.CASCADE)
