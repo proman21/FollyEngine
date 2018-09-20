@@ -116,6 +116,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
+# Append slash
+# https://docs.djangoproject.com/en/2.1/ref/settings/#append-slash
+
+APPEND_SLASH = False
+
+
 # Rest Framework Configuration
 
 REST_FRAMEWORK = {
