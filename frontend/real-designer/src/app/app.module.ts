@@ -42,7 +42,7 @@ import { AuthInterceptor } from './auth/auth.interceptor';
     HttpClientModule
   ],
   providers: [
-    DesignerService
+    DesignerService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
