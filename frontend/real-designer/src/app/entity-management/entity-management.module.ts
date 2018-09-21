@@ -11,7 +11,6 @@ import { MaterialModule } from './../material.module';
 import { SharedUiModule } from '../shared-ui/shared-ui.module';
 import { EntityEditorComponent } from './entity-editor/entity-editor.component';
 import { ComponentDisplayComponent } from './component-display/component-display.component';
-import { DescriptionDisplayComponent } from './description-display/description-display.component';
 import { ProceduresDisplayComponent } from './procedures-display/procedures-display.component';
 
 @NgModule({
@@ -22,7 +21,6 @@ import { ProceduresDisplayComponent } from './procedures-display/procedures-disp
     EntityManagementComponent,
     EntityEditorComponent,
     ComponentDisplayComponent,
-    DescriptionDisplayComponent,
     ProceduresDisplayComponent
   ]
 })
