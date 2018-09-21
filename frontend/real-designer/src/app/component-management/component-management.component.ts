@@ -17,6 +17,8 @@ export class ComponentManagementComponent implements OnInit {
 
   ngOnInit() {
     this.subscribeDesigner();
+    // Show first component by default
+    this.selected_index = this.components.entries().next().value[1].id;
   }
 
   subscribeDesigner() {
@@ -49,9 +51,9 @@ export class ComponentManagementComponent implements OnInit {
   }
 
   newComponent() {
-    this.designerService.registerNewComponent(new DesignerComponent('New Component', []));
-    this.refreshSearchList();
-    this.subscribeDesigner();
+    this.designerService
+      .registerNewComponent(new DesignerComponent('New Component', []))
+      .then(() => this.subscribeDesigner());
   }
 
   changeName(name: string) {

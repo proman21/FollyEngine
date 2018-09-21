@@ -22,6 +22,9 @@ import { LoginScreenModule } from './login-screen/login-screen.module';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './auth/auth.interceptor';
+
 @NgModule({
   declarations: [AppComponent, GenericSelectDialog],
   entryComponents: [GenericSelectDialog],
@@ -38,7 +41,14 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     HttpClientModule
   ],
-  providers: [DesignerService],
+  providers: [
+    DesignerService
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
