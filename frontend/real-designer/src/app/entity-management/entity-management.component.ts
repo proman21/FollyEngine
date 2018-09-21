@@ -39,6 +39,8 @@ export class EntityManagementComponent implements OnInit {
 
   ngOnInit() {
     this.subscribeDesigner();
+    // Show first entity by default
+    this.selected_index = this.entities.entries().next().value[1].id;
   }
 
   subscribeDesigner() {
@@ -68,9 +70,7 @@ export class EntityManagementComponent implements OnInit {
   }
 
   newEntity() {
-    this.designerService.registerNewEntity(new DesignerEntity('New Entity'));
-    this.refreshSearchList();
-    this.subscribeDesigner();
+    this.designerService.registerNewEntity(new DesignerEntity('New Entity')).then(() => this.subscribeDesigner());
   }
 
   destroySelected() {

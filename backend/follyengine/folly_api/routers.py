@@ -60,7 +60,7 @@ class DefaultRouter(routers.DefaultRouter):
                 regex = route.url.format(
                     prefix=prefix,
                     lookup=lookup,
-                    trailing_slash=self.trailing_slash
+                    trailing_slash='/?'
                 )
 
                 # If there is no prefix, the first part of the url is probably

@@ -33,6 +33,7 @@
     "jointjs": "^2.1.2",
     "jquery": "^3.3.1",
     "lodash": "3.10.1",
+    "ngx-jsonapi": "^2.0.0-rc.4",
     "rxjs": "^6.2.2",
     "rxjs-compat": "^6.2.2",
     "ts-node": "~4.1.0",

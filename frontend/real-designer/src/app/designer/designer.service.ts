@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {
   DesignerEntity,
   DesignerComponent,
@@ -16,25 +16,25 @@ export class DesignerService {
   currentProject: Project;
   projects: Map<string, Project> = new Map<string, Project>();
 
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
-  setupExampleData() {
+  async setupExampleData() {
     // EXAMPLE DATA
 
     // Make entitites
-    this.registerNewEntity(new DesignerEntity('Player'));
-    this.registerNewEntity(new DesignerEntity('Wand'));
-    this.registerNewEntity(new DesignerEntity('Shop'));
+    const playerId = await this.registerNewEntity(new DesignerEntity('Player'));
+    const wandId = await this.registerNewEntity(new DesignerEntity('Wand'));
+    const shopId = await this.registerNewEntity(new DesignerEntity('Shop'));
 
     // Make components
-    this.registerNewComponent(
+    const mortalId = await this.registerNewComponent(
       new DesignerComponent('MortalComponent', [
         new DesignerAttribute('Health', 'Attribute description'),
         new DesignerAttribute('Status', 'Attribute description')
       ])
     );
 
-    this.registerNewComponent(
+    const inventoryId = await this.registerNewComponent(
       new DesignerComponent('InventoryComponent', [
         new DesignerAttribute('Money', 'Attribute description'),
         new DesignerAttribute('Items', 'Attribute description'),
@@ -42,7 +42,7 @@ export class DesignerService {
       ])
     );
 
-    this.registerNewComponent(
+    const magicId = await this.registerNewComponent(
       new DesignerComponent('MagicComponent', [
         new DesignerAttribute('Mana', 'Attribute description'),
         new DesignerAttribute('Max Mana', 'Attribute description'),
@@ -50,268 +50,391 @@ export class DesignerService {
       ])
     );
 
-    this.registerNewComponent(new DesignerComponent('RFID', [new DesignerAttribute('id', 'Attribute description')]));
+    const rfidId = await this.registerNewComponent(
+      new DesignerComponent('RFID', [new DesignerAttribute('id', 'Attribute description')])
+    );
 
     // Assign components
-    this.currentProject.entities.get(0).addComponent(0);
-    this.currentProject.entities.get(0).addComponent(1);
-    this.currentProject.entities.get(0).addComponent(2);
-    this.currentProject.entities.get(0).addComponent(3);
+    this.currentProject.entities.get(playerId).addComponent(mortalId);
+    this.currentProject.entities.get(playerId).addComponent(inventoryId);
+    this.currentProject.entities.get(playerId).addComponent(magicId);
+    this.currentProject.entities.get(playerId).addComponent(rfidId);
 
-    this.currentProject.entities.get(1).addComponent(2);
-    this.currentProject.entities.get(1).addComponent(3);
+    this.currentProject.entities.get(wandId).addComponent(magicId);
+    this.currentProject.entities.get(wandId).addComponent(rfidId);
 
-    this.currentProject.entities.get(2).addComponent(1);
-    this.currentProject.entities.get(2).addComponent(3);
+    this.currentProject.entities.get(shopId).addComponent(inventoryId);
+    this.currentProject.entities.get(shopId).addComponent(rfidId);
 
     // Add flow
-    this.registerNewFlow(new DesignerFlow('New Flow', null));
+    this.registerNewFlow(new DesignerFlow('New Flow', {}));
   }
 
   newProject(name: string) {
-    console.log('new project');
+    console.log('New project');
+    const project = new Project();
+    this.projects.set(name, project);
     this.currentProjectName = name;
-    const email = sessionStorage.getItem('email');
-    const project = name;
+    this.currentProject = project;
 
-    // TODO
-    /*
-		$.ajax({
-			url: 'new-project.php',
-			type: "POST",
-			data: {email: email, project: project}
-		});
-		*/
-
-    const p = new Project();
-    this.projects.set(name, p);
-    this.currentProject = p;
-
-    this.setupExampleData();
-    this.saveState();
+    this.http
+      .post(
+        'api/projects',
+        {
+          data: {
+            type: 'projects',
+            attributes: {
+              title: name,
+              description: '' // TODO
+            }
+          }
+        },
+        {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/vnd.api+json',
+            Accept: 'application/vnd.api+json'
+          })
+        }
+      )
+      .subscribe(data => {
+        project.id = data['data'].id;
+        this.setupExampleData();
+        this.saveState();
+      });
   }
 
   saveState() {
-    const email = sessionStorage.getItem('email');
-    const project = this.currentProjectName;
+    // FIXME Registrations and deletions happen instantly
+    //       but everything else is patched by this function
+    //       which must be manually initiated by the user
 
-    // convert maps to plain JS arrays
-    const entities = Array.from(this.currentProject.entities)
-      .reduce((o, [key, value]) => {
-        o[key] = value;
-        return o;
-      }, [])
-      .filter(o => o);
-    const components = Array.from(this.currentProject.components)
-      .reduce((o, [key, value]) => {
-        o[key] = value;
-        return o;
-      }, [])
-      .filter(o => o);
-    const flows = Array.from(this.currentProject.flows)
-      .reduce((o, [key, value]) => {
-        o[key] = value;
-        return o;
-      }, [])
-      .filter(o => o);
-    const assets = Array.from(this.currentProject.assets)
-      .reduce((o, [key, value]) => {
-        o[key] = value;
-        return o;
-      }, [])
-      .filter(o => o);
+    for (const [id, entity] of Array.from(this.currentProject.entities)) {
+      this.http.patch(
+        `api/projects/${this.currentProject.id}/entities/${id}`,
+        {
+          data: {
+            type: 'entities',
+            id: id,
+            attributes: {
+              name: entity.name,
+              description: entity.description
+            },
+            relationships: {
+              components: {
+                data: entity.components.reduce((data, c) => {
+                  data.push({ type: 'components', id: c });
+                  return data;
+                }, [])
+              }
+            }
+          }
+        },
+        {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/vnd.api+json',
+            Accept: 'application/vnd.api+json'
+          })
+        }
+      ).subscribe();
+    }
 
-    // TODO
-    /*
-		$.ajax({
-			url: 'save-state.php',
-			type: "POST",
-			data: {email: email, project: project, entities: entities, components: components}
-		});
-		*/
-    const state = JSON.stringify({
-      email: email,
-      project: project,
-      entities: entities,
-      components: components,
-      flows: flows,
-      assets: assets
-    });
-    console.log(JSON.parse(state));
-    localStorage.setItem('localState', state);
-  }
+    for (const [id, comp] of Array.from(this.currentProject.components)) {
+      this.http.patch(
+        `api/projects/${this.currentProject.id}/components/${id}`,
+        {
+          data: {
+            type: 'components',
+            id: id,
+            attributes: {
+              name: comp.name,
+              description: comp.description,
+              attributes: comp.attributes
+            }
+          }
+        },
+        {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/vnd.api+json',
+            Accept: 'application/vnd.api+json'
+          })
+        }
+      ).subscribe();
+    }
 
-  loadAllProjects() {
-    console.log('loading projects');
+    for (const [id, flow] of Array.from(this.currentProject.flows)) {
+      this.http.patch(
+        `api/projects/${this.currentProject.id}/flows/${id}`,
+        {
+          data: {
+            type: 'flows',
+            id: id,
+            attributes: {
+              name: flow.name,
+              data: flow.cells
+            }
+          }
+        },
+        {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/vnd.api+json',
+            Accept: 'application/vnd.api+json'
+          })
+        }
+      ).subscribe();
+    }
 
-    const self = this;
-    const email = sessionStorage.getItem('email');
-
-    // TODO
-    /*
-		$.ajax({
-			url: 'get-projects.php',
-			type: "GET",
-			data: {email: email},
-			success: function(data) {
-				let projs = data.split("\n");
-				for (let p in projs) {
-					if (projs[p] != "") {
-						let project = new Project();
-						self.projects.set(projs[p], project);
-					}
-				}
-			}
-		});
-		*/
-    const stateString = localStorage.getItem('localState');
-    if (stateString != null) {
-      const state = JSON.parse(stateString);
-      self.projects.set(state.project, new Project());
+    for (const [id, asset] of Array.from(this.currentProject.assets)) {
+      // TODO Endpoint does not yet exist
     }
   }
 
+  loadAllProjects() {
+    const self = this;
+    console.log('Loading projects');
+    this.http
+      .get('api/projects', {
+        headers: new HttpHeaders({
+          Accept: 'application/vnd.api+json'
+        })
+      })
+      .subscribe(data => {
+        const project = new Project();
+        for (const entry of data['data']) {
+          const project = new Project();
+          project.id = entry.id;
+          self.projects.set(entry.attributes.title, project);
+        }
+      });
+  }
+
   loadProject(name: string) {
-    console.log('loading project: ' + name);
+    console.log('Loading project: ' + name);
     this.currentProjectName = name;
+    this.currentProject = this.projects.get(this.currentProjectName);
     this.loadState();
   }
 
   loadState() {
     console.log('Loading state');
-    const self = this;
-    const email = sessionStorage.getItem('email');
+    this.http.get(`api/projects/${this.currentProject.id}`, {
+      headers: new HttpHeaders({
+        Accept: 'application/vnd.api+json'
+      })
+    });
+    this.loadFlows();
+    this.loadComponents();
+    this.loadEntities();
 
-    const project = this.currentProjectName;
-    this.currentProject = this.projects.get(this.currentProjectName);
-
-    // TODO
     /*
-		$.ajax({
-			url: 'load-state.php',
-			type: "GET",
-			data: {email: email, project: project},
-			success: function(data) {
-				let state = JSON.parse(data);
-				let components = state["components"];
-				let entities = state["entities"];
-
-				for (var comp in components) {
-					let c = components[comp];
-					let attrs = [];
-
-					for (var a in c["attributes"]) {
-						let atr = c["attributes"][a];
-						attrs.push(new DesignerAttribute(atr.name, atr.description));
-					}
-					self.registerNewComponent(new DesignerComponent(c.name, attrs));
-				}
-				for (var ent in entities) {
-					let e = entities[ent];
-					let de = new DesignerEntity(e.name);
-
-					for (var c in e["components"]) {
-						de.addComponent(e["components"][c]);
-					}
-
-					self.registerNewEntity(de);
-				}
-
-			}
-		});
-		*/
-    const state = JSON.parse(localStorage.getItem('localState'));
-    const components = state.components;
-    const entities = state.entities;
-    const flows = state.flows;
-    const assets = state.assets;
-
-    for (const entry of components) {
-      const attrs = [];
-      for (const attr of entry.attributes) {
-        attrs.push(new DesignerAttribute(attr.name, attr.description));
-      }
-      this.registerNewComponent(new DesignerComponent(entry.name, attrs));
-    }
-
-    for (const entry of entities) {
-      const entity = new DesignerEntity(entry.name);
-      for (const c in entry.components) {
-        entity.addComponent(entry.components[c]);
-      }
-      this.registerNewEntity(entity);
-    }
-
-    for (const entry of flows) {
-      const flow = new DesignerFlow(entry.name, entry.cells);
-      this.registerNewFlow(flow);
-    }
-
     for (const entry of assets) {
       this.registerNewAsset(new DesignerAsset(entry.name, entry.file));
     }
+    */
+  }
+
+  loadEntities() {
+    console.log('Loading entities...');
+    this.http
+      .get(`api/projects/${this.currentProject.id}/entities`, {
+        headers: new HttpHeaders({
+          Accept: 'application/vnd.api+json'
+        })
+      })
+      .subscribe(data => {
+        for (const entry of data['data']) {
+          const entity = new DesignerEntity(entry.attributes.name);
+          entity.id = entry.id;
+          entity.description = entry.attributes.description;
+          for (const c in entry.relationships.components.data) {
+            entity.addComponent(c['id']);
+          }
+          this.registerNewEntity(entity);
+        }
+        console.log('...loaded entities');
+      });
+  }
+
+  loadComponents() {
+    console.log('Loading components...');
+    this.http
+      .get(`api/projects/${this.currentProject.id}/components`, {
+        headers: new HttpHeaders({
+          Accept: 'application/vnd.api+json'
+        })
+      })
+      .subscribe(data => {
+        for (const entry of data['data']) {
+          const attrs = [];
+          for (const attr of entry.attributes.attributes) {
+            const designerAttribute = new DesignerAttribute(attr.name, attr.description);
+            designerAttribute.type = attr.type;
+            attrs.push(designerAttribute);
+          }
+          const component = new DesignerComponent(entry.attributes.name, attrs);
+          component.id = entry.id;
+          component.description = entry.attributes.description;
+          this.registerNewComponent(component);
+        }
+        console.log('...loaded components');
+      });
+  }
+
+  loadFlows() {
+    console.log('Loading flows...');
+    this.http
+      .get(`api/projects/${this.currentProject.id}/flows`, {
+        headers: new HttpHeaders({
+          Accept: 'application/vnd.api+json'
+        })
+      })
+      .subscribe(data => {
+        for (const entry of data['data']) {
+          const flow = new DesignerFlow(entry.attributes.name, entry.attributes.data);
+          flow.id = entry.id;
+          this.registerNewFlow(flow);
+        }
+        console.log('...loaded flows');
+      });
   }
 
   // TODO overloads?
-  addComponentToEntity(e_id: number, c_id: number) {
+  addComponentToEntity(e: number, c: number) {
     // TODO check registered
-    this.currentProject.entities.get(e_id).addComponent(c_id);
+    this.currentProject.entities.get(e).addComponent(c);
   }
 
-  removeComponentFromEntity(e_id: number, c_id: number) {
-    this.currentProject.entities.get(e_id).removeComponent(c_id);
+  removeComponentFromEntity(e: number, c: number) {
+    this.currentProject.entities.get(e).removeComponent(c);
   }
 
-  registerNewEntity(entity: DesignerEntity): number {
-    const id = this.currentProject.ent_gen.gen();
-    entity.id = id;
-    this.currentProject.entities.set(id, entity);
+  async registerNewEntity(entity: DesignerEntity): Promise<number> {
+    if (!entity.id) {
+      const data = await this.http
+        .post(
+          `api/projects/${this.currentProject.id}/entities`,
+          {
+            data: {
+              type: 'entities',
+              attributes: {
+                name: entity.name,
+                description: entity.description
+              }
+            }
+          },
+          {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/vnd.api+json',
+              Accept: 'application/vnd.api+json'
+            })
+          }
+        )
+        .toPromise();
+      entity.id = data['data'].id;
+    }
+    this.currentProject.entities.set(entity.id, entity);
 
-    return id;
+    return entity.id;
   }
 
-  registerNewComponent(comp: DesignerComponent): number {
-    const id = this.currentProject.comp_gen.gen();
-    comp.id = id;
-    this.currentProject.components.set(id, comp);
+  async registerNewComponent(comp: DesignerComponent): Promise<number> {
+    if (!comp.id) {
+      const data = await this.http
+        .post(
+          `api/projects/${this.currentProject.id}/components`,
+          {
+            data: {
+              type: 'components',
+              attributes: {
+                name: comp.name,
+                description: comp.description,
+                attributes: comp.attributes
+              }
+            }
+          },
+          {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/vnd.api+json',
+              Accept: 'application/vnd.api+json'
+            })
+          }
+        )
+        .toPromise();
+      comp.id = data['data'].id;
+    }
+    this.currentProject.components.set(comp.id, comp);
 
-    return id;
+    return comp.id;
   }
 
-  registerNewFlow(flow: DesignerFlow): number {
-    const id = this.currentProject.flow_gen.gen();
-    flow.id = id;
-    this.currentProject.flows.set(id, flow);
+  async registerNewFlow(flow: DesignerFlow): Promise<number> {
+    if (!flow.id) {
+      const data = await this.http
+        .post(
+          `api/projects/${this.currentProject.id}/flows`,
+          {
+            data: {
+              type: 'flows',
+              attributes: {
+                name: flow.name,
+                data: flow.cells
+              }
+            }
+          },
+          {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/vnd.api+json',
+              Accept: 'application/vnd.api+json'
+            })
+          }
+        )
+        .toPromise();
+      flow.id = data['data'].id;
+    }
+    this.currentProject.flows.set(flow.id, flow);
 
-    return id;
+    return flow.id;
   }
 
   registerNewAsset(asset: DesignerAsset): number {
-    const id = this.currentProject.asset_gen.gen();
-    asset.id = id;
-    this.currentProject.assets.set(id, asset);
-
-    return id;
+    // TODO
+    asset.id = -1;
+    this.currentProject.assets.set(asset.id, asset);
+    return asset.id;
   }
 
-  destroyEntity(e_id: number) {
-    this.currentProject.entities.delete(e_id);
+  destroyEntity(id: number) {
+    this.currentProject.entities.delete(id);
+    this.http.delete(`api/projects/${this.currentProject.id}/entities/${id}`, {
+      headers: new HttpHeaders({
+        Accept: 'application/vnd.api+json'
+      })
+    });
   }
 
-  destroyAsset(id: number) {
-    this.currentProject.assets.delete(id);
+  destroyComponent(c: number) {
+    for (const e of Array.from(this.currentProject.entities.keys())) {
+      // TODO restrict components to sets per entity
+      this.removeComponentFromEntity(e, c);
+    }
+    this.currentProject.components.delete(c);
+    this.http.delete(`api/projects/${this.currentProject.id}/components/${c}`, {
+      headers: new HttpHeaders({
+        Accept: 'application/vnd.api+json'
+      })
+    });
   }
 
   destroyFlow(id: number) {
     this.currentProject.flows.delete(id);
+    this.http.delete(`api/projects/${this.currentProject.id}/flows/${id}`, {
+      headers: new HttpHeaders({
+        Accept: 'application/vnd.api+json'
+      })
+    });
   }
 
-  destroyComponent(c_id: number) {
-    for (const e_id of Array.from(this.currentProject.entities.keys())) {
-      // TODO restrict components to sets per entity
-      this.removeComponentFromEntity(e_id, c_id);
-    }
-    this.currentProject.components.delete(c_id);
+  destroyAsset(id: number) {
+    this.currentProject.assets.delete(id);
   }
 
   getEntities() {
@@ -336,19 +459,9 @@ export class DesignerService {
 }
 
 export class Project {
-  ent_gen: NumGen = new NumGen();
-  comp_gen: NumGen = new NumGen();
-  flow_gen: NumGen = new NumGen();
-  asset_gen: NumGen = new NumGen();
+  id: number;
   entities: Map<number, DesignerEntity> = new Map();
   components: Map<number, DesignerComponent> = new Map();
   flows: Map<number, DesignerFlow> = new Map();
   assets: Map<number, DesignerAsset> = new Map();
-}
-
-class NumGen {
-  num = 0;
-  gen() {
-    return this.num++;
-  }
 }

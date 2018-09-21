@@ -18,6 +18,8 @@ export class FlowManagementComponent {
 
   ngOnInit() {
     this.subscribeDesigner();
+    // Show first flow by default
+    this.selectedIndex = this.flows.entries().next().value[1].id;
   }
 
   subscribeDesigner() {
@@ -46,10 +48,8 @@ export class FlowManagementComponent {
   }
 
   newFlow() {
-    const flow = new DesignerFlow('New Flow', null);
-    this.designerService.registerNewFlow(flow);
-    this.subscribeDesigner();
-    this.selectFlow(flow.id);
+    const flow = new DesignerFlow('New Flow', {});
+    this.designerService.registerNewFlow(flow).then(() => this.subscribeDesigner());
   }
 
   changeName(name: string) {
