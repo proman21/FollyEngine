@@ -408,7 +408,7 @@ export class DesignerService {
       headers: new HttpHeaders({
         Accept: 'application/vnd.api+json'
       })
-    });
+    }).subscribe();
   }
 
   destroyComponent(c: number) {
@@ -421,7 +421,7 @@ export class DesignerService {
       headers: new HttpHeaders({
         Accept: 'application/vnd.api+json'
       })
-    });
+    }).subscribe();
   }
 
   destroyFlow(id: number) {
@@ -430,7 +430,7 @@ export class DesignerService {
       headers: new HttpHeaders({
         Accept: 'application/vnd.api+json'
       })
-    });
+    }).subscribe();
   }
 
   destroyAsset(id: number) {
