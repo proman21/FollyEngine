@@ -34,6 +34,9 @@ class Component(models.Model):
     project = models.ForeignKey(Project, related_name='components',
                                 on_delete=models.CASCADE)
 
+    class Meta:
+        unique_together = ('name', 'project')
+
 
 class Entity(models.Model):
     name = models.CharField(max_length=64)
@@ -43,12 +46,18 @@ class Entity(models.Model):
                                 on_delete=models.CASCADE)
     components = models.ManyToManyField(Component, related_name='implementers')
 
+    class Meta:
+        unique_together = ('name', 'project')
+
 
 class Flow(models.Model):
     name = models.CharField(max_length=64)
     data = JSONField()
     project = models.ForeignKey(Project, related_name='flows',
                                 on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('name', 'project')
 
     def __str__(self):
         return self.name
