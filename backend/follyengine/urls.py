@@ -21,13 +21,14 @@ from rest_framework.authtoken import views as rest_views
 from follyengine.folly_api import views
 from follyengine.folly_api.routers import DefaultRouter, NestedDefaultRouter
 
-router = DefaultRouter()
+router = DefaultRouter(trailing_slash=False)
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'projects', views.ProjectViewSet, base_name='project',
                 relationship_view=views.ProjectRelationshipView)
 
-project_router = NestedDefaultRouter(router, r'projects', lookup='project')
+project_router = NestedDefaultRouter(router, r'projects', lookup='project',
+                                     trailing_slash=False)
 project_router.register(r'entities', views.EntityViewSet, base_name='entity',
                         relationship_view=views.EntityRelationshipView,)
 project_router.register(r'components', views.ComponentViewSet,
