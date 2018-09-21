@@ -27,16 +27,18 @@ class DefaultRouter(routers.DefaultRouter):
         self.registry.append((prefix, viewset, base_name))
 
     def get_urls(self):
-        self.routes.remove(self.relationships_route)
+        rel_route = next(r for r in self.routes
+                         if r.name == '{basename}-relationships')
+        self.routes.remove(rel_route)
         urls = super().get_urls()
 
         for prefix, viewset, basename in self.registry:
             lookup = self.get_lookup_regex(viewset)
-            rel_name = self.relationships_route.name.format(basename=basename)
+            rel_name = rel_route.name.format(basename=basename)
 
             if prefix in self.relationship_registry:
                 relationship_view = self.relationship_registry[prefix]
-                rel_regex = self.relationships_route.url.format(
+                rel_regex = rel_route.url.format(
                     prefix=prefix,
                     lookup=lookup,
                     trailing_slash=self.trailing_slash,
