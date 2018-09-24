@@ -70,7 +70,7 @@ export class DesignerService {
     this.registerNewFlow(new DesignerFlow('New Flow', {}));
   }
 
-  newProject(name: string) {
+  async newProject(name: string) {
     console.log('New project');
     const project = new Project();
     this.projects.set(name, project);
@@ -96,9 +96,9 @@ export class DesignerService {
           })
         }
       )
-      .subscribe(data => {
+      .subscribe(async data => {
         project.id = data['data'].id;
-        this.setupExampleData();
+        await this.setupExampleData();
         this.saveState();
       });
   }
@@ -118,16 +118,24 @@ export class DesignerService {
             attributes: {
               name: entity.name,
               description: entity.description
-            },
-            relationships: {
-              components: {
-                data: entity.components.reduce((data, c) => {
-                  data.push({ type: 'components', id: c });
-                  return data;
-                }, [])
-              }
             }
           }
+        },
+        {
+          headers: new HttpHeaders({
+            'Content-Type': 'application/vnd.api+json',
+            Accept: 'application/vnd.api+json'
+          })
+        }
+      ).subscribe();
+
+      this.http.patch(
+        `api/projects/${this.currentProject.id}/entities/${id}/relationships/components`,
+        {
+          data: entity.components.reduce((data, c) => {
+            data.push({ type: 'components', id: c });
+            return data;
+          }, [])
         },
         {
           headers: new HttpHeaders({
@@ -207,14 +215,14 @@ export class DesignerService {
       });
   }
 
-  loadProject(name: string) {
+  async loadProject(name: string) {
     console.log('Loading project: ' + name);
     this.currentProjectName = name;
     this.currentProject = this.projects.get(this.currentProjectName);
-    this.loadState();
+    await this.loadState();
   }
 
-  loadState() {
+  async loadState() {
     console.log('Loading state');
     this.http.get(`api/projects/${this.currentProject.id}`, {
       headers: new HttpHeaders({
@@ -222,8 +230,8 @@ export class DesignerService {
       })
     });
     this.loadFlows();
-    this.loadComponents();
-    this.loadEntities();
+    await this.loadComponents();
+    await this.loadEntities();
 
     /*
     for (const entry of assets) {
@@ -232,51 +240,49 @@ export class DesignerService {
     */
   }
 
-  loadEntities() {
+  async loadEntities() {
     console.log('Loading entities...');
-    this.http
+    const data = await this.http
       .get(`api/projects/${this.currentProject.id}/entities`, {
         headers: new HttpHeaders({
           Accept: 'application/vnd.api+json'
         })
       })
-      .subscribe(data => {
-        for (const entry of data['data']) {
-          const entity = new DesignerEntity(entry.attributes.name);
-          entity.id = entry.id;
-          entity.description = entry.attributes.description;
-          for (const c in entry.relationships.components.data) {
-            entity.addComponent(c['id']);
-          }
-          this.registerNewEntity(entity);
-        }
-        console.log('...loaded entities');
-      });
+      .toPromise();
+    for (const entry of data['data']) {
+      const entity = new DesignerEntity(entry.attributes.name);
+      entity.id = entry.id;
+      entity.description = entry.attributes.description;
+      for (const c of entry.relationships.components.data) {
+        entity.addComponent(c['id']);
+      }
+      this.registerNewEntity(entity);
+    }
+    console.log('...loaded entities');
   }
 
-  loadComponents() {
+  async loadComponents() {
     console.log('Loading components...');
-    this.http
+    const data = await this.http
       .get(`api/projects/${this.currentProject.id}/components`, {
         headers: new HttpHeaders({
           Accept: 'application/vnd.api+json'
         })
       })
-      .subscribe(data => {
-        for (const entry of data['data']) {
-          const attrs = [];
-          for (const attr of entry.attributes.attributes) {
-            const designerAttribute = new DesignerAttribute(attr.name, attr.description);
-            designerAttribute.type = attr.type;
-            attrs.push(designerAttribute);
-          }
-          const component = new DesignerComponent(entry.attributes.name, attrs);
-          component.id = entry.id;
-          component.description = entry.attributes.description;
-          this.registerNewComponent(component);
-        }
-        console.log('...loaded components');
-      });
+      .toPromise();
+    for (const entry of data['data']) {
+      const attrs = [];
+      for (const attr of entry.attributes.attributes) {
+        const designerAttribute = new DesignerAttribute(attr.name, attr.description);
+        designerAttribute.type = attr.type;
+        attrs.push(designerAttribute);
+      }
+      const component = new DesignerComponent(entry.attributes.name, attrs);
+      component.id = entry.id;
+      component.description = entry.attributes.description;
+      this.registerNewComponent(component);
+    }
+    console.log('...loaded components');
   }
 
   loadFlows() {

@@ -33,18 +33,20 @@ export class WelcomeDialogComponent implements OnInit {
   }
 
   loadProject(name: string) {
-    this.dialogRef.close();
     this.projectName.setValue(name); // Hack
-    this.designerService.loadProject(name);
+    this.designerService.loadProject(name).then(() => {
+      this.dialogRef.close();
+    });
   }
 
   createProject() {
     if (this.projectName.valid) {
-      this.dialogRef.close();
+      this.designerService.newProject(this.projectName.value).then(() => {
+        this.dialogRef.close();
+      });
     } else {
       this.projectName.markAsTouched();
     }
-    this.designerService.newProject(this.projectName.value);
   }
 
   cancelNewProject() {
