@@ -135,7 +135,7 @@ export class DesignerService {
             Accept: 'application/vnd.api+json'
           })
         }
-      );
+      ).subscribe();
     }
 
     for (const [id, comp] of Array.from(this.currentProject.components)) {
@@ -158,7 +158,7 @@ export class DesignerService {
             Accept: 'application/vnd.api+json'
           })
         }
-      );
+      ).subscribe();
     }
 
     for (const [id, flow] of Array.from(this.currentProject.flows)) {
@@ -180,7 +180,7 @@ export class DesignerService {
             Accept: 'application/vnd.api+json'
           })
         }
-      );
+      ).subscribe();
     }
 
     for (const [id, asset] of Array.from(this.currentProject.assets)) {
