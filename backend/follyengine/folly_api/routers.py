@@ -27,59 +27,27 @@ class DefaultRouter(routers.DefaultRouter):
         self.registry.append((prefix, viewset, base_name))
 
     def get_urls(self):
-        ret = []
+        rel_route = next(r for r in self.routes
+                         if r.name == '{basename}-relationships')
+        self.routes.remove(rel_route)
+        urls = super().get_urls()
 
         for prefix, viewset, basename in self.registry:
             lookup = self.get_lookup_regex(viewset)
-            routes = self.get_routes(viewset)
-            rel_name = self.relationships_route.name.format(basename=basename)
+            rel_name = rel_route.name.format(basename=basename)
 
-            for route in routes:
-                name = route.name.format(basename=basename)
-
-                if name == rel_name:
-                    if prefix in self.relationship_registry:
-                        relationship_view = self.relationship_registry[prefix]
-                        rel_regex = route.url.format(
-                            prefix=prefix,
-                            lookup=lookup,
-                            trailing_slash=self.trailing_slash,
-                            rel_lookup='(?P<related_field>[^/.]+)'
-                        )
-                        ret.append(url(rel_regex, relationship_view.as_view(),
-                                   name=name))
-                    continue
-
-                # Only actions which actually exist on the viewset will be
-                # bound
-                mapping = self.get_method_map(viewset, route.mapping)
-                if not mapping:
-                    continue
-
-                # Build the url pattern
-                regex = route.url.format(
+            if prefix in self.relationship_registry:
+                relationship_view = self.relationship_registry[prefix]
+                rel_regex = rel_route.url.format(
                     prefix=prefix,
                     lookup=lookup,
-                    trailing_slash='/?'
+                    trailing_slash=self.trailing_slash,
+                    rel_lookup='(?P<related_field>[^/.]+)'
                 )
+                urls.append(url(rel_regex, relationship_view.as_view(),
+                            name=rel_name))
 
-                # If there is no prefix, the first part of the url is probably
-                # controlled by project's urls.py and the router is in an app,
-                # so a slash in the beginning will (A) cause Django to give
-                # warnings and (B) generate URLS that will require using '//'.
-                if not prefix and regex[:2] == '^/':
-                    regex = '^' + regex[2:]
-
-                initkwargs = route.initkwargs.copy()
-                initkwargs.update({
-                    'basename': basename,
-                    'detail': route.detail,
-                })
-
-                view = viewset.as_view(mapping, **initkwargs)
-                ret.append(url(regex, view, name=name))
-
-        return ret
+        return urls
 
 
 class NestedDefaultRouter(NestedMixin, DefaultRouter):
