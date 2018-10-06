@@ -7,7 +7,6 @@ from rest_framework.authtoken.models import Token
 from django.contrib.postgres.fields import JSONField
 
 
-# Create your models here.
 class Project(models.Model):
     title = models.CharField(max_length=64)
     slug = models.SlugField(max_length=64, allow_unicode=True)
@@ -61,6 +60,16 @@ class Flow(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Asset(models.Model):
+    name = models.CharField(max_length=64)
+    file = models.FileField(upload_to='assets/')
+    project = models.ForeignKey(Project, related_name='assets',
+                                on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('name', 'project')
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)

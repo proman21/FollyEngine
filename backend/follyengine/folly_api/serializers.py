@@ -69,11 +69,18 @@ class FlowSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('name', 'data')
 
 
+class AssetSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.Asset
+        fields = ('name',)
+        read_only_fields = ('file',)
+
+
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Project
         fields = ('url', 'title', 'description', 'slug', 'owner', 'entities',
-                  'components')
+                  'components', 'assets')
         read_only_fields = ('created', 'modified',)
 
     slug = serializers.SlugField(read_only=True)
@@ -94,11 +101,18 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         related_link_view_name='component-list',
         related_link_url_kwarg='project_pk'
     )
+    assets = serializers.ResourceRelatedField(
+        read_only=True,
+        many=True,
+        related_link_view_name='asset-list',
+        related_link_url_kwarg='project_pk'
+    )
 
     included_serializers = {
         'entities': EntitySerializer,
         'components': ComponentSerializer,
-        'flows': FlowSerializer
+        'flows': FlowSerializer,
+        'assets': AssetSerializer,
     }
 
 

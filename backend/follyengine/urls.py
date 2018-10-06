@@ -34,11 +34,13 @@ project_router.register(r'entities', views.EntityViewSet, base_name='entity',
 project_router.register(r'components', views.ComponentViewSet,
                         base_name='component')
 project_router.register(r'flows', views.FlowViewSet, base_name='flow')
+project_router.register(r'assets', views.AssetViewSet, base_name='asset')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^api/', include(router.urls)),
     url(r'^api/', include(project_router.urls)),
     url(r'^api/auth/token', rest_views.obtain_auth_token),
-    url(r'^api/', include('rest_framework.urls', namespace='rest_framework'))
+    url(r'^api/auth/', include('rest_framework.urls',
+                               namespace='rest_framework'))
 ]

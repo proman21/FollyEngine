@@ -1,9 +1,18 @@
 from django.contrib.auth.models import User, Group
 
 from rest_framework import viewsets, permissions
+from rest_framework.response import Response
+from rest_framework.decorators import action
+from rest_framework.parsers import FileUploadParser
 from rest_framework_json_api import views
 
-from follyengine.folly_api.models import Entity, Project, Component, Flow
+from follyengine.folly_api.models import (
+    Entity,
+    Project,
+    Component,
+    Flow,
+    Asset
+)
 from follyengine.folly_api import serializers
 
 
@@ -104,3 +113,23 @@ class FlowViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         project = Project.objects.get(pk=self.kwargs['project_pk'])
         serializer.save(project=project)
+
+
+class AssetViewSet(viewsets.ModelViewSet):
+    resource_name = 'assets'
+    serializer_class = serializers.AssetSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        return Asset.objects.filter(project=self.kwargs['project_pk'])
+
+    def perform_create(self, serializer):
+        project = Project.objects.get(pk=self.kwargs['project_pk'])
+        serializer.save(project=project)
+
+    @action(methods=['POST'], detail=True, parser_classes=[FileUploadParser])
+    def upload(self, request, pk=None):
+        file = request.data['file']
+        asset = self.get_object()
+        asset.file.save(file.name, file)
+        return Response(self.get_serializer(instance=asset).data)
