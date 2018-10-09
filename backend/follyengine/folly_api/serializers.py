@@ -1,8 +1,5 @@
-import copy
-import re
-
 from django.contrib.auth.models import User, Group
-from rest_framework import serializers
+from rest_framework import serializers as rf_serializers
 from rest_framework_json_api import serializers
 from rest_framework_nested import relations
 
@@ -44,7 +41,7 @@ class EntitySerializer(serializers.HyperlinkedModelSerializer):
     )
 
 
-class EntityExportSerializer(serializers.ModelSerializer):
+class EntityExportSerializer(rf_serializers.ModelSerializer):
     class Meta:
         model = models.Entity
         fields = ('name', 'slug', 'description', 'components')
@@ -76,7 +73,7 @@ class ComponentSerializer(serializers.HyperlinkedModelSerializer):
     # }])
 
 
-class ComponentExportSerializer(serializers.ModelSerializer):
+class ComponentExportSerializer(rf_serializers.ModelSerializer):
     class Meta:
         model = models.Component
         fields = ('name', 'slug', 'description', 'attributes')
@@ -85,10 +82,10 @@ class ComponentExportSerializer(serializers.ModelSerializer):
 class FlowSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Flow
-        fields = ('name', 'data')
+        fields = ('url', 'name', 'data')
 
 
-class FlowExportSerializer(serializers.ModelSerializer):
+class FlowExportSerializer(rf_serializers.ModelSerializer):
     class Meta:
         model = models.Flow
         fields = ('name', 'data')
@@ -134,7 +131,7 @@ class ProjectCreateSerializer(ProjectSerializer):
     owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
 
-class ProjectExportSerializer(serializers.ModelSerializer):
+class ProjectExportSerializer(rf_serializers.ModelSerializer):
     class Meta:
         model = models.Project
         fields = ('title', 'description', 'created', 'modified', 'entities',
