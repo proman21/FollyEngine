@@ -1,7 +1,11 @@
 from django.contrib.auth.models import User, Group
 
 from rest_framework import viewsets, permissions
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.renderers import BrowsableAPIRenderer
 from rest_framework_json_api import views
+from rest_framework_yaml.renderers import YAMLRenderer
 
 from follyengine.folly_api.models import Entity, Project, Component, Flow
 from follyengine.folly_api import serializers
@@ -60,6 +64,23 @@ class ProjectViewSet(views.ModelViewSet):
 class ProjectRelationshipView(views.RelationshipView):
     def get_queryset(self):
         return self.request.user.projects.all()
+
+
+class ProjectConfigurationViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.ProjectConfigurationSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    renderer_classes = (YAMLRenderer, BrowsableAPIRenderer,)
+    http_method_names = ['get']
+    
+    def get_queryset(self):
+        return self.request.user.projects.all()
+
+    """def retrieve(self, request, *args, **kwargs):
+        project = Project.objects.get(pk=self.kwargs['pk'])
+        serializer = self.serializer_class(project)
+        response = Response(serializer.data)
+        response['Content-Disposition'] = 'attachment; filename="{0}.yaml"'.format(project.slug)
+        return response"""
 
 
 class EntityViewSet(viewsets.ModelViewSet):

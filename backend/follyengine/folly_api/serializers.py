@@ -1,4 +1,8 @@
+import copy
+import re
+
 from django.contrib.auth.models import User, Group
+from rest_framework.serializers import BaseSerializer
 from rest_framework_json_api import serializers
 from rest_framework_nested import relations
 
@@ -107,3 +111,66 @@ class ProjectCreateSerializer(ProjectSerializer):
         default=serializers.CreateOnlyDefault(SlugDefault('title'))
     )
     owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
+
+class ProjectConfigurationSerializer(BaseSerializer):
+    def to_representation(self, obj):
+        entities = {}
+        components = {}
+        nodes = {}
+        
+        for e in obj.entities.all():
+            entities[e.slug] = {}
+            entities[e.slug]['components'] = []
+            for c in e.components.all():
+                entities[e.slug]['components'].append(c.name)
+
+        for c in obj.components.all():
+            components[c.name] = {}
+            components[c.name]['attributes'] = {}
+            for a in c.attributes:
+                components[c.name]['attributes'][a['name']] = {}
+                components[c.name]['attributes'][a['name']]['type'] = a['type']
+
+        node_keys = {}
+        node_key = 0
+        for f in obj.flows.all():
+            elements = copy.deepcopy(f.data)
+            for element in elements:
+                if element['type'] == 'link':
+                    continue
+                node_keys[element['id']] = node_key
+
+                nodes[node_key] = {}
+                nodes[node_key]['type'] = re.search(r'folly\.(\w+)Node', element['type']).group(1).lower()
+                
+                element.pop('id', None)
+                element.pop('name', None)
+                element.pop('type', None)
+                element.pop('attrs', None)
+                element.pop('position', None)
+                element.pop('z', None)
+
+                # TODO
+                if 'entity' in element:
+                    element['entity'] = obj.entities.get(id=element['entity']).slug
+                
+                nodes[node_key]['args'] = element
+                nodes[node_key]['go'] = []
+                node_key += 1
+            
+            links = {}
+            for n in f.data:
+                if n['type'] != 'link':
+                    continue
+
+                source_key = node_keys[n['source']['id']]
+                source_port = n['source']['port'].lower()
+                target_key = node_keys[n['target']['id']]
+                nodes[source_key]['go'].append({'from': source_port, 'to': target_key})
+
+        return {
+            'entities': entities,
+            'components': components,
+            'nodes': nodes
+        }

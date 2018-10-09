@@ -26,6 +26,7 @@ router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
 router.register(r'projects', views.ProjectViewSet, base_name='project',
                 relationship_view=views.ProjectRelationshipView)
+router.register(r'configs', views.ProjectConfigurationViewSet, base_name='config')
 
 project_router = NestedDefaultRouter(router, r'projects', lookup='project',
                                      trailing_slash=False)
