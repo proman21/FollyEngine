@@ -63,7 +63,10 @@ class ProjectViewSet(views.ModelViewSet):
     def export(self, request, pk=None):
         project = self.get_object()
         serializer = serializers.ProjectExportSerializer(project)
-        return Response(serializer.data)
+        headers = {
+            'Content-Disposition': f'attachment; filename="{project.slug}.yaml"'
+        }
+        return Response(serializer.data, headers=headers)
 
 
 class ProjectRelationshipView(views.RelationshipView):
