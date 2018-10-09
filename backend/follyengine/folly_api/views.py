@@ -1,9 +1,8 @@
 from django.contrib.auth.models import User, Group
 
 from rest_framework import viewsets, permissions
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.renderers import BrowsableAPIRenderer
+from rest_framework.decorators import action
 from rest_framework_json_api import views
 from rest_framework_yaml.renderers import YAMLRenderer
 
@@ -60,27 +59,16 @@ class ProjectViewSet(views.ModelViewSet):
     def get_queryset(self):
         return self.request.user.projects.all().order_by('-modified')
 
+    @action(detail=True, renderer_classes=[YAMLRenderer])
+    def export(self, request, pk=None):
+        project = self.get_object()
+        serializer = serializers.ProjectExportSerializer(project)
+        return Response(serializer.data)
+
 
 class ProjectRelationshipView(views.RelationshipView):
     def get_queryset(self):
         return self.request.user.projects.all()
-
-
-class ProjectConfigurationViewSet(viewsets.ModelViewSet):
-    serializer_class = serializers.ProjectConfigurationSerializer
-    permission_classes = (permissions.IsAuthenticated,)
-    renderer_classes = (YAMLRenderer, BrowsableAPIRenderer,)
-    http_method_names = ['get']
-    
-    def get_queryset(self):
-        return self.request.user.projects.all()
-
-    """def retrieve(self, request, *args, **kwargs):
-        project = Project.objects.get(pk=self.kwargs['pk'])
-        serializer = self.serializer_class(project)
-        response = Response(serializer.data)
-        response['Content-Disposition'] = 'attachment; filename="{0}.yaml"'.format(project.slug)
-        return response"""
 
 
 class EntityViewSet(viewsets.ModelViewSet):
