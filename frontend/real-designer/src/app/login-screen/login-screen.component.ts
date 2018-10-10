@@ -6,6 +6,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 import { DesignerService } from '../designer/designer.service';
 
@@ -22,7 +23,8 @@ export class LoginScreenComponent {
     private designerService: DesignerService,
     private domSanitizer: DomSanitizer,
     public matIconRegistry: MatIconRegistry,
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) {
     // Add custom material icons
     //matIconRegistry.addSvgIcon('facebook', domSanitizer.bypassSecurityTrustResourceUrl("assets/icon/facebook.svg"));
@@ -66,14 +68,14 @@ export class LoginScreenComponent {
 
       this.http.post('api/auth/token', { username: username, password: password }, httpOptions).subscribe(data => {
         if (data['token']) {
-          self.welcomeName = username;
+          this.welcomeName = username;
           sessionStorage.setItem('username', username);
           sessionStorage.setItem('token', data['token']);
-          self.designerService.loadAllProjects(); // Load all projects with this username
-          self.transition();
+          this.designerService.loadAllProjects(); // Load all projects with this username
+          this.router.navigate(['projects']);
         } else {
-          self.username.reset();
-          self.password.reset();
+          this.username.reset();
+          this.password.reset();
           console.log('username or password incorrect');
         }
       });
@@ -151,11 +153,6 @@ export class LoginScreenComponent {
           this.makeEmail.markAsTouched();
           this.makePassword.markAsTouched();
       }*/
-  }
-
-  guestLogin() {
-    sessionStorage.setItem('username', 'Guest');
-    this.transition();
   }
 
   /* Transition */

@@ -13,6 +13,7 @@ export class WelcomeDialogComponent implements OnInit {
   constructor(private designerService: DesignerService, private dialogRef: MatDialogRef<WelcomeDialogComponent>) {}
 
   currentView = 0;
+  projectId: number;
   projectName = new FormControl('', [Validators.required]);
   projectDescription = new FormControl('');
   projectTags = new FormControl('');
@@ -32,9 +33,9 @@ export class WelcomeDialogComponent implements OnInit {
     this.currentView = 1;
   }
 
-  loadProject(name: string) {
-    this.projectName.setValue(name); // Hack
-    this.designerService.loadProject(name).then(() => {
+  loadProject(id: number) {
+    this.designerService.loadProject(id).then(() => {
+      this.projectId = id;
       this.dialogRef.close();
     });
   }

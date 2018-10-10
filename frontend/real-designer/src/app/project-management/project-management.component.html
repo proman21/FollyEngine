@@ -1,7 +1,38 @@
-<menubar [workspace]="workspace" [projectName]="_projectName" [username]="_username"
-  (onOpenWelcome)="displayWelcomeDialog()" (onPressSideBar)="toggleSideBar()"
-  (onPressSave)="save()" (onOpenSettings)="displaySettingsDialog()" (onNew)="makeNewProject()"
-  (onPressNewEntity)="makeNewEntity()" (onPressNewComponent)="makeNewComponent()"
-  (onPressAddAction)="addNewAction()" (onPressAddTrigger)="addNewTrigger()"
-  (onPressAddCondition)="addNewCondition()" (onPressAddOperation)="addNewOperation()"
-  (onPressAddNestedFlow)="addNewNestedFlow()"></menubar>
+<div class="menu">
+  <menubar [workspace]="view" [projectName]="projectName" [username]="username"
+    (onOpenWelcome)="displayWelcomeDialog()" (onPressSideBar)="toggleSideBar()"
+    (onPressSave)="save()" (onOpenSettings)="displaySettingsDialog()" (onNew)="makeNewProject()"
+    (onPressNewEntity)="makeNewEntity()" (onPressNewComponent)="makeNewComponent()"
+    (onPressAddAction)="addNewAction()" (onPressAddTrigger)="addNewTrigger()"
+    (onPressAddCondition)="addNewCondition()" (onPressAddOperation)="addNewOperation()"
+    (onPressAddNestedFlow)="addNewNestedFlow()"></menubar>
+</div>
+
+<div class="main" *ngIf="id">
+  <mat-drawer-container class="container" autosize>
+    <mat-drawer opened="{{ sidebarExpanded }}" mode="side" class="sideNav">
+      <mat-button-toggle-group #group="matButtonToggleGroup" vertical="true"
+        class="sidenav-buttons-group" (change)="setView(group.value)">
+        <mat-button-toggle value="0" [ngClass]="{'selected':view==0}">Entities</mat-button-toggle>
+        <mat-button-toggle value="1" [ngClass]="{'selected':view==1}">Components</mat-button-toggle>
+        <mat-button-toggle value="2" [ngClass]="{'selected':view==2}">Flow</mat-button-toggle>
+        <mat-button-toggle value="3" [ngClass]="{'selected':view==3}">Assets</mat-button-toggle>
+      </mat-button-toggle-group>
+    </mat-drawer>
+
+    <div [ngSwitch]="view">
+      <div *ngSwitchCase="0">
+        <entity-management></entity-management>
+      </div>
+      <div *ngSwitchCase="1">
+        <component-management></component-management>
+      </div>
+      <div *ngSwitchCase="2">
+        <flow-management></flow-management>
+      </div>
+      <div *ngSwitchCase="3">
+        <asset-management></asset-management>
+      </div>
+    </div>
+  </mat-drawer-container>
+</div>
