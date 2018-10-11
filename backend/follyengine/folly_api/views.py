@@ -41,7 +41,6 @@ class ProjectViewSet(views.ModelViewSet):
     create:
     Creates a new project, with the authenticated user as the owner.
     """
-    resource_name = 'projects'
     serializer_class = serializers.ProjectSerializer
     permission_classes = (permissions.IsAuthenticated,)
     prefetch_for_includes = {
@@ -75,7 +74,6 @@ class ProjectRelationshipView(views.RelationshipView):
 
 
 class EntityViewSet(viewsets.ModelViewSet):
-    resource_name = 'entities'
     serializer_class = serializers.EntitySerializer
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -93,7 +91,6 @@ class EntityRelationshipView(views.RelationshipView):
 
 
 class ComponentViewSet(viewsets.ModelViewSet):
-    resource_name = 'components'
     serializer_class = serializers.ComponentSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -106,7 +103,6 @@ class ComponentViewSet(viewsets.ModelViewSet):
 
 
 class FlowViewSet(viewsets.ModelViewSet):
-    resource_name = 'flows'
     serializer_class = serializers.FlowSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
