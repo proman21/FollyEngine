@@ -1,5 +1,4 @@
-import copy
-import re
+from collections import OrderedDict
 
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
@@ -139,6 +138,24 @@ class ProjectExportSerializer(serializers.ModelSerializer):
         model = models.Project
         fields = ('title', 'description', 'created', 'modified', 'entities',
                   'components', 'flows')
+
+    def to_representation(self, instance):
+        data = super(ProjectExportSerializer, self).to_representation(instance)
+
+        # Convert related lists to dictionaries
+        data['entities'] = {e.pop('name'): e for e in data['entities']}
+        data['components'] = {c.pop('name'): c for c in data['components']}
+        data['flows'] = {f['name']: f['data'] for f in data['flows']}
+
+        # Group all other fields under 'meta'
+        data['meta'] = OrderedDict({
+            k: data.pop(k)
+            for k in list(data.keys())
+            if not isinstance(data[k], dict)
+        })
+        data.move_to_end('meta', last=False)
+
+        return data
 
     entities = EntityExportSerializer(many=True)
     components = ComponentExportSerializer(many=True)
