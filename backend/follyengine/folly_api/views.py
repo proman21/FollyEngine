@@ -4,10 +4,9 @@ from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework_json_api import views
-from rest_framework_yaml.renderers import YAMLRenderer
 
 from follyengine.folly_api.models import Entity, Project, Component, Flow
-from follyengine.folly_api import serializers
+from follyengine.folly_api import renderers, serializers
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -58,7 +57,7 @@ class ProjectViewSet(views.ModelViewSet):
     def get_queryset(self):
         return self.request.user.projects.all().order_by('-modified')
 
-    @action(detail=True, renderer_classes=[YAMLRenderer])
+    @action(detail=True, renderer_classes=[renderers.PrettyYAMLRenderer])
     def export(self, request, pk=None):
         project = self.get_object()
         serializer = serializers.ProjectExportSerializer(project)
