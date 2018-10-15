@@ -46,10 +46,10 @@ class EntitySerializer(serializers.HyperlinkedModelSerializer):
 class EntityExportSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Entity
-        fields = ('name', 'slug', 'description', 'components')
-
+        fields = ('name', 'description', 'components')
+    
     components = serializers.SlugRelatedField(many=True, read_only=True,
-                                              slug_field='slug')
+                                              slug_field='name')
 
 
 class ComponentSerializer(serializers.HyperlinkedModelSerializer):
@@ -78,7 +78,7 @@ class ComponentSerializer(serializers.HyperlinkedModelSerializer):
 class ComponentExportSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Component
-        fields = ('name', 'slug', 'description', 'attributes')
+        fields = ('name', 'description', 'attributes')
 
 
 class FlowSerializer(serializers.HyperlinkedModelSerializer):
