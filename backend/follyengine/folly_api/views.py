@@ -4,10 +4,9 @@ from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework_json_api import views
-from rest_framework_yaml.renderers import YAMLRenderer
 
 from follyengine.folly_api.models import Entity, Project, Component, Flow
-from follyengine.folly_api import serializers
+from follyengine.folly_api import renderers, serializers
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -41,7 +40,6 @@ class ProjectViewSet(views.ModelViewSet):
     create:
     Creates a new project, with the authenticated user as the owner.
     """
-    resource_name = 'projects'
     serializer_class = serializers.ProjectSerializer
     permission_classes = (permissions.IsAuthenticated,)
     prefetch_for_includes = {
@@ -59,11 +57,14 @@ class ProjectViewSet(views.ModelViewSet):
     def get_queryset(self):
         return self.request.user.projects.all().order_by('-modified')
 
-    @action(detail=True, renderer_classes=[YAMLRenderer])
+    @action(detail=True, renderer_classes=[renderers.PrettyYAMLRenderer])
     def export(self, request, pk=None):
         project = self.get_object()
         serializer = serializers.ProjectExportSerializer(project)
-        return Response(serializer.data)
+        headers = {
+            'Content-Disposition': f'attachment; filename="{project.slug}.yaml"'
+        }
+        return Response(serializer.data, headers=headers)
 
 
 class ProjectRelationshipView(views.RelationshipView):
@@ -72,7 +73,6 @@ class ProjectRelationshipView(views.RelationshipView):
 
 
 class EntityViewSet(viewsets.ModelViewSet):
-    resource_name = 'entities'
     serializer_class = serializers.EntitySerializer
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -90,7 +90,6 @@ class EntityRelationshipView(views.RelationshipView):
 
 
 class ComponentViewSet(viewsets.ModelViewSet):
-    resource_name = 'components'
     serializer_class = serializers.ComponentSerializer
     permission_classes = (permissions.IsAuthenticated,)
 
@@ -103,7 +102,6 @@ class ComponentViewSet(viewsets.ModelViewSet):
 
 
 class FlowViewSet(viewsets.ModelViewSet):
-    resource_name = 'flows'
     serializer_class = serializers.FlowSerializer
     permission_classes = (permissions.IsAuthenticated,)
 

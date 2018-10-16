@@ -13,6 +13,7 @@ djangorestframework-yaml = "*"
 drf-nested-routers = "*"
 gunicorn = "*"
 "psycopg2" = "*"
+pyaml = "*"
 voluptuous = "*"
 
 [requires]
