@@ -47,7 +47,11 @@ class EntityExportSerializer(rf_serializers.ModelSerializer):
     class Meta:
         model = models.Entity
         fields = ('name', 'description', 'components')
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 2a5bbff347adf203961d0a7598d8dfa9c06a916a
     components = serializers.SlugRelatedField(many=True, read_only=True,
                                               slug_field='name')
 
