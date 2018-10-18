@@ -86,6 +86,13 @@ class FlowSerializer(serializers.HyperlinkedModelSerializer):
         model = models.Flow
         fields = ('url', 'name', 'data')
 
+    url = relations.NestedHyperlinkedIdentityField(
+        view_name='flow-detail',
+        parent_lookup_kwargs={
+            'project_pk': 'project__pk'
+        }
+    )
+
 
 class FlowExportSerializer(rf_serializers.ModelSerializer):
     class Meta:
