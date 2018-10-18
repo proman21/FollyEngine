@@ -65,9 +65,7 @@ export class AppComponent {
       self.menu = true;
       setTimeout(
         () =>
-          this.projectManagement.displayWelcomeDialog(function() {
-            self.login = 1;
-          }),
+          this.projectManagement.displayWelcomeDialog(),
         1
       );
     }
