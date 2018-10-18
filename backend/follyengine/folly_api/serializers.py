@@ -1,4 +1,7 @@
+from collections import OrderedDict
+
 from django.contrib.auth.models import User, Group
+from rest_framework import serializers as rf_serializers
 from rest_framework_json_api import serializers
 from rest_framework_nested import relations
 
@@ -40,6 +43,19 @@ class EntitySerializer(serializers.HyperlinkedModelSerializer):
     )
 
 
+class EntityExportSerializer(rf_serializers.ModelSerializer):
+    class Meta:
+        model = models.Entity
+        fields = ('name', 'description', 'components')
+<<<<<<< HEAD
+
+=======
+    
+>>>>>>> 2a5bbff347adf203961d0a7598d8dfa9c06a916a
+    components = serializers.SlugRelatedField(many=True, read_only=True,
+                                              slug_field='name')
+
+
 class ComponentSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Component
@@ -63,7 +79,19 @@ class ComponentSerializer(serializers.HyperlinkedModelSerializer):
     # }])
 
 
+class ComponentExportSerializer(rf_serializers.ModelSerializer):
+    class Meta:
+        model = models.Component
+        fields = ('name', 'description', 'attributes')
+
+
 class FlowSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = models.Flow
+        fields = ('url', 'name', 'data')
+
+
+class FlowExportSerializer(rf_serializers.ModelSerializer):
     class Meta:
         model = models.Flow
         fields = ('name', 'data')
@@ -107,3 +135,32 @@ class ProjectCreateSerializer(ProjectSerializer):
         default=serializers.CreateOnlyDefault(SlugDefault('title'))
     )
     owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
+
+class ProjectExportSerializer(rf_serializers.ModelSerializer):
+    class Meta:
+        model = models.Project
+        fields = ('title', 'description', 'created', 'modified', 'entities',
+                  'components', 'flows')
+
+    def to_representation(self, instance):
+        data = super(ProjectExportSerializer, self).to_representation(instance)
+
+        # Convert related lists to dictionaries
+        data['entities'] = {e.pop('name'): e for e in data['entities']}
+        data['components'] = {c.pop('name'): c for c in data['components']}
+        data['flows'] = {f['name']: f['data'] for f in data['flows']}
+
+        # Group all other fields under 'meta'
+        data['meta'] = OrderedDict({
+            k: data.pop(k)
+            for k in list(data.keys())
+            if not isinstance(data[k], dict)
+        })
+        data.move_to_end('meta', last=False)
+
+        return data
+
+    entities = EntityExportSerializer(many=True)
+    components = ComponentExportSerializer(many=True)
+    flows = FlowSerializer(many=True)

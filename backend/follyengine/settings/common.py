@@ -97,6 +97,12 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Login redirection
+# https://docs.djangoproject.com/en/2.1/ref/settings/#login-redirect-url
+
+LOGIN_REDIRECT_URL = '/api'
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 

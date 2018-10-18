@@ -17,6 +17,9 @@ class Project(models.Model):
     owner = models.ForeignKey('auth.User', related_name='projects',
                               on_delete=models.CASCADE)
 
+    class JSONAPIMeta:
+        resource_name = 'projects'
+
     def save(self, *args, **kwargs):
         if not self.id and not kwargs.get('slug', None):
             self.slug = slugify(self.title)
@@ -29,6 +32,7 @@ class Project(models.Model):
 
 class Component(models.Model):
     name = models.CharField(max_length=64)
+    slug = models.SlugField(max_length=64, allow_unicode=True)
     description = models.TextField(blank=True)
     attributes = JSONField(default=list)
     project = models.ForeignKey(Project, related_name='components',
@@ -36,6 +40,9 @@ class Component(models.Model):
 
     class Meta:
         unique_together = ('name', 'project')
+
+    class JSONAPIMeta:
+        resource_name = 'components'
 
 
 class Entity(models.Model):
@@ -49,6 +56,9 @@ class Entity(models.Model):
     class Meta:
         unique_together = ('name', 'project')
 
+    class JSONAPIMeta:
+        resource_name = 'entities'
+
 
 class Flow(models.Model):
     name = models.CharField(max_length=64)
@@ -58,6 +68,9 @@ class Flow(models.Model):
 
     class Meta:
         unique_together = ('name', 'project')
+
+    class JSONAPIMeta:
+        resource_name = 'flows'
 
     def __str__(self):
         return self.name
