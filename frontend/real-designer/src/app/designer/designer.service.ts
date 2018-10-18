@@ -14,7 +14,7 @@ import {
 export class DesignerService {
   currentProjectName: string;
   currentProject: Project;
-  projects: Map<string, Project> = new Map<string, Project>();
+  projects: Map<number, Project> = new Map<number, Project>();
 
   constructor(private http: HttpClient) {}
 
@@ -73,7 +73,6 @@ export class DesignerService {
   async newProject(name: string) {
     console.log('New project');
     const project = new Project();
-    this.projects.set(name, project);
     this.currentProjectName = name;
     this.currentProject = project;
 
@@ -98,6 +97,7 @@ export class DesignerService {
       )
       .subscribe(async data => {
         project.id = data['data'].id;
+        this.projects.set(project.id, project);
         await this.setupExampleData();
         this.saveState();
       });
@@ -196,29 +196,26 @@ export class DesignerService {
     }
   }
 
-  loadAllProjects() {
+  async loadAllProjects() {
     const self = this;
     console.log('Loading projects');
-    this.http
+    const data = await this.http
       .get('api/projects', {
         headers: new HttpHeaders({
           Accept: 'application/vnd.api+json'
         })
-      })
-      .subscribe(data => {
-        const project = new Project();
-        for (const entry of data['data']) {
-          const project = new Project();
-          project.id = entry.id;
-          self.projects.set(entry.attributes.title, project);
-        }
-      });
+      }).toPromise();
+    const project = new Project();
+    for (const entry of data['data']) {
+      const project = new Project();
+      project.id = entry.id;
+      self.projects.set(entry.id, project);
+    }
   }
 
-  async loadProject(name: string) {
-    console.log('Loading project: ' + name);
-    this.currentProjectName = name;
-    this.currentProject = this.projects.get(this.currentProjectName);
+  async loadProject(id: number) {
+    console.log('Loading project: ' + id);
+    this.currentProject = this.projects.get(id);
     await this.loadState();
   }
 

@@ -1,7 +1,13 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DesignerService } from '../designer/designer.service';
 import { WelcomeDialogComponent } from './welcome-dialog/welcome-dialog.component';
 import { SettingsDialogComponent } from './settings-dialog/settings-dialog.component';
 import { MenubarComponent } from './menubar/menubar.component';
+import { EntityManagementComponent } from '../entity-management/entity-management.component';
+import { ComponentManagementComponent } from '../component-management/component-management.component';
+import { FlowManagementComponent } from '../flow-management/flow-management.component';
+import { AssetManagementComponent } from '../asset-management/asset-management.component';
 
 // Angular Material
 import { MatDialog, MatDialogConfig } from '@angular/material';
@@ -12,29 +18,44 @@ import { MatDialog, MatDialogConfig } from '@angular/material';
   styleUrls: ['./project-management.component.css']
 })
 export class ProjectManagementComponent {
-  @Input()
-  workspace: number;
-  @Input()
-  username: string;
-  @Input()
-  projectName: string;
+  id: number;
+  view: number = 0;
 
   // Default Values
-  _username: string = sessionStorage.getItem('username');
-  _projectName = 'Untitled';
+  username: string = sessionStorage.getItem('username');
+  projectName = 'Untitled';
+  
+  bindingVar = '';
 
-  constructor(public dialog: MatDialog) {}
-
-  ngOnInit() {
-    if (this.username) {
-      this._username = this.username;
-    }
-    if (this.projectName) {
-      this._projectName = this.projectName;
-    }
+  constructor(private designerService: DesignerService, private route: ActivatedRoute, private router: Router, public dialog: MatDialog) {
+    designerService.loadAllProjects().then(() => {
+      route.params.subscribe(({id}) => {
+        if (id) {
+          designerService.loadProject(id).then(() => {
+            this.id = id;
+          });
+        } else {
+          this.displayWelcomeDialog();
+        }
+      });
+    });
   }
 
-  displayWelcomeDialog(callback) {
+  ngOnInit() {
+    this.username = this.username;
+    this.projectName = this.projectName;
+  }
+
+  setView(val: number) {
+    this.view = val;
+    this.fadeIn();
+  }
+  
+  fadeIn() {
+    this.bindingVar = 'fadeIn';
+  }
+
+  displayWelcomeDialog() {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = false;
@@ -43,8 +64,8 @@ export class ProjectManagementComponent {
     dialogConfig.hasBackdrop = true;
     const dialogRef = this.dialog.open(WelcomeDialogComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(() => {
-      this._projectName = dialogRef.componentInstance.projectName.value;
-      callback(); // Hack fix I'm laqzy
+      this.projectName = dialogRef.componentInstance.projectName.value;
+      this.router.navigate(['projects', dialogRef.componentInstance.projectId]);
     });
   }
 
@@ -61,61 +82,39 @@ export class ProjectManagementComponent {
     });
   }
 
-  @Output()
-  onSave = new EventEmitter<string>();
-  save() {
-    this.onSave.emit();
-  }
-
-  @Output()
-  onToggleSideBar = new EventEmitter<string>();
-  toggleSideBar() {
-    this.onToggleSideBar.emit();
-  }
-
   makeNewProject() {
-    this.displayWelcomeDialog(undefined);
+    this.displayWelcomeDialog();
   }
 
-  @Output()
-  onMakeNewEntity = new EventEmitter<string>();
+  // Makes a new entity in the entity manager
+  @ViewChild(EntityManagementComponent)
+  entityManagement: EntityManagementComponent;
   makeNewEntity() {
-    this.onMakeNewEntity.emit();
+    this.entityManagement.newEntity();
   }
 
-  @Output()
-  onMakeNewComponent = new EventEmitter<string>();
+  // Makes a new component in the component manager
+  @ViewChild(ComponentManagementComponent)
+  componentManagement: ComponentManagementComponent;
   makeNewComponent() {
-    this.onMakeNewComponent.emit();
+    this.componentManagement.newComponent();
   }
 
-  @Output()
-  onAddNewAction = new EventEmitter<string>();
+  @ViewChild(FlowManagementComponent)
+  flowManagement: FlowManagementComponent;
   addNewAction() {
-    this.onAddNewAction.emit();
+    this.flowManagement.newAction();
   }
-
-  @Output()
-  onAddNewTrigger = new EventEmitter<string>();
   addNewTrigger() {
-    this.onAddNewTrigger.emit();
+    this.flowManagement.newTrigger();
   }
-
-  @Output()
-  onAddNewCondition = new EventEmitter<string>();
   addNewCondition() {
-    this.onAddNewCondition.emit();
+    this.flowManagement.newCondition();
   }
-
-  @Output()
-  onAddNewOperation = new EventEmitter<string>();
   addNewOperation() {
-    this.onAddNewOperation.emit();
+    this.flowManagement.newOperation();
   }
-
-  @Output()
-  onAddNewNestedFlow = new EventEmitter<string>();
   addNewNestedFlow() {
-    this.onAddNewNestedFlow.emit();
+    this.flowManagement.newNestedFlow();
   }
 }

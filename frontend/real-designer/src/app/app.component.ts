@@ -27,7 +27,6 @@ import { DesignerService } from './designer/designer.service';
 })
 export class AppComponent {
   title = 'Real Designer';
-  view: number;
   login: number;
   menu = false;
   sidebarExpanded: boolean;
@@ -43,7 +42,7 @@ export class AppComponent {
   projectManagement: ProjectManagementComponent;
 
   constructor(private designerService: DesignerService, public snackBar: MatSnackBar) {
-    this.view = 0;
+    //this.view = 0;
     this.login = 0;
     this.sidebarExpanded = true;
 
@@ -52,13 +51,8 @@ export class AppComponent {
     }
 
     if (typeof sessionStorage.getItem('username') !== 'undefined' && sessionStorage.getItem('username') !== null) {
-      this.setLogin(2);
+      //this.setLogin(2);
     }
-  }
-
-  setView(val: number) {
-    this.view = val;
-    this.fadeIn();
   }
 
   setLogin(val: number) {
@@ -93,37 +87,5 @@ export class AppComponent {
     config.duration = duration;
     config.panelClass = ['alert-bar'];
     this.snackBar.open(message, action, config);
-  }
-
-  // Makes a new entity in the entity manager
-  @ViewChild(EntityManagementComponent)
-  entityManagement: EntityManagementComponent;
-  makeNewEntity() {
-    this.entityManagement.newEntity();
-  }
-
-  // Makes a new component in the component manager
-  @ViewChild(ComponentManagementComponent)
-  componentManagement: ComponentManagementComponent;
-  makeNewComponent() {
-    this.componentManagement.newComponent();
-  }
-
-  @ViewChild(FlowManagementComponent)
-  flowManagement: FlowManagementComponent;
-  addNewAction() {
-    this.flowManagement.newAction();
-  }
-  addNewTrigger() {
-    this.flowManagement.newTrigger();
-  }
-  addNewCondition() {
-    this.flowManagement.newCondition();
-  }
-  addNewOperation() {
-    this.flowManagement.newOperation();
-  }
-  addNewNestedFlow() {
-    this.flowManagement.newNestedFlow();
   }
 }
