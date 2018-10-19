@@ -4,7 +4,6 @@ import { EntityManagementComponent } from './entity-management/entity-management
 import { ComponentManagementComponent } from './component-management/component-management.component';
 import { FlowManagementComponent } from './flow-management/flow-management.component';
 import { trigger, transition, style, animate, stagger } from '@angular/animations';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 
 import { DesignerService } from './designer/designer.service';
 
@@ -41,7 +40,7 @@ export class AppComponent {
   @ViewChild(ProjectManagementComponent)
   projectManagement: ProjectManagementComponent;
 
-  constructor(private designerService: DesignerService, public snackBar: MatSnackBar) {
+  constructor(private designerService: DesignerService) {
     //this.view = 0;
     this.login = 0;
     this.sidebarExpanded = true;
@@ -69,21 +68,5 @@ export class AppComponent {
         1
       );
     }
-  }
-
-  toggleSideBar() {
-    this.sidebarExpanded = !this.sidebarExpanded;
-  }
-
-  save() {
-    this.designerService.saveState();
-    this.displayAlert('Save Successful', 'OK', 1500); // lol
-  }
-
-  displayAlert(message: string, action: string, duration: number) {
-    const config = new MatSnackBarConfig();
-    config.duration = duration;
-    config.panelClass = ['alert-bar'];
-    this.snackBar.open(message, action, config);
   }
 }

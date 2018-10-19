@@ -10,7 +10,7 @@ import { FlowManagementComponent } from '../flow-management/flow-management.comp
 import { AssetManagementComponent } from '../asset-management/asset-management.component';
 
 // Angular Material
-import { MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatSnackBar, MatSnackBarConfig } from '@angular/material';
 
 @Component({
   selector: 'project-management',
@@ -27,7 +27,7 @@ export class ProjectManagementComponent {
   
   bindingVar = '';
 
-  constructor(private designerService: DesignerService, private route: ActivatedRoute, private router: Router, public dialog: MatDialog) {
+  constructor(private designerService: DesignerService, public snackBar: MatSnackBar, private route: ActivatedRoute, private router: Router, public dialog: MatDialog) {
     designerService.loadAllProjects().then(() => {
       route.params.subscribe(({id}) => {
         if (id) {
@@ -84,6 +84,22 @@ export class ProjectManagementComponent {
 
   makeNewProject() {
     this.displayWelcomeDialog();
+  }
+
+  toggleSideBar() {
+    this.sidebarExpanded = !this.sidebarExpanded;
+  }
+
+  save() {
+    this.designerService.saveState();
+    this.displayAlert('Save Successful', 'OK', 1500); // lol
+  }
+
+  displayAlert(message: string, action: string, duration: number) {
+    const config = new MatSnackBarConfig();
+    config.duration = duration;
+    config.panelClass = ['alert-bar'];
+    this.snackBar.open(message, action, config);
   }
 
   // Makes a new entity in the entity manager
