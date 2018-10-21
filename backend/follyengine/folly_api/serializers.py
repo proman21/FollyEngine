@@ -166,4 +166,4 @@ class ProjectExportSerializer(rf_serializers.ModelSerializer):
 
     entities = EntityExportSerializer(many=True)
     components = ComponentExportSerializer(many=True)
-    flows = FlowSerializer(many=True)
+    flows = FlowExportSerializer(many=True)
