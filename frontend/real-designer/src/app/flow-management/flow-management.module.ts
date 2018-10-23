@@ -21,6 +21,10 @@ import { FlowNodeService } from './flow-node/flow-node.service';
 // Module
 import { MaterialModule } from './../material.module';
 import { SharedUiModule } from '../shared-ui/shared-ui.module';
+import { InstanceNodeComponent } from './flow-node/instance-node.component';
+import { GateNodeComponent } from './flow-node/gate-node.component';
+import { StartNodeComponent } from './flow-node/start-node.component';
+import { EndNodeComponent } from './flow-node/end-node.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, SharedUiModule, MaterialModule],
@@ -34,7 +38,11 @@ import { SharedUiModule } from '../shared-ui/shared-ui.module';
     TriggerNodeComponent,
     NestedFlowNodeComponent,
     AttributeInputComponent,
-    AssetInputComponent
+    AssetInputComponent,
+    InstanceNodeComponent,
+    GateNodeComponent,
+    StartNodeComponent,
+    EndNodeComponent
   ],
   providers: [FlowNodeService],
   entryComponents: [
@@ -42,7 +50,11 @@ import { SharedUiModule } from '../shared-ui/shared-ui.module';
     OperationNodeComponent,
     ActionNodeComponent,
     TriggerNodeComponent,
-    NestedFlowNodeComponent
+    NestedFlowNodeComponent,
+    InstanceNodeComponent,
+    GateNodeComponent,
+    StartNodeComponent,
+    EndNodeComponent
   ]
 })
 export class FlowManagementModule {}

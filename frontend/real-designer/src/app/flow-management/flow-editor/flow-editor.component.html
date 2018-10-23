@@ -3,10 +3,12 @@
   [style.top.px]="contextMenuPosition.y" [matMenuTriggerFor]="blankContextMenu">
 </div>
 <mat-menu #blankContextMenu="matMenu">
-  <button mat-menu-item (click)="addActionNode()">Add Action</button>
+  <button mat-menu-item (click)="addInstanceNode()">Add Instance</button>
   <button mat-menu-item (click)="addTriggerNode()">Add Trigger</button>
   <button mat-menu-item (click)="addConditionNode()">Add Condition</button>
+  <button mat-menu-item (click)="addGateNode()">Add Gate</button>
   <button mat-menu-item (click)="addOperationNode()">Add Operation</button>
+  <button mat-menu-item (click)="addActionNode()">Add Action</button>
   <button mat-menu-item (click)="addNestedFlowNode()">Add Nested Flow</button>
 </mat-menu>
 

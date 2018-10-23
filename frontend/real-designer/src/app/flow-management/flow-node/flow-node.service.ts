@@ -9,6 +9,8 @@ import { OperationNodeComponent } from './operation-node.component';
 import { ActionNodeComponent } from './action-node.component';
 import { TriggerNodeComponent } from './trigger-node.component';
 import { NestedFlowNodeComponent } from './nested-flow-node.component';
+import { InstanceNodeComponent } from './instance-node.component';
+import { GateNodeComponent } from './gate-node.component';
 import { FlowNodeView } from './flow-node.view';
 
 joint.shapes['folly'] = {};
@@ -53,6 +55,17 @@ export class FlowNodeService {
     // NestedFlowNode
     this.define('NestedFlowNode', NestedFlowNodeComponent, {
       size: { width: 220, height: 60 }
+    });
+
+    // InstanceNode
+    this.define('InstanceNode', InstanceNodeComponent, {
+      size: { width: 220, height: 90 }
+    });
+
+    // GateNode
+    this.define('GateNode', GateNodeComponent, {
+      inPorts: ['left', 'right'],
+      size: { width: 200, height: 60 }
     });
   }
 

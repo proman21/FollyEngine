@@ -232,6 +232,20 @@ export class FlowEditorComponent implements OnChanges {
     this.addNode(cell);
   }
 
+  addInstanceNode() {
+    const cell = new joint.shapes['folly'].InstanceNode({
+      position: { ...this.newNodePosition }
+    });
+    this.addNode(cell);
+  }
+
+  addGateNode() {
+    const cell = new joint.shapes['folly'].GateNode({
+      position: { ...this.newNodePosition }
+    });
+    this.addNode(cell);
+  }
+
   duplicateSelectedNode() {
     const cell = this.selected.clone();
     cell.translate(120, 90);

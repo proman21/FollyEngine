@@ -95,9 +95,14 @@ export class FlowNodeView extends joint.dia.ElementView {
 
   renderPorts() {
     // FIXME
-    this.$('.inPorts')
-      .empty()
-      .append(joint.V('<g class="port0"><circle/></g>').node);
+    const inPorts = Object.values(this.model['ports']).filter(p => p['type'] === 'in');
+    const $inPorts = this.$('.inPorts').empty();
+    const multipleInPorts = inPorts.length > 1 ? true : false;
+    $inPorts.append(joint.V('<g class="port0"><circle/><text/></g>').node);
+    if (multipleInPorts) {
+      $inPorts.append(joint.V('<g class="port1"><circle/><text/></g>').node);
+    }
+
     const outPorts = Object.values(this.model['ports']).filter(p => p['type'] === 'out');
     const $outPorts = this.$('.outPorts').empty();
     const multipleOutPorts = outPorts.length > 1 ? true : false;
