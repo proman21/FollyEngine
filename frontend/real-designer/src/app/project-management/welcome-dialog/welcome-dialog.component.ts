@@ -25,10 +25,6 @@ export class WelcomeDialogComponent implements OnInit {
 
   ngOnInit() {}
 
-  getAllProjects() {
-    return Array.from(this.designerService.getAllProjects().keys());
-  }
-
   newProject() {
     this.currentView = 1;
   }
