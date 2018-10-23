@@ -28,7 +28,6 @@ export class AppComponent {
   title = 'Real Designer';
   login: number;
   menu = false;
-  sidebarExpanded: boolean;
   bindingVar = '';
   fadeIn() {
     this.bindingVar = 'fadeIn';
@@ -43,7 +42,6 @@ export class AppComponent {
   constructor(private designerService: DesignerService) {
     //this.view = 0;
     this.login = 0;
-    this.sidebarExpanded = true;
 
     if (sessionStorage.getItem('username') == 'Guest') {
       sessionStorage.removeItem('username');
