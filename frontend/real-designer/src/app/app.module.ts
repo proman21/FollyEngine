@@ -24,6 +24,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth/auth.interceptor';
 
+import {Injector} from '@angular/core';
+import {setAppInjector} from './app-injector';
+
 const appRoutes: Routes = [
   {
       path: '',
@@ -69,4 +72,8 @@ const appRoutes: Routes = [
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+  constructor(injector: Injector) {
+    setAppInjector(injector);
+  }
+}
