@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'menubar',
@@ -13,7 +14,7 @@ export class MenubarComponent implements OnInit {
   @Input()
   projectName: string;
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   // The hot key modifier will depend on operating system. Use option form
   // Windows and Command for macOS
@@ -220,6 +221,6 @@ export class MenubarComponent implements OnInit {
   // Method called when logging out
   selectedLogout() {
     sessionStorage.clear();
-    location.reload(); // Ultra hacky logout I know
+    this.router.navigate(['login']);
   }
 }

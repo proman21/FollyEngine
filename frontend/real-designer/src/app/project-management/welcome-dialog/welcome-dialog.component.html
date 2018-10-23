@@ -15,10 +15,10 @@
     </div>
 
     <div class="open">
-      <div *ngFor="let e of getAllProjects()">
-        <button (click)="loadProject(e)" class="load-btn" mat-raised-button
+      <div *ngFor="let project of designerService.getAllProjects() | keyvalue">
+        <button (click)="loadProject(project.key)" class="load-btn" mat-raised-button
           color="primary">
-          {{e}}
+          {{project.value.name}}
         </button>
       </div>
     </div>

@@ -73,10 +73,11 @@ export class DesignerService {
   async newProject(name: string) {
     console.log('New project');
     const project = new Project();
+    project.name = name;
     this.currentProjectName = name;
     this.currentProject = project;
 
-    this.http
+    const data = await this.http
       .post(
         'api/projects',
         {
@@ -95,12 +96,12 @@ export class DesignerService {
           })
         }
       )
-      .subscribe(async data => {
-        project.id = data['data'].id;
-        this.projects.set(project.id, project);
-        await this.setupExampleData();
-        this.saveState();
-      });
+      .toPromise();
+
+    project.id = data['data'].id;
+    this.projects.set(project.id, project);
+    await this.setupExampleData();
+    this.saveState();
   }
 
   saveState() {
@@ -209,6 +210,7 @@ export class DesignerService {
     for (const entry of data['data']) {
       const project = new Project();
       project.id = entry.id;
+      project.name = entry.attributes.title;
       self.projects.set(entry.id, project);
     }
   }
@@ -463,6 +465,7 @@ export class DesignerService {
 
 export class Project {
   id: number;
+  name: string;
   entities: Map<number, DesignerEntity> = new Map();
   components: Map<number, DesignerComponent> = new Map();
   flows: Map<number, DesignerFlow> = new Map();

@@ -25,10 +25,6 @@ export class WelcomeDialogComponent implements OnInit {
 
   ngOnInit() {}
 
-  getAllProjects() {
-    return Array.from(this.designerService.getAllProjects().keys());
-  }
-
   newProject() {
     this.currentView = 1;
   }
@@ -43,6 +39,7 @@ export class WelcomeDialogComponent implements OnInit {
   createProject() {
     if (this.projectName.valid) {
       this.designerService.newProject(this.projectName.value).then(() => {
+        this.projectId = this.designerService.currentProject.id;
         this.dialogRef.close();
       });
     } else {
