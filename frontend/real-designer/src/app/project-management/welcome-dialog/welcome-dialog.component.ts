@@ -43,6 +43,7 @@ export class WelcomeDialogComponent implements OnInit {
   createProject() {
     if (this.projectName.valid) {
       this.designerService.newProject(this.projectName.value).then(() => {
+        this.projectId = this.designerService.currentProject.id;
         this.dialogRef.close();
       });
     } else {

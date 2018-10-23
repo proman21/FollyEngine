@@ -76,7 +76,7 @@ export class DesignerService {
     this.currentProjectName = name;
     this.currentProject = project;
 
-    this.http
+    const data = await this.http
       .post(
         'api/projects',
         {
@@ -95,12 +95,12 @@ export class DesignerService {
           })
         }
       )
-      .subscribe(async data => {
-        project.id = data['data'].id;
-        this.projects.set(project.id, project);
-        await this.setupExampleData();
-        this.saveState();
-      });
+      .toPromise();
+
+    project.id = data['data'].id;
+    this.projects.set(project.id, project);
+    await this.setupExampleData();
+    this.saveState();
   }
 
   saveState() {
