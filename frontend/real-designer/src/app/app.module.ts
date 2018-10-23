@@ -24,28 +24,28 @@ import { HttpClientModule } from '@angular/common/http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth/auth.interceptor';
 
-import {Injector} from '@angular/core';
-import {setAppInjector} from './app-injector';
+import { Injector } from '@angular/core';
+import { setAppInjector } from './app-injector';
 
 const appRoutes: Routes = [
   {
-      path: '',
-      redirectTo: '/login',
-      pathMatch: 'full'
+    path: '',
+    redirectTo: '/login',
+    pathMatch: 'full'
   },
   {
-      path: 'projects',
-      component: ProjectManagementComponent
-      //loadChildren: './books/books.module#BooksModule'
+    path: 'projects',
+    component: ProjectManagementComponent
+    //loadChildren: './books/books.module#BooksModule'
   },
   {
-      path: 'projects/:id',
-      component: ProjectManagementComponent
-      //loadChildren: './books/books.module#BooksModule'
+    path: 'projects/:id',
+    component: ProjectManagementComponent
+    //loadChildren: './books/books.module#BooksModule'
   },
   {
-      path: 'login',
-      component: LoginScreenComponent
+    path: 'login',
+    component: LoginScreenComponent
   }
 ];
 

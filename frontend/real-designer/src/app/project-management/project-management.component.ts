@@ -19,17 +19,23 @@ import { MatDialog, MatDialogConfig, MatSnackBar, MatSnackBarConfig } from '@ang
 })
 export class ProjectManagementComponent {
   id: number;
-  view: number = 0;
+  view = 0;
 
   // Default Values
   username: string = sessionStorage.getItem('username');
   projectName = 'Untitled';
-  
+
   bindingVar = '';
 
-  constructor(private designerService: DesignerService, public snackBar: MatSnackBar, private route: ActivatedRoute, private router: Router, public dialog: MatDialog) {
+  constructor(
+    private designerService: DesignerService,
+    public snackBar: MatSnackBar,
+    private route: ActivatedRoute,
+    private router: Router,
+    public dialog: MatDialog
+  ) {
     designerService.loadAllProjects().then(() => {
-      route.params.subscribe(({id}) => {
+      route.params.subscribe(({ id }) => {
         if (id) {
           designerService.loadProject(id).then(() => {
             this.id = id;
@@ -50,7 +56,7 @@ export class ProjectManagementComponent {
     this.view = val;
     this.fadeIn();
   }
-  
+
   fadeIn() {
     this.bindingVar = 'fadeIn';
   }
