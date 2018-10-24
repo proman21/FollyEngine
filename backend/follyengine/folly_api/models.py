@@ -51,7 +51,7 @@ class Entity(models.Model):
     description = models.TextField(blank=True)
     project = models.ForeignKey(Project, related_name='entities',
                                 on_delete=models.CASCADE)
-    components = models.ManyToManyField(Component, related_name='implementers')
+    components = models.ManyToManyField(Component, related_name='components')
 
     class Meta:
         unique_together = ('name', 'project')

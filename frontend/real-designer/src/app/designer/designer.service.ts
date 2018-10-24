@@ -130,7 +130,7 @@ export class DesignerService {
         }
       ).subscribe();
 
-      this.http.patch(
+      this.http.post(
         `api/projects/${this.currentProject.id}/entities/${id}/relationships/components`,
         {
           data: entity.components.reduce((data, c) => {
