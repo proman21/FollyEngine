@@ -60,11 +60,7 @@ export class AppComponent {
     if (val == 2) {
       this.designerService.loadAllProjects();
       self.menu = true;
-      setTimeout(
-        () =>
-          this.projectManagement.displayWelcomeDialog(),
-        1
-      );
+      setTimeout(() => this.projectManagement.displayWelcomeDialog(), 1);
     }
   }
 }
