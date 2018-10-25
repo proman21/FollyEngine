@@ -132,7 +132,7 @@ APPEND_SLASH = False
 # Rest Framework Configuration
 
 REST_FRAMEWORK = {
-    'PAGE_SIZE': 10,
+    'PAGE_SIZE': 0,
     'EXCEPTION_HANDLER':
         'rest_framework_json_api.exceptions.exception_handler',
     'DEFAULT_PAGINATION_CLASS':
