@@ -4,7 +4,6 @@ import { EntityManagementComponent } from './entity-management/entity-management
 import { ComponentManagementComponent } from './component-management/component-management.component';
 import { FlowManagementComponent } from './flow-management/flow-management.component';
 import { trigger, transition, style, animate, stagger } from '@angular/animations';
-import { MatSnackBar, MatSnackBarConfig } from '@angular/material';
 
 import { DesignerService } from './designer/designer.service';
 
@@ -27,10 +26,8 @@ import { DesignerService } from './designer/designer.service';
 })
 export class AppComponent {
   title = 'Real Designer';
-  view: number;
   login: number;
   menu = false;
-  sidebarExpanded: boolean;
   bindingVar = '';
   fadeIn() {
     this.bindingVar = 'fadeIn';
@@ -42,23 +39,17 @@ export class AppComponent {
   @ViewChild(ProjectManagementComponent)
   projectManagement: ProjectManagementComponent;
 
-  constructor(private designerService: DesignerService, public snackBar: MatSnackBar) {
-    this.view = 0;
+  constructor(private designerService: DesignerService) {
+    //this.view = 0;
     this.login = 0;
-    this.sidebarExpanded = true;
 
     if (sessionStorage.getItem('username') == 'Guest') {
       sessionStorage.removeItem('username');
     }
 
     if (typeof sessionStorage.getItem('username') !== 'undefined' && sessionStorage.getItem('username') !== null) {
-      this.setLogin(2);
+      //this.setLogin(2);
     }
-  }
-
-  setView(val: number) {
-    this.view = val;
-    this.fadeIn();
   }
 
   setLogin(val: number) {
@@ -69,61 +60,7 @@ export class AppComponent {
     if (val == 2) {
       this.designerService.loadAllProjects();
       self.menu = true;
-      setTimeout(
-        () =>
-          this.projectManagement.displayWelcomeDialog(function() {
-            self.login = 1;
-          }),
-        1
-      );
+      setTimeout(() => this.projectManagement.displayWelcomeDialog(), 1);
     }
-  }
-
-  toggleSideBar() {
-    this.sidebarExpanded = !this.sidebarExpanded;
-  }
-
-  save() {
-    this.designerService.saveState();
-    this.displayAlert('Save Successful', 'OK', 1500); // lol
-  }
-
-  displayAlert(message: string, action: string, duration: number) {
-    const config = new MatSnackBarConfig();
-    config.duration = duration;
-    config.panelClass = ['alert-bar'];
-    this.snackBar.open(message, action, config);
-  }
-
-  // Makes a new entity in the entity manager
-  @ViewChild(EntityManagementComponent)
-  entityManagement: EntityManagementComponent;
-  makeNewEntity() {
-    this.entityManagement.newEntity();
-  }
-
-  // Makes a new component in the component manager
-  @ViewChild(ComponentManagementComponent)
-  componentManagement: ComponentManagementComponent;
-  makeNewComponent() {
-    this.componentManagement.newComponent();
-  }
-
-  @ViewChild(FlowManagementComponent)
-  flowManagement: FlowManagementComponent;
-  addNewAction() {
-    this.flowManagement.newAction();
-  }
-  addNewTrigger() {
-    this.flowManagement.newTrigger();
-  }
-  addNewCondition() {
-    this.flowManagement.newCondition();
-  }
-  addNewOperation() {
-    this.flowManagement.newOperation();
-  }
-  addNewNestedFlow() {
-    this.flowManagement.newNestedFlow();
   }
 }

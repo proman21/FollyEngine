@@ -7,8 +7,7 @@ import {
   Output,
   QueryList,
   SimpleChanges,
-  ViewChildren,
-  ViewEncapsulation
+  ViewChildren
 } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material';
 
@@ -24,8 +23,7 @@ import { GenericSelectDialog } from '../../dialogs/dialogs.component';
 @Component({
   selector: 'flow-editor',
   templateUrl: './flow-editor.component.html',
-  styleUrls: ['./flow-editor.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./flow-editor.component.css']
 })
 export class FlowEditorComponent implements OnChanges {
   @Input()
@@ -62,73 +60,74 @@ export class FlowEditorComponent implements OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.flow === undefined) {
-      return;
-    }
+    // Wrapping this in a timeout is an easy fix for ExpressionChangedAfterItHasBeenCheckedError
+    // See https://blog.angularindepth.com/everything-you-need-to-know-about-the-expressionchangedafterithasbeenchecked
+    //     error-error-e3fd9ce7dbb4
+    setTimeout(() => {
+      if (changes.flow === undefined) {
+        return;
+      }
 
-    this.flowNodeService.update();
+      this.flowNodeService.update();
 
-    if (this.flow === undefined) {
-      this.graph.clear();
-      this.paper.remove();
-      const flowInner = this.elementRef.nativeElement.querySelector('.flow-inner');
-      flowInner.insertAdjacentHTML('beforeend', '<div class="flow-paper"></div>');
-      return;
-    }
+      if (this.flow === undefined) {
+        this.graph.clear();
+        this.paper.remove();
+        const flowInner = this.elementRef.nativeElement.querySelector('.flow-inner');
+        flowInner.insertAdjacentHTML('beforeend', '<div class="flow-paper"></div>');
+        return;
+      }
 
-    this.graph = new joint.dia.Graph();
-    this.paper = new joint.dia.Paper({
-      el: $('.flow-paper'),
-      model: this.graph,
-      width: 10000,
-      height: 10000,
-      gridSize: 10,
-      drawGrid: true,
-      background: {
-        color: '#fafafa'
-      },
-      defaultLink: new joint.dia.Link({
-        attrs: {
-          '.connection': { stroke: 'black', 'stroke-width': 3 },
-          '.marker-target': { fill: 'black', d: 'M 10 0 L 0 5 L 10 10 z' }
-        }
-      }),
-      // validateConnection: this.checkConnection,
-      // validateMagnet: this.checkMagnet,
-      snapLinks: { radius: 40 },
-      linkPinning: false
+      this.graph = new joint.dia.Graph();
+      this.paper = new joint.dia.Paper({
+        el: $('.flow-paper'),
+        model: this.graph,
+        width: 10000,
+        height: 10000,
+        gridSize: 10,
+        drawGrid: true,
+        background: {
+          color: '#fafafa'
+        },
+        defaultLink: new joint.dia.Link({
+          attrs: {
+            '.connection': { stroke: 'black', 'stroke-width': 3 },
+            '.marker-target': { fill: 'black', d: 'M 10 0 L 0 5 L 10 10 z' }
+          }
+        }),
+        // validateConnection: this.checkConnection,
+        // validateMagnet: this.checkMagnet,
+        snapLinks: { radius: 40 },
+        linkPinning: false
+      });
+
+      if (this.flow.cells !== null) {
+        this.loadFlow();
+      }
+
+      // Setup handlers
+
+      // FIXME Probably not the most deterministic way to autosave,
+      //       nor the most efficient
+      this.graph.on('change', _.debounce(this.saveFlow.bind(this), 250, { leading: true, trailing: true }));
+
+      this.paper.on('cell:pointerdown', cellView => {
+        cellView.model.toFront();
+      });
+
+      this.paper.on('blank:contextmenu', this.showBlankContextMenu.bind(this));
+      this.paper.on('cell:contextmenu', this.showNodeContextMenu.bind(this));
+
+      // Disable normal scrolling
+      // FIXME This does not work as expected
+      // this.paper.on('blank:mousewheel', this.zoom.bind(this));
+      // this.paper.on('cell:mousewheel', this.zoom.bind(this));
+
+      this.paper.on('blank:pointerdown', this.enableScrolling.bind(this));
+      window.addEventListener('mouseup', this.disableScrolling.bind(this));
+
+      window.addEventListener('mousemove', this.updateMouse.bind(this));
     });
-
-    if (this.flow.cells !== null) {
-      this.loadFlow();
-    }
-
-    // Setup handlers
-
-    // FIXME Probably not the most deterministic way to autosave,
-    //       nor the most efficient
-    this.graph.on('change', _.debounce(this.saveFlow.bind(this), 250, { leading: true, trailing: true }));
-
-    // https://github.com/clientIO/joint/issues/879#issuecomment-388695519
-    /*this.paper.options.guard = function(evt) {
-            return (evt.type === 'mousedown' && evt.buttons === 2);
-        };*/
-
-    this.paper.on('cell:pointerdown', cellView => {
-      cellView.model.toFront();
-    });
-
-    this.paper.on('blank:contextmenu', this.showBlankContextMenu.bind(this));
-    this.paper.on('cell:contextmenu', this.showNodeContextMenu.bind(this));
-
-    // Disable normal scrolling
-    this.paper.on('blank:mousewheel', this.zoom.bind(this));
-    //this.paper.on('cell:mousewheel', this.zoom.bind(this)); Brok :(
-
-    this.paper.on('blank:pointerdown', this.enableScrolling.bind(this));
-    window.addEventListener('mouseup', this.disableScrolling.bind(this));
-
-    window.addEventListener('mousemove', this.updateMouse.bind(this));
   }
 
   saveFlow() {
@@ -229,6 +228,20 @@ export class FlowEditorComponent implements OnChanges {
 
   addNestedFlowNode() {
     const cell = new joint.shapes['folly'].NestedFlowNode({
+      position: { ...this.newNodePosition }
+    });
+    this.addNode(cell);
+  }
+
+  addInstanceNode() {
+    const cell = new joint.shapes['folly'].InstanceNode({
+      position: { ...this.newNodePosition }
+    });
+    this.addNode(cell);
+  }
+
+  addGateNode() {
+    const cell = new joint.shapes['folly'].GateNode({
       position: { ...this.newNodePosition }
     });
     this.addNode(cell);

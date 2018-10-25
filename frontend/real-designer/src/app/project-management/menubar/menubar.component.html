@@ -15,6 +15,7 @@
               O</span></button>
           <button mat-menu-item id="SAVE" (click)="pressedSave()">Save<span
               class="hotkey">{{hotKeyModifier}} S</span></button>
+          <button mat-menu-item (click)="designerService.exportCurrentProject()">Export</button>
         </mat-menu>
 
         <button mat-button [matMenuTriggerFor]="editMenu">Edit</button>

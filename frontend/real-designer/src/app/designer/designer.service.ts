@@ -14,7 +14,7 @@ import {
 export class DesignerService {
   currentProjectName: string;
   currentProject: Project;
-  projects: Map<string, Project> = new Map<string, Project>();
+  projects: Map<number, Project> = new Map<number, Project>();
 
   constructor(private http: HttpClient) {}
 
@@ -73,11 +73,11 @@ export class DesignerService {
   async newProject(name: string) {
     console.log('New project');
     const project = new Project();
-    this.projects.set(name, project);
+    project.name = name;
     this.currentProjectName = name;
     this.currentProject = project;
 
-    this.http
+    const data = await this.http
       .post(
         'api/projects',
         {
@@ -96,11 +96,12 @@ export class DesignerService {
           })
         }
       )
-      .subscribe(async data => {
-        project.id = data['data'].id;
-        await this.setupExampleData();
-        this.saveState();
-      });
+      .toPromise();
+
+    project.id = data['data'].id;
+    this.projects.set(project.id, project);
+    await this.setupExampleData();
+    this.saveState();
   }
 
   saveState() {
@@ -109,86 +110,94 @@ export class DesignerService {
     //       which must be manually initiated by the user
 
     for (const [id, entity] of Array.from(this.currentProject.entities)) {
-      this.http.patch(
-        `api/projects/${this.currentProject.id}/entities/${id}`,
-        {
-          data: {
-            type: 'entities',
-            id: id,
-            attributes: {
-              name: entity.name,
-              description: entity.description
+      this.http
+        .patch(
+          `api/projects/${this.currentProject.id}/entities/${id}`,
+          {
+            data: {
+              type: 'entities',
+              id: id,
+              attributes: {
+                name: entity.name,
+                description: entity.description
+              }
             }
+          },
+          {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/vnd.api+json',
+              Accept: 'application/vnd.api+json'
+            })
           }
-        },
-        {
-          headers: new HttpHeaders({
-            'Content-Type': 'application/vnd.api+json',
-            Accept: 'application/vnd.api+json'
-          })
-        }
-      ).subscribe();
+        )
+        .subscribe();
 
-      this.http.patch(
-        `api/projects/${this.currentProject.id}/entities/${id}/relationships/components`,
-        {
-          data: entity.components.reduce((data, c) => {
-            data.push({ type: 'components', id: c });
-            return data;
-          }, [])
-        },
-        {
-          headers: new HttpHeaders({
-            'Content-Type': 'application/vnd.api+json',
-            Accept: 'application/vnd.api+json'
-          })
-        }
-      ).subscribe();
+      this.http
+        .post(
+          `api/projects/${this.currentProject.id}/entities/${id}/relationships/components`,
+          {
+            data: entity.components.reduce((data, c) => {
+              data.push({ type: 'components', id: c });
+              return data;
+            }, [])
+          },
+          {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/vnd.api+json',
+              Accept: 'application/vnd.api+json'
+            })
+          }
+        )
+        .subscribe();
     }
 
     for (const [id, comp] of Array.from(this.currentProject.components)) {
-      this.http.patch(
-        `api/projects/${this.currentProject.id}/components/${id}`,
-        {
-          data: {
-            type: 'components',
-            id: id,
-            attributes: {
-              name: comp.name,
-              description: comp.description,
-              attributes: comp.attributes
+      this.http
+        .patch(
+          `api/projects/${this.currentProject.id}/components/${id}`,
+          {
+            data: {
+              type: 'components',
+              id: id,
+              attributes: {
+                name: comp.name,
+                description: comp.description,
+                attributes: comp.attributes
+              }
             }
+          },
+          {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/vnd.api+json',
+              Accept: 'application/vnd.api+json'
+            })
           }
-        },
-        {
-          headers: new HttpHeaders({
-            'Content-Type': 'application/vnd.api+json',
-            Accept: 'application/vnd.api+json'
-          })
-        }
-      ).subscribe();
+        )
+        .subscribe();
     }
 
     for (const [id, flow] of Array.from(this.currentProject.flows)) {
-      this.http.patch(
-        `api/projects/${this.currentProject.id}/flows/${id}`,
-        {
-          data: {
-            type: 'flows',
-            id: id,
-            attributes: {
-              name: flow.name,
-              data: flow.cells
+      this.http
+        .patch(
+          `api/projects/${this.currentProject.id}/flows/${id}`,
+          {
+            data: {
+              type: 'flows',
+              id: id,
+              attributes: {
+                name: flow.name,
+                data: flow.cells
+              }
             }
+          },
+          {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/vnd.api+json',
+              Accept: 'application/vnd.api+json'
+            })
           }
-        },
-        {
-          headers: new HttpHeaders({
-            'Content-Type': 'application/vnd.api+json',
-            Accept: 'application/vnd.api+json'
-          })
-        }
-      ).subscribe();
+        )
+        .subscribe();
     }
 
     for (const [id, asset] of Array.from(this.currentProject.assets)) {
@@ -196,29 +205,28 @@ export class DesignerService {
     }
   }
 
-  loadAllProjects() {
+  async loadAllProjects() {
     const self = this;
     console.log('Loading projects');
-    this.http
+    const data = await this.http
       .get('api/projects', {
         headers: new HttpHeaders({
           Accept: 'application/vnd.api+json'
         })
       })
-      .subscribe(data => {
-        const project = new Project();
-        for (const entry of data['data']) {
-          const project = new Project();
-          project.id = entry.id;
-          self.projects.set(entry.attributes.title, project);
-        }
-      });
+      .toPromise();
+    const project = new Project();
+    for (const entry of data['data']) {
+      const project = new Project();
+      project.id = entry.id;
+      project.name = entry.attributes.title;
+      self.projects.set(entry.id, project);
+    }
   }
 
-  async loadProject(name: string) {
-    console.log('Loading project: ' + name);
-    this.currentProjectName = name;
-    this.currentProject = this.projects.get(this.currentProjectName);
+  async loadProject(id: number) {
+    console.log('Loading project: ' + id);
+    this.currentProject = this.projects.get(id);
     await this.loadState();
   }
 
@@ -315,6 +323,10 @@ export class DesignerService {
 
   async registerNewEntity(entity: DesignerEntity): Promise<number> {
     if (!entity.id) {
+      // Resolve name collisions
+      entity.name = this.findUniqueName(entity.name, this.currentProject.entities);
+
+      // Post new resource to API
       const data = await this.http
         .post(
           `api/projects/${this.currentProject.id}/entities`,
@@ -344,6 +356,10 @@ export class DesignerService {
 
   async registerNewComponent(comp: DesignerComponent): Promise<number> {
     if (!comp.id) {
+      // Resolve name collisions
+      comp.name = this.findUniqueName(comp.name, this.currentProject.components);
+
+      // Post new resource to API
       const data = await this.http
         .post(
           `api/projects/${this.currentProject.id}/components`,
@@ -374,6 +390,10 @@ export class DesignerService {
 
   async registerNewFlow(flow: DesignerFlow): Promise<number> {
     if (!flow.id) {
+      // Resolve name collisions
+      flow.name = this.findUniqueName(flow.name, this.currentProject.flows);
+
+      // Post new resource to API
       const data = await this.http
         .post(
           `api/projects/${this.currentProject.id}/flows`,
@@ -410,11 +430,13 @@ export class DesignerService {
 
   destroyEntity(id: number) {
     this.currentProject.entities.delete(id);
-    this.http.delete(`api/projects/${this.currentProject.id}/entities/${id}`, {
-      headers: new HttpHeaders({
-        Accept: 'application/vnd.api+json'
+    this.http
+      .delete(`api/projects/${this.currentProject.id}/entities/${id}`, {
+        headers: new HttpHeaders({
+          Accept: 'application/vnd.api+json'
+        })
       })
-    }).subscribe();
+      .subscribe();
   }
 
   destroyComponent(c: number) {
@@ -423,20 +445,24 @@ export class DesignerService {
       this.removeComponentFromEntity(e, c);
     }
     this.currentProject.components.delete(c);
-    this.http.delete(`api/projects/${this.currentProject.id}/components/${c}`, {
-      headers: new HttpHeaders({
-        Accept: 'application/vnd.api+json'
+    this.http
+      .delete(`api/projects/${this.currentProject.id}/components/${c}`, {
+        headers: new HttpHeaders({
+          Accept: 'application/vnd.api+json'
+        })
       })
-    }).subscribe();
+      .subscribe();
   }
 
   destroyFlow(id: number) {
     this.currentProject.flows.delete(id);
-    this.http.delete(`api/projects/${this.currentProject.id}/flows/${id}`, {
-      headers: new HttpHeaders({
-        Accept: 'application/vnd.api+json'
+    this.http
+      .delete(`api/projects/${this.currentProject.id}/flows/${id}`, {
+        headers: new HttpHeaders({
+          Accept: 'application/vnd.api+json'
+        })
       })
-    }).subscribe();
+      .subscribe();
   }
 
   destroyAsset(id: number) {
@@ -462,10 +488,35 @@ export class DesignerService {
   getAllProjects() {
     return this.projects;
   }
+
+  exportCurrentProject() {
+    // FIXME Pop-up blob usually gets blocked and has incorrect filename
+    this.http
+      .get(`api/projects/${this.currentProject.id}/export`, { responseType: 'arraybuffer' })
+      .subscribe(response => {
+        var blob = new Blob([response], { type: 'application/x-yaml' });
+        var url = window.URL.createObjectURL(blob);
+        window.open(url);
+      });
+  }
+
+  private findUniqueName(basename: string, resources: any) {
+    // FIXME The API should handle this
+    const names = Array.from(resources).reduce<Array<string>>((o, [key, value]) => {
+      o.push(value.name);
+      return o;
+    }, []);
+    let name = basename;
+    for (let i = 1; names.includes(name); i++) {
+      name = basename + ' (' + i + ')';
+    }
+    return name;
+  }
 }
 
 export class Project {
   id: number;
+  name: string;
   entities: Map<number, DesignerEntity> = new Map();
   components: Map<number, DesignerComponent> = new Map();
   flows: Map<number, DesignerFlow> = new Map();

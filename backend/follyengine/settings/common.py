@@ -97,6 +97,12 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Login redirection
+# https://docs.djangoproject.com/en/2.1/ref/settings/#login-redirect-url
+
+LOGIN_REDIRECT_URL = '/api'
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -126,7 +132,7 @@ APPEND_SLASH = False
 # Rest Framework Configuration
 
 REST_FRAMEWORK = {
-    'PAGE_SIZE': 10,
+    'PAGE_SIZE': 0,
     'EXCEPTION_HANDLER':
         'rest_framework_json_api.exceptions.exception_handler',
     'DEFAULT_PAGINATION_CLASS':

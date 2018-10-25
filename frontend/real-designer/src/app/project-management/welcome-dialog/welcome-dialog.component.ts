@@ -13,6 +13,7 @@ export class WelcomeDialogComponent implements OnInit {
   constructor(private designerService: DesignerService, private dialogRef: MatDialogRef<WelcomeDialogComponent>) {}
 
   currentView = 0;
+  projectId: number;
   projectName = new FormControl('', [Validators.required]);
   projectDescription = new FormControl('');
   projectTags = new FormControl('');
@@ -24,17 +25,13 @@ export class WelcomeDialogComponent implements OnInit {
 
   ngOnInit() {}
 
-  getAllProjects() {
-    return Array.from(this.designerService.getAllProjects().keys());
-  }
-
   newProject() {
     this.currentView = 1;
   }
 
-  loadProject(name: string) {
-    this.projectName.setValue(name); // Hack
-    this.designerService.loadProject(name).then(() => {
+  loadProject(id: number) {
+    this.designerService.loadProject(id).then(() => {
+      this.projectId = id;
       this.dialogRef.close();
     });
   }
@@ -42,6 +39,7 @@ export class WelcomeDialogComponent implements OnInit {
   createProject() {
     if (this.projectName.valid) {
       this.designerService.newProject(this.projectName.value).then(() => {
+        this.projectId = this.designerService.currentProject.id;
         this.dialogRef.close();
       });
     } else {

@@ -4,16 +4,23 @@ import * as $ from 'jquery';
 import * as joint from 'jointjs';
 
 import { DesignerService } from './../../designer/designer.service';
+import { ConditionNodeComponent } from './condition-node.component';
+import { OperationNodeComponent } from './operation-node.component';
+import { ActionNodeComponent } from './action-node.component';
+import { TriggerNodeComponent } from './trigger-node.component';
+import { NestedFlowNodeComponent } from './nested-flow-node.component';
+import { InstanceNodeComponent } from './instance-node.component';
+import { GateNodeComponent } from './gate-node.component';
 import { FlowNodeView } from './flow-node.view';
 
 joint.shapes['folly'] = {};
 joint.shapes.basic['PortsModel'] = joint.shapes.basic.Generic.extend(joint.shapes.basic['PortsModelInterface']);
 
 interface FlowNodeOptions {
-  entities: string;
+  entities: any[];
   attributes: { [x: number]: string };
-  flows: string;
-  assets: string;
+  flows: any[];
+  assets: any[];
 }
 
 @Injectable()
@@ -28,138 +35,43 @@ export class FlowNodeService {
 
   constructor(private designerService: DesignerService) {
     // ConditionNode
-    this.define(
-      'ConditionNode',
-      options => {
-        const conditionOptions = [
-          'Equal to',
-          'Greater than',
-          'Less than',
-          'Greater than or equal to',
-          'Less than or equal to'
-        ].reduce<string>((s, value) => {
-          s += `<option>${value}</option>`;
-          return s;
-        }, '');
-        return `<span class="node-caption">Condition</span>
-          <div class="input-group">
-            <input name="name" type="text" value="New Condition"/>
-          </div>
-          <div class="input-group">
-            <label>Entity</label>
-            <select name="entity">${options.entities}</select>
-            <label>Attribute</label>
-            <select name="attr">${options.attributes[Object.keys(options.attributes)[0]]}</select>
-          </div>
-          <div class="input-group">
-            <label>is</label>
-            <select name="action">${conditionOptions}</select>
-          </div>
-          <div class="input-group">
-            <label>Value</label>
-            <input name="value" type="text" value=""/>
-          </div>`;
-      },
-      {
-        outPorts: ['True', 'False']
-      }
-    );
-
-    // OperationNode
-    this.define('OperationNode', options => {
-      const operationOptions = ['Add', 'Subtract', 'Set'].reduce<string>((s, value) => {
-        s += `<option>${value}</option>`;
-        return s;
-      }, '');
-      return `<span class="node-caption">Operation</span>
-          <div class="input-group">
-            <input name="name" type="text" value="New Operation"/>
-          </div>
-          <div class="input-group">
-            <label>Entity</label>
-            <select name="entity">${options.entities}</select>
-            <label>Attribute</label>
-            <select name="attr">${options.attributes[Object.keys(options.attributes)[0]]}</select>
-          </div>
-          <div class="input-group">
-            <label>Action</label>
-            <select name="action">${operationOptions}</select>
-          </div>
-          <div class="input-group">
-            <label>Value</label>
-            <input name="value" type="text" value=""/>
-          </div>`;
+    this.define('ConditionNode', ConditionNodeComponent, {
+      outPorts: ['True', 'False']
     });
 
+    // OperationNode
+    this.define('OperationNode', OperationNodeComponent);
+
     // ActionNode
-    this.define(
-      'ActionNode',
-      options => {
-        return `<span class="node-caption">Action</span>
-          <div class="input-group">
-            <input name="name" type="text" value="New Action"/>
-          </div>
-          <div class="input-group">
-            <label>Entity</label>
-            <select name="entity">${options.entities}</select>
-            <label>Attribute</label>
-            <select name="attr">${options.attributes[Object.keys(options.attributes)[0]]}</select>
-          </div>
-          <div class="input-group">
-            <label>File</label>
-            <select name="action">${options.assets}</select>
-          </div>`;
-      },
-      {
-        size: { width: 240, height: 160 }
-      }
-    );
+    this.define('ActionNode', ActionNodeComponent, {
+      size: { width: 240, height: 140 }
+    });
 
     // TriggerNode
-    this.define(
-      'TriggerNode',
-      options => {
-        const triggerOptions = ['RFID'].reduce<string>((s, value) => {
-          s += `<option>${value}</option>`;
-          return s;
-        }, '');
-        return `<span class="node-caption">Trigger</span>
-          <div class="input-group">
-            <input name="name" type="text" value="New Trigger"/>
-          </div>
-          <div class="input-group">
-            <label>Type</label>
-            <select name="trigger">${triggerOptions}</select>
-          </div>
-          <div class="input-group">
-            <label>Entity</label>
-            <select name="entity">${options.entities}</select>
-          </div>`;
-      },
-      {
-        size: { width: 220, height: 140 }
-      }
-    );
+    this.define('TriggerNode', TriggerNodeComponent, {
+      size: { width: 220, height: 140 }
+    });
 
     // NestedFlowNode
-    this.define(
-      'NestedFlowNode',
-      options => {
-        return `<div class="input-group">
-          <label>Flow</label>
-          <select name="flow">${options.flows}</select>
-        </div>`;
-      },
-      {
-        size: { width: 220, height: 60 }
-      }
-    );
+    this.define('NestedFlowNode', NestedFlowNodeComponent, {
+      size: { width: 220, height: 60 }
+    });
+
+    // InstanceNode
+    this.define('InstanceNode', InstanceNodeComponent, {
+      size: { width: 220, height: 90 }
+    });
+
+    // GateNode
+    this.define('GateNode', GateNodeComponent, {
+      inPorts: ['left', 'right'],
+      size: { width: 200, height: 60 }
+    });
   }
 
-  define(type: string, template: (options: FlowNodeOptions) => string, defaultAttributes?: {}) {
+  define(type: any, component: any, defaultAttributes?: {}) {
     // declare class and functions
     joint.shapes['folly'][type] = class extends joint.shapes.basic['PortsModel'] {};
-    joint.shapes['folly'][type].prototype.template = template;
 
     // define defaults property
     if (!defaultAttributes) {
@@ -170,15 +82,15 @@ export class FlowNodeService {
         return {
           ...joint.shapes.basic['PortsModel'].prototype.defaults,
           type: `folly.${type}`,
-          size: { width: 240, height: 180 },
+          size: { width: 240, height: 200 },
           inPorts: ['In'],
           outPorts: ['Out'],
           attrs: {
             '.': { magnet: false },
-            rect: { stroke: 'none', 'fill-opacity': 0, width: '100%', height: '100%' },
-            circle: { r: 8, magnet: true },
-            '.inPorts circle': { fill: 'green', magnet: 'passive', type: 'input' },
-            '.outPorts circle': { fill: 'red', type: 'output' },
+            '.box': { stroke: 'none', 'fill-opacity': 0, width: '100%', height: '100%' },
+            '.port': { width: 10, height: 10, magnet: true },
+            '.inPorts .port': { fill: 'green', magnet: 'passive', type: 'input' },
+            '.outPorts .port': { fill: 'red', type: 'output' },
             '.outPorts text': { dx: '-12px', dy: '4px', 'text-anchor': 'end' }
           },
           ...defaultAttributes
@@ -195,12 +107,7 @@ export class FlowNodeService {
     Object.defineProperty(joint.shapes['folly'][type].prototype, 'markup', {
       get: () => `<g class="rotatable">
         <g class="scalable">
-          <rect/>
-          <foreignObject>
-            <div xmlns="http://www.w3.org/1999/xhtml" class="flow-node">
-              ${joint.shapes['folly'][type].prototype.template.call(this, this.options)}
-            </div>
-          </foreignObject>
+          <rect class="box"/>
         </g>
         <g class="inPorts"/>
         <g class="outPorts"/>
@@ -208,7 +115,21 @@ export class FlowNodeService {
     });
 
     joint.shapes['folly'][type].prototype.getPortAttrs = function(portName, index, total, selector, type) {
-      return FlowNodeService.getPortAttrs.apply(this, arguments);
+      const attrs = {};
+      const portClass = 'port' + index;
+      const portSelector = selector + '>.' + portClass;
+      const portCircleSelector = portSelector + '>circle';
+
+      attrs[portCircleSelector] = { port: { id: portName, type: type } };
+      attrs[portSelector] = { ref: 'rect', 'ref-y': (index + 0.5) * (1 / total) };
+
+      if (selector === '.outPorts') {
+        attrs[portSelector]['ref-dx'] = 0;
+      } else {
+        attrs[portSelector]['ref-dx'] = -this.attributes.size.width - 10;
+      }
+
+      return attrs;
     };
 
     // define view class
@@ -223,6 +144,10 @@ export class FlowNodeService {
         configurable: true
       }
     });
+    Object.defineProperty(joint.shapes['folly'][`${type}View`].prototype, 'component', {
+      value: component,
+      writable: true
+    });
   }
 
   update() {
@@ -231,49 +156,33 @@ export class FlowNodeService {
     const flows = this.designerService.getFlows();
     const assets = this.designerService.getAssets();
 
-    this.options.entities = Array.from(entities).reduce<string>((s, [key, value]) => {
-      s += `<option value="${value.id}">${value.name}</option>`;
+    this.options.entities = Array.from(entities).reduce((s, [key, value]) => {
+      s.push(value);
       return s;
-    }, '');
+    }, []);
 
     const attributeOptions = {};
     entities.forEach(e => {
-      attributeOptions[e.id] = '';
+      attributeOptions[e.id] = [];
       e.components.forEach(c => {
         components.get(c).attributes.forEach(function(attr) {
-          attributeOptions[e.id] += `<option>${attr.name}</option>`;
+          attributeOptions[e.id].push(attr.name);
         });
       });
     });
     this.options.attributes = attributeOptions;
 
-    this.options.flows = Array.from(flows).reduce<string>((s, [key, value]) => {
+    this.options.flows = Array.from(flows).reduce((s, [key, value]) => {
       // TODO
       //if (key !== this.flow.id) {
-      s += `<option value="${value.id}">${value.name}</option>`;
+      s.push(value);
       //}
       return s;
-    }, '');
+    }, []);
 
-    this.options.assets = Array.from(assets).reduce<string>((s, [key, value]) => {
-      s += `<option value="${value.id}">${value.name}</option>`;
+    this.options.assets = Array.from(assets).reduce((s, [key, value]) => {
+      s.push(value);
       return s;
-    }, '');
-  }
-
-  static getPortAttrs(portName, index, total, selector, type) {
-    const attrs = {};
-    const portClass = 'port' + index;
-    const portSelector = selector + '>.' + portClass;
-    const portCircleSelector = portSelector + '>circle';
-
-    attrs[portCircleSelector] = { port: { id: portName, type: type } };
-    attrs[portSelector] = { ref: 'rect', 'ref-y': (index + 0.5) * (1 / total) };
-
-    if (selector === '.outPorts') {
-      attrs[portSelector]['ref-dx'] = 0;
-    }
-
-    return attrs;
+    }, []);
   }
 }
