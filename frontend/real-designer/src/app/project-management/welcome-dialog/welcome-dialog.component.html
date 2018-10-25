@@ -16,8 +16,8 @@
 
     <div class="open">
       <div *ngFor="let project of designerService.getAllProjects() | keyvalue">
-        <button (click)="loadProject(project.key)" class="load-btn" mat-raised-button
-          color="primary">
+        <button (click)="loadProject(project.key)" class="load-btn"
+          mat-raised-button color="primary">
           {{project.value.name}}
         </button>
       </div>

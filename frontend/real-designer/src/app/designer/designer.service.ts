@@ -110,86 +110,94 @@ export class DesignerService {
     //       which must be manually initiated by the user
 
     for (const [id, entity] of Array.from(this.currentProject.entities)) {
-      this.http.patch(
-        `api/projects/${this.currentProject.id}/entities/${id}`,
-        {
-          data: {
-            type: 'entities',
-            id: id,
-            attributes: {
-              name: entity.name,
-              description: entity.description
+      this.http
+        .patch(
+          `api/projects/${this.currentProject.id}/entities/${id}`,
+          {
+            data: {
+              type: 'entities',
+              id: id,
+              attributes: {
+                name: entity.name,
+                description: entity.description
+              }
             }
+          },
+          {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/vnd.api+json',
+              Accept: 'application/vnd.api+json'
+            })
           }
-        },
-        {
-          headers: new HttpHeaders({
-            'Content-Type': 'application/vnd.api+json',
-            Accept: 'application/vnd.api+json'
-          })
-        }
-      ).subscribe();
+        )
+        .subscribe();
 
-      this.http.post(
-        `api/projects/${this.currentProject.id}/entities/${id}/relationships/components`,
-        {
-          data: entity.components.reduce((data, c) => {
-            data.push({ type: 'components', id: c });
-            return data;
-          }, [])
-        },
-        {
-          headers: new HttpHeaders({
-            'Content-Type': 'application/vnd.api+json',
-            Accept: 'application/vnd.api+json'
-          })
-        }
-      ).subscribe();
+      this.http
+        .post(
+          `api/projects/${this.currentProject.id}/entities/${id}/relationships/components`,
+          {
+            data: entity.components.reduce((data, c) => {
+              data.push({ type: 'components', id: c });
+              return data;
+            }, [])
+          },
+          {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/vnd.api+json',
+              Accept: 'application/vnd.api+json'
+            })
+          }
+        )
+        .subscribe();
     }
 
     for (const [id, comp] of Array.from(this.currentProject.components)) {
-      this.http.patch(
-        `api/projects/${this.currentProject.id}/components/${id}`,
-        {
-          data: {
-            type: 'components',
-            id: id,
-            attributes: {
-              name: comp.name,
-              description: comp.description,
-              attributes: comp.attributes
+      this.http
+        .patch(
+          `api/projects/${this.currentProject.id}/components/${id}`,
+          {
+            data: {
+              type: 'components',
+              id: id,
+              attributes: {
+                name: comp.name,
+                description: comp.description,
+                attributes: comp.attributes
+              }
             }
+          },
+          {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/vnd.api+json',
+              Accept: 'application/vnd.api+json'
+            })
           }
-        },
-        {
-          headers: new HttpHeaders({
-            'Content-Type': 'application/vnd.api+json',
-            Accept: 'application/vnd.api+json'
-          })
-        }
-      ).subscribe();
+        )
+        .subscribe();
     }
 
     for (const [id, flow] of Array.from(this.currentProject.flows)) {
-      this.http.patch(
-        `api/projects/${this.currentProject.id}/flows/${id}`,
-        {
-          data: {
-            type: 'flows',
-            id: id,
-            attributes: {
-              name: flow.name,
-              data: flow.cells
+      this.http
+        .patch(
+          `api/projects/${this.currentProject.id}/flows/${id}`,
+          {
+            data: {
+              type: 'flows',
+              id: id,
+              attributes: {
+                name: flow.name,
+                data: flow.cells
+              }
             }
+          },
+          {
+            headers: new HttpHeaders({
+              'Content-Type': 'application/vnd.api+json',
+              Accept: 'application/vnd.api+json'
+            })
           }
-        },
-        {
-          headers: new HttpHeaders({
-            'Content-Type': 'application/vnd.api+json',
-            Accept: 'application/vnd.api+json'
-          })
-        }
-      ).subscribe();
+        )
+        .subscribe();
     }
 
     for (const [id, asset] of Array.from(this.currentProject.assets)) {
@@ -205,7 +213,8 @@ export class DesignerService {
         headers: new HttpHeaders({
           Accept: 'application/vnd.api+json'
         })
-      }).toPromise();
+      })
+      .toPromise();
     const project = new Project();
     for (const entry of data['data']) {
       const project = new Project();
@@ -409,11 +418,13 @@ export class DesignerService {
 
   destroyEntity(id: number) {
     this.currentProject.entities.delete(id);
-    this.http.delete(`api/projects/${this.currentProject.id}/entities/${id}`, {
-      headers: new HttpHeaders({
-        Accept: 'application/vnd.api+json'
+    this.http
+      .delete(`api/projects/${this.currentProject.id}/entities/${id}`, {
+        headers: new HttpHeaders({
+          Accept: 'application/vnd.api+json'
+        })
       })
-    }).subscribe();
+      .subscribe();
   }
 
   destroyComponent(c: number) {
@@ -422,20 +433,24 @@ export class DesignerService {
       this.removeComponentFromEntity(e, c);
     }
     this.currentProject.components.delete(c);
-    this.http.delete(`api/projects/${this.currentProject.id}/components/${c}`, {
-      headers: new HttpHeaders({
-        Accept: 'application/vnd.api+json'
+    this.http
+      .delete(`api/projects/${this.currentProject.id}/components/${c}`, {
+        headers: new HttpHeaders({
+          Accept: 'application/vnd.api+json'
+        })
       })
-    }).subscribe();
+      .subscribe();
   }
 
   destroyFlow(id: number) {
     this.currentProject.flows.delete(id);
-    this.http.delete(`api/projects/${this.currentProject.id}/flows/${id}`, {
-      headers: new HttpHeaders({
-        Accept: 'application/vnd.api+json'
+    this.http
+      .delete(`api/projects/${this.currentProject.id}/flows/${id}`, {
+        headers: new HttpHeaders({
+          Accept: 'application/vnd.api+json'
+        })
       })
-    }).subscribe();
+      .subscribe();
   }
 
   destroyAsset(id: number) {
