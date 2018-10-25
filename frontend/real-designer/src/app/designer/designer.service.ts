@@ -476,6 +476,17 @@ export class DesignerService {
   getAllProjects() {
     return this.projects;
   }
+
+  exportCurrentProject() {
+    // FIXME Pop-up blob usually gets blocked and has incorrect filename
+    this.http
+      .get(`api/projects/${this.currentProject.id}/export`, { responseType: 'arraybuffer' })
+      .subscribe(response => {
+        var blob = new Blob([response], { type: 'application/x-yaml' });
+        var url = window.URL.createObjectURL(blob);
+        window.open(url);
+      });
+  }
 }
 
 export class Project {
