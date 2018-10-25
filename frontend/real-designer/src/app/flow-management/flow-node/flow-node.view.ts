@@ -94,21 +94,20 @@ export class FlowNodeView extends joint.dia.ElementView {
   }
 
   renderPorts() {
-    // FIXME
     const inPorts = Object.values(this.model['ports']).filter(p => p['type'] === 'in');
     const $inPorts = this.$('.inPorts').empty();
     const multipleInPorts = inPorts.length > 1 ? true : false;
-    $inPorts.append(joint.V('<g class="port0"><circle/><text/></g>').node);
+    $inPorts.append(joint.V('<g class="port0"><rect class="port"/><text/></g>').node);
     if (multipleInPorts) {
-      $inPorts.append(joint.V('<g class="port1"><circle/><text/></g>').node);
+      $inPorts.append(joint.V('<g class="port1"><rect class="port"/><text/></g>').node);
     }
 
     const outPorts = Object.values(this.model['ports']).filter(p => p['type'] === 'out');
     const $outPorts = this.$('.outPorts').empty();
     const multipleOutPorts = outPorts.length > 1 ? true : false;
-    $outPorts.append(joint.V('<g class="port0"><circle/><text/></g>').node);
+    $outPorts.append(joint.V('<g class="port0"><rect class="port"/><text/></g>').node);
     if (multipleOutPorts) {
-      $outPorts.append(joint.V('<g class="port1"><circle/><text/></g>').node);
+      $outPorts.append(joint.V('<g class="port1"><rect class="port"/><text/></g>').node);
     }
   }
 

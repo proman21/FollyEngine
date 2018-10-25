@@ -87,10 +87,10 @@ export class FlowNodeService {
           outPorts: ['Out'],
           attrs: {
             '.': { magnet: false },
-            rect: { stroke: 'none', 'fill-opacity': 0, width: '100%', height: '100%' },
-            circle: { r: 8, magnet: true },
-            '.inPorts circle': { fill: 'green', magnet: 'passive', type: 'input' },
-            '.outPorts circle': { fill: 'red', type: 'output' },
+            '.box': { stroke: 'none', 'fill-opacity': 0, width: '100%', height: '100%' },
+            '.port': { width: 10, height: 10, magnet: true },
+            '.inPorts .port': { fill: 'green', magnet: 'passive', type: 'input' },
+            '.outPorts .port': { fill: 'red', type: 'output' },
             '.outPorts text': { dx: '-12px', dy: '4px', 'text-anchor': 'end' }
           },
           ...defaultAttributes
@@ -107,7 +107,7 @@ export class FlowNodeService {
     Object.defineProperty(joint.shapes['folly'][type].prototype, 'markup', {
       get: () => `<g class="rotatable">
         <g class="scalable">
-          <rect/>
+          <rect class="box"/>
         </g>
         <g class="inPorts"/>
         <g class="outPorts"/>
@@ -183,6 +183,8 @@ export class FlowNodeService {
 
     if (selector === '.outPorts') {
       attrs[portSelector]['ref-dx'] = 0;
+    } else {
+      attrs[portSelector]['ref-dx'] = -250;
     }
 
     return attrs;
