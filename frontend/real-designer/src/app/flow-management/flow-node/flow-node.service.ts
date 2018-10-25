@@ -115,7 +115,21 @@ export class FlowNodeService {
     });
 
     joint.shapes['folly'][type].prototype.getPortAttrs = function(portName, index, total, selector, type) {
-      return FlowNodeService.getPortAttrs.apply(this, arguments);
+      const attrs = {};
+      const portClass = 'port' + index;
+      const portSelector = selector + '>.' + portClass;
+      const portCircleSelector = portSelector + '>circle';
+
+      attrs[portCircleSelector] = { port: { id: portName, type: type } };
+      attrs[portSelector] = { ref: 'rect', 'ref-y': (index + 0.5) * (1 / total) };
+
+      if (selector === '.outPorts') {
+        attrs[portSelector]['ref-dx'] = 0;
+      } else {
+        attrs[portSelector]['ref-dx'] = -this.attributes.size.width - 10;
+      }
+
+      return attrs;
     };
 
     // define view class
@@ -170,23 +184,5 @@ export class FlowNodeService {
       s.push(value);
       return s;
     }, []);
-  }
-
-  static getPortAttrs(portName, index, total, selector, type) {
-    const attrs = {};
-    const portClass = 'port' + index;
-    const portSelector = selector + '>.' + portClass;
-    const portCircleSelector = portSelector + '>circle';
-
-    attrs[portCircleSelector] = { port: { id: portName, type: type } };
-    attrs[portSelector] = { ref: 'rect', 'ref-y': (index + 0.5) * (1 / total) };
-
-    if (selector === '.outPorts') {
-      attrs[portSelector]['ref-dx'] = 0;
-    } else {
-      attrs[portSelector]['ref-dx'] = -250;
-    }
-
-    return attrs;
   }
 }
