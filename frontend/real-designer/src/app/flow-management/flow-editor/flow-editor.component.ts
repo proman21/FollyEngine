@@ -119,8 +119,9 @@ export class FlowEditorComponent implements OnChanges {
       this.paper.on('cell:contextmenu', this.showNodeContextMenu.bind(this));
 
       // Disable normal scrolling
-      this.paper.on('blank:mousewheel', this.zoom.bind(this));
-      //this.paper.on('cell:mousewheel', this.zoom.bind(this)); Brok :(
+      // FIXME This does not work as expected
+      // this.paper.on('blank:mousewheel', this.zoom.bind(this));
+      // this.paper.on('cell:mousewheel', this.zoom.bind(this));
 
       this.paper.on('blank:pointerdown', this.enableScrolling.bind(this));
       window.addEventListener('mouseup', this.disableScrolling.bind(this));
