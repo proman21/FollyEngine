@@ -44,7 +44,7 @@ export class FlowNodeService {
 
     // ActionNode
     this.define('ActionNode', ActionNodeComponent, {
-      size: { width: 240, height: 160 }
+      size: { width: 240, height: 140 }
     });
 
     // TriggerNode

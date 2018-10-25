@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 
 // Components
 import { FlowManagementComponent } from './flow-management.component';
@@ -10,8 +9,10 @@ import { OperationNodeComponent } from './flow-node/operation-node.component';
 import { ActionNodeComponent } from './flow-node/action-node.component';
 import { TriggerNodeComponent } from './flow-node/trigger-node.component';
 import { NestedFlowNodeComponent } from './flow-node/nested-flow-node.component';
-import { AttributeInputComponent } from './flow-node/attribute-input.component';
-import { AssetInputComponent } from './flow-node/asset-input.component';
+import { InstanceNodeComponent } from './flow-node/instance-node.component';
+import { GateNodeComponent } from './flow-node/gate-node.component';
+import { StartNodeComponent } from './flow-node/start-node.component';
+import { EndNodeComponent } from './flow-node/end-node.component';
 
 // Libs
 
@@ -19,15 +20,12 @@ import { AssetInputComponent } from './flow-node/asset-input.component';
 import { FlowNodeService } from './flow-node/flow-node.service';
 
 // Module
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './../material.module';
 import { SharedUiModule } from '../shared-ui/shared-ui.module';
-import { InstanceNodeComponent } from './flow-node/instance-node.component';
-import { GateNodeComponent } from './flow-node/gate-node.component';
-import { StartNodeComponent } from './flow-node/start-node.component';
-import { EndNodeComponent } from './flow-node/end-node.component';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, SharedUiModule, MaterialModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedUiModule, MaterialModule],
   exports: [FlowManagementComponent],
   declarations: [
     FlowManagementComponent,
@@ -37,8 +35,6 @@ import { EndNodeComponent } from './flow-node/end-node.component';
     ActionNodeComponent,
     TriggerNodeComponent,
     NestedFlowNodeComponent,
-    AttributeInputComponent,
-    AssetInputComponent,
     InstanceNodeComponent,
     GateNodeComponent,
     StartNodeComponent,

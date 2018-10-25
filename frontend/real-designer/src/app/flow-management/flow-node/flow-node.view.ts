@@ -43,41 +43,28 @@ export class FlowNodeView extends joint.dia.ElementView {
     });
 
     // React on the input change and store the input data in the cell model
-    $(this.box).on(
-      'change',
-      'input,select',
-      function(evt) {
-        const $target = $(evt.target);
-        this.model.set($target.attr('name'), $target.val());
-      }.bind(this)
-    );
-    $(this.box)
-      .find('input,select')
-      .each(
-        function(index, element) {
-          const $element = $(element);
-          const val = this.model.get($element.attr('name'));
-          if (val != undefined) {
-            $element.val(val);
+    if (this.componentRef.instance.form != undefined) {
+      const valueKeys = Object.keys(this.componentRef.instance.form.value);
+      const patch = Object.keys(this.model.attributes)
+        .filter(key => valueKeys.includes(key))
+        .reduce((o, key) => {
+          o[key] = this.model.attributes[key];
+          return o;
+        }, {});
+      for (const key of valueKeys) {
+        if (patch[key] != undefined) {
+          this.componentRef.instance.form.get(key).setValue(patch[key]);
+          this.componentRef.changeDetectorRef.detectChanges();
+        }
+      }
+      this.componentRef.instance.form.valueChanges.subscribe(value => {
+        for (const key of valueKeys) {
+          if (value[key] != undefined) {
+            this.model.set(key, value[key]);
           }
-        }.bind(this)
-      );
-    const observer = new MutationObserver(
-      function(mutationList, observer) {
-        mutationList.forEach(mutation => {
-          const $element = $(mutation.target);
-          const val = this.model.get($element.attr('name'));
-          if (val != undefined) {
-            $element.val(val);
-          }
-        });
-      }.bind(this)
-    );
-    observer.observe(this.box, {
-      attributes: true,
-      attributeFilter: ['name'],
-      subtree: true
-    });
+        }
+      });
+    }
 
     // Update the box whenever the underlying model changes
     this.model.on('change', this.updateBox, this);

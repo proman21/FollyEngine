@@ -1,15 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { DesignerService } from './../../designer/designer.service';
 
 @Component({
-  selector: 'app-nested-flow-node',
-  template: `<div class="input-group">
-          <label>Flow</label>
-          <select name="flow">${'options.flows'}</select>
-        </div>`,
+  selector: 'app-flow-node',
+  template: `
+    <div [formGroup]="form">
+      <div class="input-group">
+        <label>Flow</label>
+        <select formControlName="flow">
+          <option *ngFor="let flow of designerService.getFlows() | keyvalue" value="{{flow.key}}">
+            {{flow.value.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+  `,
   styleUrls: ['./flow-node.component.css']
 })
-export class NestedFlowNodeComponent implements OnInit {
-  constructor() {}
+export class NestedFlowNodeComponent {
+  form = new FormGroup({
+    flow: new FormControl()
+  });
 
-  ngOnInit() {}
+  constructor(private designerService: DesignerService) {}
 }

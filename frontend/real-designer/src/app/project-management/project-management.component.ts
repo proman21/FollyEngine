@@ -19,8 +19,8 @@ import { MatDialog, MatDialogConfig, MatSnackBar, MatSnackBarConfig } from '@ang
 })
 export class ProjectManagementComponent {
   id: number;
-  view: number = 0;
-  sidebarExpanded: boolean = true;
+  view = 0;
+  sidebarExpanded = true;
 
   // Default Values
   username: string = sessionStorage.getItem('username');
