@@ -323,6 +323,10 @@ export class DesignerService {
 
   async registerNewEntity(entity: DesignerEntity): Promise<number> {
     if (!entity.id) {
+      // Resolve name collisions
+      entity.name = this.findUniqueName(entity.name, this.currentProject.entities);
+
+      // Post new resource to API
       const data = await this.http
         .post(
           `api/projects/${this.currentProject.id}/entities`,
@@ -352,6 +356,10 @@ export class DesignerService {
 
   async registerNewComponent(comp: DesignerComponent): Promise<number> {
     if (!comp.id) {
+      // Resolve name collisions
+      comp.name = this.findUniqueName(comp.name, this.currentProject.components);
+
+      // Post new resource to API
       const data = await this.http
         .post(
           `api/projects/${this.currentProject.id}/components`,
@@ -382,6 +390,10 @@ export class DesignerService {
 
   async registerNewFlow(flow: DesignerFlow): Promise<number> {
     if (!flow.id) {
+      // Resolve name collisions
+      flow.name = this.findUniqueName(flow.name, this.currentProject.flows);
+
+      // Post new resource to API
       const data = await this.http
         .post(
           `api/projects/${this.currentProject.id}/flows`,
@@ -486,6 +498,19 @@ export class DesignerService {
         var url = window.URL.createObjectURL(blob);
         window.open(url);
       });
+  }
+
+  private findUniqueName(basename: string, resources: any) {
+    // FIXME The API should handle this
+    const names = Array.from(resources).reduce<Array<string>>((o, [key, value]) => {
+      o.push(value.name);
+      return o;
+    }, []);
+    let name = basename;
+    for (let i = 1; names.includes(name); i++) {
+      name = basename + ' (' + i + ')';
+    }
+    return name;
   }
 }
 
