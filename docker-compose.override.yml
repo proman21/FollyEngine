@@ -9,16 +9,6 @@ services:
     entrypoint: ["python", "manage.py"]
     command: ["runserver", "0.0.0.0:8000"]
 
-  front:
-    build: ./frontend
-    volumes:
-      - ./frontend/real-designer/src:/app/src
-    environment:
-      - NODE_ENV=development
-    entrypoint: ["ng", "serve", "--host", "0.0.0.0"]
-
   web:
     volumes:
       - ./follyengine.dev.conf:/etc/nginx/conf.d/follyengine.dev.conf
-    depends_on:
-      - front
