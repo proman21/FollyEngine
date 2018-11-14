@@ -89,13 +89,12 @@ export class DesignerAttribute {
 }
 
 export class DesignerFlow {
-  id: number; // unique ID
+  id: number;
   name: string;
-  cells: {};
+  graph: FlowGraph;
 
-  constructor(name: string, cells: {}) {
+  constructor(name: string) {
     this.name = name;
-    this.cells = cells;
   }
 }
 
