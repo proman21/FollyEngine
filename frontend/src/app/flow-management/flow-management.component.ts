@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { DesignerFlow } from '../designer/designer';
 import { DesignerService } from '../designer/designer.service';
 import { FlowEditorComponent } from './flow-editor/flow-editor.component';
@@ -8,7 +8,7 @@ import { FlowEditorComponent } from './flow-editor/flow-editor.component';
   templateUrl: './flow-management.component.html',
   styleUrls: ['./flow-management.component.css']
 })
-export class FlowManagementComponent {
+export class FlowManagementComponent implements OnInit {
   title = 'Real Designer';
   flows: Map<number, DesignerFlow> = new Map();
   searchData: Map<number, string> = new Map();
@@ -18,8 +18,6 @@ export class FlowManagementComponent {
 
   ngOnInit() {
     this.subscribeDesigner();
-    // Show first flow by default
-    this.selectedIndex = this.flows.entries().next().value[1].id;
   }
 
   subscribeDesigner() {
@@ -48,7 +46,7 @@ export class FlowManagementComponent {
   }
 
   newFlow() {
-    const flow = new DesignerFlow('New Flow', {});
+    const flow = new DesignerFlow('New Flow');
     this.designerService.registerNewFlow(flow).then(() => this.subscribeDesigner());
   }
 
@@ -66,23 +64,5 @@ export class FlowManagementComponent {
 
   selectFlow(event: number) {
     this.selectedIndex = event;
-  }
-
-  @ViewChild(FlowEditorComponent)
-  flowEditor: FlowEditorComponent;
-  newAction() {
-    this.flowEditor.addActionNode();
-  }
-  newTrigger() {
-    this.flowEditor.addTriggerNode();
-  }
-  newCondition() {
-    this.flowEditor.addConditionNode();
-  }
-  newOperation() {
-    this.flowEditor.addOperationNode();
-  }
-  newNestedFlow() {
-    this.flowEditor.addNestedFlowNode();
   }
 }

@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import {
   MatButtonModule,
   MatSidenavModule,
@@ -20,11 +19,13 @@ import {
   MatTabsModule,
   MatTooltipModule,
   MatChipsModule,
+  MatTreeModule,
   MatDatepickerModule,
   MatNativeDateModule,
   MatCheckboxModule,
   MatProgressSpinnerModule
 } from '@angular/material';
+import { CdkTreeModule } from "@angular/cdk/tree";
 
 @NgModule({
   imports: [
@@ -50,7 +51,9 @@ import {
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTreeModule,
+    CdkTreeModule
   ],
   exports: [
     MatButtonModule,

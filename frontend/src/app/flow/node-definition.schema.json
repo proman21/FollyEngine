@@ -1,0 +1,137 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "./node-definitions.schema.json",
+  "title": "NodeDefinition",
+  "description": "A node in a Flow is based on a defintion, which describes the inputs and outputs of a node.",
+  "type": "object",
+  "additionalProperties": {
+    "type": "object",
+    "required": ["name", "description", "nodes"],
+    "properties": {
+      "name": {
+        "type": "string",
+        "description": "Name of the category."
+      },
+      "description": {
+        "type": "string",
+        "description": "Describes what kinds of nodes are under this category."
+      },
+      "nodes": {
+        "type": "object",
+        "description": "List of nodes in this category.",
+        "additionalProperties": {
+          "$ref": "#/definitions/NodeDefinition"
+        }
+      }
+    }
+  },
+  "definitions": {
+    "NodeDefinition": {
+      "type": "object",
+      "required": ["name", "description"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Display name of the node."
+        },
+        "description": {
+          "type": "string",
+          "description": "Describes what the node does."
+        },
+        "inputs": {
+          "type": "array",
+          "description": "List of input pins of the node. Control pins will be rendered before data pins. Order is preserved within these two sets.",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/ControlPin"
+              },
+              {
+                "$ref": "#/definitions/DataPin"
+              },
+              {
+                "const": "_",
+                "description": "This is a shortcut that represents a default control input."
+              }
+            ]
+          }
+        },
+        "outputs": {
+          "type": "array",
+          "description": "List of output pins on the node. Control pins will be rendered before data pins. Order is preserved within these two sets.",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/ControlPin"
+              },
+              {
+                "$ref": "#/definitions/DataPin"
+              },
+              {
+                "const": "_",
+                "description": "This is a shortcut that represents a default control output."
+              }
+            ]
+          }
+        }
+      }
+    },
+    "Pin": {
+      "type": "object",
+      "required": ["name", "label"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Identifies the pin uniquely."
+        },
+        "label": {
+          "type": "string",
+          "description": "The display name of the pin."
+        },
+        "description": {
+          "type": "string",
+          "description": "Describes the purpose of the pin."
+        }
+      }
+    },
+    "ControlPin": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Pin"
+        }
+      ],
+      "type": "object",
+      "description": "Control pins are used to route control flow between different nodes. If a node only has one output or input control pin, it is treated as the default and is not labelled. More then one input or output control pin will cause all nodes to be labelled.",
+      "required": ["kind"],
+      "properties": {
+        "kind": {
+          "const": "control"
+        }
+      }
+    },
+    "DataPin": {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Pin"
+        }
+      ],
+      "type": "object",
+      "description": "Data pins are used for arguments to a node. A node with unamed data pins is considered pure and will be shown in a compact way.",
+      "required": ["kind", "type"],
+      "properties": {
+        "kind": {
+          "const": "data"
+        },
+        "type": {
+          "type": "string",
+          "description": "The type name of the data pin."
+        },
+        "required": {
+          "type": "boolean",
+          "description": "Specifies that this pin needs to either have a constant value, or be connected to another node.",
+          "default": false
+        }
+      }
+    }
+  }
+}

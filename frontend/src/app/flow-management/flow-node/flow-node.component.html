@@ -1,0 +1,31 @@
+<svg:g class="node" [attr.transform]="transform">
+  <svg:rect class="background" [class.selected]="selected" x="0" y="0" [attr.width]="" [attr.height]="dim.y"/>
+  <svg:g class="title">
+    <svg:rect class="title-background" x="0" y="0" />
+    <svg:text #title class="title" x="5" y="0" dominant-baseline="hanging"
+              (mousedown)="startDrag($event)"
+              (mouseup)="stopDrag()"
+              (click)="selectNode($event)"
+    >{{node.title}}</svg:text>
+  </svg:g>
+  <svg:g class="pins">
+    <svg:g class="inputs">
+      <svg:g
+        controlPin
+        *ngFor="let p of descriptor.inputControlSet; let i=index;"
+        [pin]="p"
+        [layoutNode]="createInputPinNode(i)"
+      />
+      <svg:g
+        dataPin
+        *ngFor="let p of descriptor.inputControlSet; let i=index;"
+        [pin]="p"
+        [layoutNode]="createInputPinNode(i)"
+      />
+    </svg:g>
+    <svg:g class="outputs">
+      <svg:g controlPin class="pin input" *ngFor="let p of outputPins.control" />
+      <svg:g dataPin class="pin input" *ngFor="let p of outputPins.data" />
+    </svg:g>
+  </svg:g>
+</svg:g>

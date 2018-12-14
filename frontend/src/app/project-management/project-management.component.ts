@@ -11,6 +11,7 @@ import { AssetManagementComponent } from '../asset-management/asset-management.c
 
 // Angular Material
 import { MatDialog, MatDialogConfig, MatSnackBar, MatSnackBarConfig } from '@angular/material';
+import { FlowService } from "../flow/flow.service";
 
 @Component({
   selector: 'project-management',
@@ -33,8 +34,10 @@ export class ProjectManagementComponent {
     public snackBar: MatSnackBar,
     private route: ActivatedRoute,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public flowService: FlowService
   ) {
+    this.flowService.initialise();
     designerService.loadAllProjects().then(() => {
       route.params.subscribe(({ id }) => {
         if (id) {
@@ -46,11 +49,6 @@ export class ProjectManagementComponent {
         }
       });
     });
-  }
-
-  ngOnInit() {
-    this.username = this.username;
-    this.projectName = this.projectName;
   }
 
   setView(val: number) {
@@ -121,23 +119,5 @@ export class ProjectManagementComponent {
   componentManagement: ComponentManagementComponent;
   makeNewComponent() {
     this.componentManagement.newComponent();
-  }
-
-  @ViewChild(FlowManagementComponent)
-  flowManagement: FlowManagementComponent;
-  addNewAction() {
-    this.flowManagement.newAction();
-  }
-  addNewTrigger() {
-    this.flowManagement.newTrigger();
-  }
-  addNewCondition() {
-    this.flowManagement.newCondition();
-  }
-  addNewOperation() {
-    this.flowManagement.newOperation();
-  }
-  addNewNestedFlow() {
-    this.flowManagement.newNestedFlow();
   }
 }

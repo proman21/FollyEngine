@@ -1,3 +1,5 @@
+import { FlowGraph } from "./flow-graph";
+
 export class DesignerEntity {
   id: number; // unique ID
   name: string;
@@ -91,10 +93,11 @@ export class DesignerAttribute {
 export class DesignerFlow {
   id: number;
   name: string;
-  graph: FlowGraph;
+  data: FlowGraph;
 
   constructor(name: string) {
     this.name = name;
+    this.data = new FlowGraph();
   }
 }
 

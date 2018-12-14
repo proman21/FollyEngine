@@ -1,5 +1,8 @@
 .flow-outer {
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .flow-name {
@@ -26,16 +29,20 @@
   height: 100%;
 }
 
-.flow-paper {
-  position: relative;
-  display: inline-block;
-  background: transparent;
+.flow-inner svg {
+  width: 100%;
+  height: 100%;
+}
+
+.flow-editor {
+  height: 100%;
+}
+
+.catTree {
+  width: 200px;
   overflow: hidden;
 }
-.flow-paper svg {
-  background: transparent;
-}
-.flow-paper svg text {
-  font-family: Roboto, "Helvetica Neue", sans-serif;
-  font-size: 11px;
+
+.context-trigger {
+  position: absolute;
 }

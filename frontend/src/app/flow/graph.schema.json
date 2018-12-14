@@ -1,0 +1,163 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "graph.schema.json",
+  "title": "Graph",
+  "description": "Serialized representation of a flow graph. Nodes are stored in a Map-like object, with outgoing edges stored in each node.",
+  "properties": {
+    "variables": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/definitions/Variable"
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "description": "An array of nodes in the flow.",
+      "items": {
+        "$ref": "#/defintions/Node"
+      }
+    },
+    "entrypoints": {
+      "type": "array",
+      "description": "List of node ID's that serve as entry points to the flow. A breadth first search starting from these nodes will yield the set of functions described by the this flow.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "comments": {
+      "description": "List of comments in the flow. A comment can be attached to either one node (single comment), or a subset of nodes in the flow (multi-comment). The set of multi-comments is always a partition (A node can only be part of one multi-comment).",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "description": "A comment on at least one node. Multiple nodes can be under one comment.",
+        "required": ["comment", "attached"],
+        "properties": {
+          "comment": {
+            "type": "string"
+          },
+          "attached": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "json-pointer"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Node": {
+      "type": "object",
+      "description": "A node instance in the flow. ",
+      "required": ["id", "def", "position"],
+      "properties": {
+        "position": {
+          "$ref": "#/definitions/Position"
+        },
+        "id": {
+          "type": "string",
+          "description": "Unique string that identifies this node in the graph.",
+        },
+        "def": {
+          "type": "string",
+          "description": "The name of the node definition this node is based off."
+        },
+        "connections": {
+          "type": "object",
+          "required": ["data", "control"],
+          "properties": {
+            "control": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/definitions/NodeConnection"
+              }
+            },
+            "data": {
+              "type": "object",
+              "additionalProperties": {
+                "oneOf": [
+                  {
+                    "$ref": "#/definitions/NodeConnection"
+                  },
+                  {
+                    "$ref": "#/definitions/Const"
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "Position": {
+      "description": "Used for the position of a node in the graph.",
+      "type": "array",
+      "items": [
+        {
+          "type": "integer",
+          "title": "x"
+        },
+        {
+          "type": "integer",
+          "title": "y"
+        }
+      ]
+    },
+    "NodeConnection": {
+      "type": "object",
+      "required": ["type", "value"],
+      "properties": {
+        "type": {
+          "const": "connection"
+        },
+        "value": {
+          "type": "object",
+          "required": ["node", "pin"],
+          "properties": {
+            "node": {
+              "type": "string",
+              "description": "The ID of the node on the terminating end of the connection."
+            },
+            "pin": {
+              "type": "string",
+              "description": "The ID of the input pin this connection attachs to."
+            }
+          }
+        }
+      }
+    },
+    "Const": {
+      "type": "object",
+      "required": ["type", "value"],
+      "properties": {
+        "type": {
+          "const": "const"
+        },
+        "value": true
+      }
+    },
+    "Variable": {
+      "type": "object",
+      "required": ["name", "type"],
+      "properties": {
+        "position": {
+          "$ref": "#/definitions/Position"
+        },
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "value": true,
+        "connection": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Connection"
+          }
+        }
+      }
+    }
+  }
+}

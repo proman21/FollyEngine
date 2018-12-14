@@ -67,7 +67,7 @@ export class DesignerService {
     this.currentProject.entities.get(shopId).addComponent(rfidId);
 
     // Add flow
-    this.registerNewFlow(new DesignerFlow('New Flow', {}));
+    this.registerNewFlow(new DesignerFlow('New Flow'));
   }
 
   async newProject(name: string) {
@@ -186,7 +186,7 @@ export class DesignerService {
               id: id,
               attributes: {
                 name: flow.name,
-                data: flow.cells
+                data: flow.data.serialize()
               }
             }
           },
@@ -215,7 +215,6 @@ export class DesignerService {
         })
       })
       .toPromise();
-    const project = new Project();
     for (const entry of data['data']) {
       const project = new Project();
       project.id = entry.id;
@@ -303,7 +302,8 @@ export class DesignerService {
       })
       .subscribe(data => {
         for (const entry of data['data']) {
-          const flow = new DesignerFlow(entry.attributes.name, entry.attributes.data);
+          const flow = new DesignerFlow(entry.attributes.name);
+          flow.data = entry.attributes.graph;
           flow.id = entry.id;
           this.registerNewFlow(flow);
         }
@@ -357,7 +357,8 @@ export class DesignerService {
   async registerNewComponent(comp: DesignerComponent): Promise<number> {
     if (!comp.id) {
       // Resolve name collisions
-      comp.name = this.findUniqueName(comp.name, this.currentProject.components);
+      comp.name = this.findUniqueName(comp.name,
+        this.currentProject.components);
 
       // Post new resource to API
       const data = await this.http
@@ -402,7 +403,7 @@ export class DesignerService {
               type: 'flows',
               attributes: {
                 name: flow.name,
-                data: flow.cells
+                data: flow.data.serialize()
               }
             }
           },

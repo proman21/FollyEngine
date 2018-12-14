@@ -1,0 +1,1004 @@
+{
+  "casts": {
+    "name": "Casts",
+    "description": "Nodes to cast data from one type to another",
+    "nodes": {
+      "floatToInt": {
+        "name": "Float to Integer",
+        "description": "Converts a decimal number to an integer by throwing away the fractional part.",
+        "inputs": [
+          {
+            "name": "in",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "out",
+            "type": "int",
+            "required": true
+          }
+        ]
+      },
+      "intToFloat": {
+        "name": "Integer to Float",
+        "description": "Converts an integer to a decimal number by adding a zero fractional part.",
+        "inputs": [
+          {
+            "name": "in",
+            "kind": "data",
+            "label": "",
+            "type": "int",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "intToString": {
+        "name": "Integer to String",
+        "description": "Converts a integer to a base 10 string.",
+        "inputs": [
+          {
+            "name": "id",
+            "kind": "data",
+            "label": "",
+            "type": "int",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "id",
+            "kind": "data",
+            "label": "",
+            "type": "str",
+            "required": true
+          }
+        ]
+      },
+      "floatToString": {
+        "name": "Float to String",
+        "description": "Converts a decimal number to a string. Numbers small than 9 places will be expressed in scientific notation.",
+        "inputs": [
+          {
+            "name": "in",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "type": "str",
+            "required": true
+          }
+        ]
+      }
+    }
+  },
+  "math": {
+    "name": "Math",
+    "description": "Mathematical operations that are performed on numbers.",
+    "nodes": {
+      "add": {
+        "name": "Addition",
+        "description": "Add two numbers together.",
+        "inputs": [
+          {
+            "name": "a",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          },
+          {
+            "name": "b",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "sub": {
+        "name": "Subtraction",
+        "description": "Subtract two numbers.",
+        "inputs": [
+          {
+            "name": "a",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          },
+          {
+            "name": "b",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "mul": {
+        "name": "Multiplication",
+        "description": "Multiply two numbers.",
+        "inputs": [
+          {
+            "name": "a",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          },
+          {
+            "name": "b",
+            "kind": "data",
+            "label": "b",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "div": {
+        "name": "Division",
+        "description": "Divide two numbers.",
+        "inputs": [
+          {
+            "name": "a",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          },
+          {
+            "name": "b",
+            "kind": "data",
+            "label": "b",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "out",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "floor": {
+        "name": "Round Down",
+        "description": "Round a float down to the nearest integer.",
+        "inputs": [
+          {
+            "name": "x",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "ceil": {
+        "name": "Round Up",
+        "description": "Round a float up to the nearest integer.",
+        "inputs": [
+          {
+            "name": "x",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "inc": {
+        "name": "Increment",
+        "description": "Increment the integer part of a float by 1.",
+        "inputs": [
+          {
+            "name": "x",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "out",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "dec": {
+        "name": "Decrement",
+        "description": "Decrement the integer part of a float by 1.",
+        "inputs": [
+          {
+            "name": "x",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "mod": {
+        "name": "Modulo",
+        "description": "Calculate the remainder of dividing two integers.",
+        "inputs": [
+          {
+            "name": "dividend",
+            "kind": "data",
+            "label": "",
+            "type": "int",
+            "required": true
+          },
+          {
+            "name": "divisor",
+            "kind": "data",
+            "label": "divisor",
+            "type": "int",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "type": "int",
+            "required": true
+          }
+        ]
+      },
+      "abs": {
+        "name": "Absolute Value",
+        "description": "Calculate the absolute value of a float",
+        "inputs": [
+          {
+            "name": "x",
+            "kind": "data",
+            "label": "",
+            "description": "A positive or negative number.",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "description": "The input as a positive number.",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "pow": {
+        "name": "Power",
+        "description": "Calculates the base to the exponent power.",
+        "inputs": [
+          {
+            "name": "base",
+            "kind": "data",
+            "label": "",
+            "description": "The base number.",
+            "type": "float",
+            "required": true
+          },
+          {
+            "name": "exponent",
+            "kind": "data",
+            "label": "",
+            "description": "The number used to raise the base.",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "sign": {
+        "name": "Is Positive",
+        "description": "Determine whether a number is negative or not",
+        "inputs": [
+          {
+            "name": "x",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "description": "True if the input is positive, False otherwise.",
+            "type": "bool",
+            "required": true
+          }
+        ]
+      },
+      "max": {
+        "name": "Pick Maximum",
+        "description": "Returns the higher of two numbers.",
+        "inputs": [
+          {
+            "name": "x",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          },
+          {
+            "name": "y",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "min": {
+        "name": "Pick Minimum",
+        "description": "Returns the lower of two numbers.",
+        "inputs": [
+          {
+            "name": "x",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          },
+          {
+            "name": "y",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "acos": {
+        "name": "Arc-cosine",
+        "description": "Calculate the arc-cosine of a number.",
+        "inputs": [
+          {
+            "name": "in",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "kind": "data",
+            "label": "",
+            "description": "The arc-consine in radians.",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "acosh": {
+        "name": "Hyperbolic Arc-cosine",
+        "description": "Calculate the hyperbolic arc-cosine of a number.",
+        "inputs": [
+          {
+            "name": "in",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "description": "Will return NaN if the input is less than 1.",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "asin": {
+        "name": "Arcsine",
+        "description": "Calculate the arcsine of a number.",
+        "inputs": [
+          {
+            "name": "x",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "description": "The arcsine in radians.",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "asinh": {
+        "name": "Hyperbolic Arcsine",
+        "description": "Calculate the hyperbolic arcsine of a number.",
+        "inputs": [
+          {
+            "name": "x",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "atan": {
+        "name": "Arctangent",
+        "description": "Calculate the arctangent of a number.",
+        "inputs": [
+          {
+            "name": "x",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "description": "The arctangent is radians",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "atanh": {
+        "name": "Hyperbolic Arctangent",
+        "description": "Calculate the hyperbolic arctangent of a number. Input should be in radians.",
+        "inputs": [
+          {
+            "name": "x",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "cos": {
+        "name": "Cosine",
+        "description": "Calculate the cosine of a number.",
+        "inputs": [
+          {
+            "name": "x",
+            "kind": "data",
+            "label": "",
+            "description": "Angle in radians",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "description": "Cosine between 1 and -1.",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "cosh": {
+        "name": "Hyperbolic Cosine",
+        "description": "Calculate the hyperbolic cosine of a number.",
+        "inputs": [
+          {
+            "name": "x",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "sin": {
+        "name": "Sine",
+        "description": "Calculate the sine of a number.",
+        "inputs": [
+          {
+            "name": "x",
+            "kind": "data",
+            "label": "",
+            "description": "Angle in radians",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "description": "Sine between 1 and -1.",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "sinh": {
+        "name": "Hyperbolic Sine",
+        "description": "Calculate the hyperbolic sine of a number.",
+        "inputs": [
+          {
+            "name": "x",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "tan": {
+        "name": "Tangent",
+        "description": "Calculate the tangent of a number.",
+        "inputs": [
+          {
+            "name": "x",
+            "kind": "data",
+            "label": "",
+            "description": "Angle in radians",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ]
+      },
+      "tanh": {
+        "name": "Hyperbolic Tangent",
+        "description": "Calculate the hyperbolic tangent of a number.",
+        "inputs": [
+          {
+            "name": "x",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "type": "float",
+            "required": true
+          }
+        ]
+      }
+    }
+  },
+  "logic": {
+    "name": "Logic",
+    "description": "Logical operators that provide comparison and bitwise operators",
+    "nodes": {
+      "eq": {
+        "name": "Compare Numbers",
+        "description": "Compares two numbers to check if they are exactly equal. Returns a boolean indicating the outcome",
+        "inputs": [
+          "_",
+          {
+            "name": "a",
+            "kind": "data",
+            "label": "",
+            "type": "float"
+          },
+          {
+            "name": "b",
+            "kind": "data",
+            "label": "",
+            "type": "float"
+          }
+        ],
+        "outputs": [
+          "_",
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "type": "bool"
+          }
+        ]
+      },
+      "greater": {
+        "name": "Greater Than",
+        "description": "Determine if the first input is greater than the second.",
+        "inputs": [
+          {
+            "name": "_",
+            "kind": "control",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "a",
+            "kind": "data",
+            "label": "",
+            "type": "float"
+          },
+          {
+            "name": "b",
+            "kind": "data",
+            "label": "",
+            "type": "float"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "_",
+            "kind": "control",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "type": "bool"
+          }
+        ]
+      },
+      "greaterEq": {
+        "name": "Greater Than or Equal",
+        "description": "Determine if the first input is greater than or equal to the second.",
+        "inputs": [
+          {
+            "name": "_",
+            "kind": "control",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "a",
+            "kind": "data",
+            "label": "",
+            "type": "float"
+          },
+          {
+            "name": "b",
+            "kind": "data",
+            "label": "",
+            "type": "float"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "_",
+            "kind": "control",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "type": "bool"
+          }
+        ]
+      },
+      "lesser": {
+        "name": "Lesser Than",
+        "description": "Determine if the first input is lesser than the second.",
+        "inputs": [
+          {
+            "name": "_",
+            "kind": "control",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "a",
+            "kind": "data",
+            "label": "",
+            "type": "float"
+          },
+          {
+            "name": "b",
+            "kind": "data",
+            "label": "",
+            "type": "float"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "_",
+            "kind": "control",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "type": "bool"
+          }
+        ]
+      },
+      "lesserEq": {
+        "name": "Lesser Than or Equal",
+        "description": "Determine if the first input is lesser than or equal to the second.",
+        "inputs": [
+          {
+            "name": "_",
+            "kind": "control",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "a",
+            "kind": "data",
+            "label": "",
+            "type": "float"
+          },
+          {
+            "name": "b",
+            "kind": "data",
+            "label": "",
+            "type": "float"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "_",
+            "kind": "control",
+            "label": "",
+            "required": true
+          },
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "type": "bool"
+          }
+        ]
+      },
+      "and": {
+        "name": "Logical AND",
+        "description": "Perform a logical AND on two boolean inputs.",
+        "inputs": [
+          {
+            "name": "a",
+            "kind": "data",
+            "label": "",
+            "type": "bool"
+          },
+          {
+            "name": "b",
+            "kind": "data",
+            "label": "",
+            "type": "bool"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "description": "Returns True if both inputs are True, False otherwise.",
+            "type": "bool"
+          }
+        ]
+      },
+      "or": {
+        "name": "Logical OR",
+        "description": "Perform a logical OR on two boolean inputs.",
+        "inputs": [
+          {
+            "name": "a",
+            "kind": "data",
+            "label": "",
+            "type": "bool"
+          },
+          {
+            "name": "b",
+            "kind": "data",
+            "label": "",
+            "type": "bool"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "description": "Returns True if at least one input is True, False otherwise.",
+            "type": "bool"
+          }
+        ]
+      },
+      "not": {
+        "name": "Logical NOT",
+        "description": "Perform a logical NOT on two boolean inputs.",
+        "inputs": [
+          {
+            "name": "x",
+            "kind": "data",
+            "label": "",
+            "type": "bool"
+          }
+        ],
+        "outputs": [
+          {
+            "name": "out",
+            "kind": "data",
+            "label": "",
+            "description": "Returns True if the input is False, and False otherwise.",
+            "type": "bool"
+          }
+        ]
+      }
+    }
+  }
+}

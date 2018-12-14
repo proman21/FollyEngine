@@ -17,15 +17,19 @@ import { EndNodeComponent } from './flow-node/end-node.component';
 // Libs
 
 // Services
-import { FlowNodeService } from './flow-node/flow-node.service';
 
 // Module
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MaterialModule } from './../material.module';
+import { MaterialModule } from "../material.module";
 import { SharedUiModule } from '../shared-ui/shared-ui.module';
+import { SwitchNodeComponent } from './flow-node/switch-node.component';
+import { FlowNodeComponent } from './flow-node/flow-node.component';
+import { ControlPinComponent } from './flow-node/control-pin/control-pin.component';
+import { DataPinComponent } from './flow-node/data-pin/data-pin.component';
+import { MatTreeModule } from "@angular/material";
 
 @NgModule({
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedUiModule, MaterialModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, SharedUiModule, MaterialModule, MatTreeModule],
   exports: [FlowManagementComponent],
   declarations: [
     FlowManagementComponent,
@@ -38,19 +42,15 @@ import { SharedUiModule } from '../shared-ui/shared-ui.module';
     InstanceNodeComponent,
     GateNodeComponent,
     StartNodeComponent,
-    EndNodeComponent
+    EndNodeComponent,
+    SwitchNodeComponent,
+    FlowNodeComponent,
+    ControlPinComponent,
+    DataPinComponent,
   ],
-  providers: [FlowNodeService],
+  providers: [],
   entryComponents: [
-    ConditionNodeComponent,
-    OperationNodeComponent,
-    ActionNodeComponent,
-    TriggerNodeComponent,
-    NestedFlowNodeComponent,
-    InstanceNodeComponent,
-    GateNodeComponent,
-    StartNodeComponent,
-    EndNodeComponent
+    FlowNodeComponent
   ]
 })
 export class FlowManagementModule {}

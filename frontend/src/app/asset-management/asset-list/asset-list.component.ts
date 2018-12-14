@@ -18,7 +18,7 @@ export class AssetListComponent implements OnInit {
 
   // nameChange(event: any) {
   // 	console.log('workingish');
-  // 	this.onNameChange.emit(event.target.value);
+  // 	this.nameChange.emit(event.target.value);
   // }
   constructor() {}
 
