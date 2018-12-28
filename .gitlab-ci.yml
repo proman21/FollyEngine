@@ -1,5 +1,5 @@
 frontend:
-  image: follygames/yarn:lts-slim
+  image: registry.gitlab.com/synthsym/follyengine/frontend-build:lts-slim
   script:
     - cd frontend
     - yarn install --frozen-lockfile --non-interactive
