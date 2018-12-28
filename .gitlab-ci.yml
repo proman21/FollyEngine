@@ -1,7 +1,11 @@
 frontend:
-  script: "yarn --cwd ./frontend run build"
+  image: follygames/yarn:lts-slim
+  script:
+    - cd frontend
+    - yarn install --frozen-lockfile --non-interactive
+    - yarn run build
   stage: build
   artifacts:
     name: "$CI_JOB_NAME"
     paths:
-      - ./frontend/dist/
+      - frontend/dist/
