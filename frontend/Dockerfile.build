@@ -1,3 +1,0 @@
-FROM node:lts-slim
-
-RUN cd /opt && wget https://yarnpkg.com/latest.tar.gz && tar zvxf latest.tar.gz

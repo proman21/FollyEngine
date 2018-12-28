@@ -1,5 +1,5 @@
 frontend:
-  image: registry.gitlab.com/synthsym/follyengine/frontend-build:lts-slim
+  image: node:lts
   script:
     - cd frontend
     - yarn install --frozen-lockfile --non-interactive
