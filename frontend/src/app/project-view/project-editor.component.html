@@ -1,11 +1,9 @@
 <div class="menu">
-  <menubar [workspace]="view" [projectName]="projectName" [username]="username"
-           (openWelcome)="displayWelcomeDialog()" (pressSideBar)="toggleSideBar()"
-           (pressSave)="save()" (openSettings)="displaySettingsDialog()" (new)="makeNewProject()"
-           (pressNewEntity)="makeNewEntity()" (newComponent)="makeNewComponent()"
-           (addAction)="addNewAction()" (addTrigger)="addNewTrigger()"
-           (addCondition)="addNewCondition()" (addOperation)="addNewOperation()"
-           (addNestedFlow)="addNewNestedFlow()"></menubar>
+  <menubar [projectName]="projectsQuery.getActive().title"
+           [username]="username"
+           (pressSideBar)="toggleSideBar()"
+           (openSettings)="displaySettingsDialog()"
+  ></menubar>
 </div>
 
 <div class="main">

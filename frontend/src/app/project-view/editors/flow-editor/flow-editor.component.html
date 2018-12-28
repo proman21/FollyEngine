@@ -1,8 +1,7 @@
 <mat-drawer-container class="flow-editor">
   <mat-drawer-content class="flow-outer">
     <div class="flow-name">
-      <input type="text" maxlength="50" class="name-field" [value]="flow.name"
-             (keyup)="nameChange.emit($event.target.value)">
+      <input type="text" maxlength="50" class="name-field" [value]="flow.name">
       <button mat-button color="primary" class="add-button">
         <mat-icon>add box</mat-icon>
       </button>
