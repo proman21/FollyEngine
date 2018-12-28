@@ -1,0 +1,17 @@
+.attribute-display {
+  display: flex;
+  justify-content: space-between;
+}
+
+.attribute-form {
+  display: flex;
+  flex-grow: 1;
+}
+
+.attribute-form > * {
+  margin: 0 4px;
+}
+
+.attribute-description {
+  flex-grow: 2;
+}

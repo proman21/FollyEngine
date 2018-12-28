@@ -1,0 +1,11 @@
+<div class="attribute-display">
+  <form class="attribute-form" [formGroup]="attributeForm">
+    <mat-form-field>
+      <input matInput formControlName="name" placeholder="Name" required>
+    </mat-form-field>
+    <mat-form-field class="attribute-description">
+      <input matInput formControlName="description" placeholder="Description">
+    </mat-form-field>
+  </form>
+  <ng-container *ngTemplateOutlet="actionTemplate"></ng-container>
+</div>

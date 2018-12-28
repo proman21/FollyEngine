@@ -29,7 +29,7 @@ class EntitySerializer(serializers.HyperlinkedModelSerializer):
     url = relations.NestedHyperlinkedIdentityField(
         view_name='entity-detail',
         parent_lookup_kwargs={
-            'project_pk': 'project__pk'
+            'project_slug': 'project__slug'
         }
     )
     slug = serializers.SlugField(
@@ -39,7 +39,7 @@ class EntitySerializer(serializers.HyperlinkedModelSerializer):
         read_only=True,
         many=True,
         related_link_view_name='component-list',
-        related_link_url_kwarg='project_pk'
+        related_link_url_kwarg='project_slug'
     )
 
 
@@ -61,10 +61,10 @@ class ComponentSerializer(serializers.HyperlinkedModelSerializer):
     url = relations.NestedHyperlinkedIdentityField(
         view_name='component-detail',
         parent_lookup_kwargs={
-            'project_pk': 'project__pk'
+            'project_slug': 'project__slug'
         }
     )
-    attributes = serializers.JSONField()
+    attributes = serializers.JSONField(default=list)
     # attributes = JSONSchemaField([{
     #     Required('name'): All(str, Length(max=64)),
     #     Optional('description', default=''): str,
@@ -84,12 +84,12 @@ class ComponentExportSerializer(rf_serializers.ModelSerializer):
 class FlowSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Flow
-        fields = ('url', 'name', 'data')
+        fields = ('url', 'name', 'graph')
 
     url = relations.NestedHyperlinkedIdentityField(
         view_name='flow-detail',
         parent_lookup_kwargs={
-            'project_pk': 'project__pk'
+            'project_slug': 'project__slug'
         }
     )
 
@@ -106,6 +106,8 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', 'title', 'description', 'slug', 'owner', 'entities',
                   'components')
         read_only_fields = ('created', 'modified',)
+        lookup_field = 'slug'
+        extra_kwargs = {'url': {'lookup_field': 'slug'}}
 
     slug = serializers.SlugField(read_only=True)
     owner = serializers.ResourceRelatedField(
@@ -117,13 +119,13 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         read_only=True,
         many=True,
         related_link_view_name='entity-list',
-        related_link_url_kwarg='project_pk'
+        related_link_url_kwarg='project_slug'
     )
     components = serializers.ResourceRelatedField(
         read_only=True,
         many=True,
         related_link_view_name='component-list',
-        related_link_url_kwarg='project_pk'
+        related_link_url_kwarg='project_slug'
     )
 
     included_serializers = {

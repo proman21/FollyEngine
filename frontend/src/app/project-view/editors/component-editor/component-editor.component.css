@@ -1,0 +1,30 @@
+.component-name {
+  padding: 15px;
+  background: white;
+}
+
+.component-name input {
+  width: 69%;
+  font-size: 1.5em;
+  border: none;
+}
+
+.component-name button {
+  width: 15%;
+}
+
+.component-attributes {
+  width: 100%;
+  overflow-y: visible;
+}
+
+.description {
+  width: 100%;
+}
+
+.short-description {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
+}

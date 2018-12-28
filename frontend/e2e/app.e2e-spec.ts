@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('real-designer App', () => {
+describe('real-state App', () => {
   let page: AppPage;
 
   beforeEach(() => {

@@ -1,14 +1,11 @@
-import { Component, Output, EventEmitter, Injectable } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component} from '@angular/core';
+import { FormControl, FormGroup } from "@angular/forms";
 import { Validators } from '@angular/forms';
-import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-import { DesignerService } from '../designer/designer.service';
+import { SessionService } from "../auth/auth.service";
 
 @Component({
   selector: 'login-screen',
@@ -16,143 +13,35 @@ import { DesignerService } from '../designer/designer.service';
   styleUrls: ['./login-screen.component.css']
 })
 export class LoginScreenComponent {
-  @Output()
-  login = new EventEmitter<any>();
+  loginForm = new FormGroup({
+    username: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required])
+  });
+
+  get username() { return this.loginForm.get('username'); }
+
+  get password() { return this.loginForm.get('password'); }
 
   public constructor(
-    private designerService: DesignerService,
     private domSanitizer: DomSanitizer,
-    public matIconRegistry: MatIconRegistry,
-    private http: HttpClient,
-    private router: Router
-  ) {
-    // Add custom material icons
-    //matIconRegistry.addSvgIcon('facebook', domSanitizer.bypassSecurityTrustResourceUrl("assets/icon/facebook.svg"));
-    //matIconRegistry.addSvgIcon('googleplus', domSanitizer.bypassSecurityTrustResourceUrl("assets/icon/googleplus.svg"));
-    //matIconRegistry.addSvgIcon('microsoft', domSanitizer.bypassSecurityTrustResourceUrl("assets/icon/microsoft.svg"));
-  }
+    private router: Router,
+    private authService: SessionService
+  ) {}
 
   // Variables
-  state = true; // True if signing in, false if creating account
   welcomeName = 'Guest'; // The name displayed when logging in
 
-  toggleState() {
-    this.state = !this.state;
-  }
-
-  /* Sign In */
-
-  hide = true;
-  username = new FormControl('', [Validators.required]);
-  password = new FormControl('', [Validators.required]);
-
-  getUsernameErrorMessage() {
-    return this.username.hasError('required') ? '' : '';
-  }
-
-  getPasswordErrorMessage() {
-    return this.password.hasError('required') ? '' : '';
-  }
-
   signIn() {
-    const self = this;
-
-    if (this.password.valid && this.username.valid) {
-      const username = this.username.value;
-      const password = this.password.value;
-      const httpOptions = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json'
-        })
-      };
-
-      this.http.post('api/auth/token', { username: username, password: password }, httpOptions).subscribe(data => {
-        if (data['token']) {
-          this.welcomeName = username;
-          sessionStorage.setItem('username', username);
-          sessionStorage.setItem('token', data['token']);
-          this.designerService.loadAllProjects(); // Load all projects with this username
-          this.router.navigate(['projects']);
-        } else {
-          this.username.reset();
-          this.password.reset();
-          console.log('username or password incorrect');
-        }
-      });
+    if (this.loginForm.valid) {
+      this.authService.login(this.loginForm.value).subscribe(() => {
+        this.router.navigate(['/projects']);
+      }, err => {
+        console.log(err);
+      })
     } else {
       // show errors
-      this.username.markAsTouched();
-      this.password.markAsTouched();
+      this.loginForm.markAsTouched();
     }
-  }
-
-  /* Create Account */
-
-  makeHide = true;
-  makeUsername = new FormControl('', [Validators.required]);
-  makeEmail = new FormControl('', [Validators.required, Validators.email]);
-  makePassword = new FormControl('', [Validators.required, Validators.minLength(8)]);
-
-  getMakeUsernameErrorMessage() {
-    return this.makeUsername.hasError('required') ? 'Enter a Username' : '';
-  }
-
-  getMakeEmailErrorMessage() {
-    return this.makeEmail.hasError('required')
-      ? 'Enter your email'
-      : this.makeEmail.hasError('email')
-        ? 'Enter a valid email'
-        : '';
-  }
-
-  // Gets error messaged depending on what isn't satisfied
-  getMakePasswordErrorMessage() {
-    return this.makePassword.hasError('required')
-      ? 'Enter a password'
-      : this.makePassword.hasError('minlength')
-        ? 'Must be at least 8 characters'
-        : '';
-  }
-
-  addToDatabase(name, email, password) {}
-
-  createAccount() {
-    /*const loginScreen = this;
-    const xhttp = new XMLHttpRequest();
-
-      if (this.makeUsername.valid && this.makeEmail.valid && this.makePassword.valid) {
-          this.welcomeName = this.makeUsername.value;
-
-          const name = this.makeUsername.value;
-          const email = this.makeEmail.value;
-          const password = this.makePassword.value;
-
-          $.ajax({
-            url: 'sign-up.php',
-            type: 'POST',
-            data: {'name': name, 'email': email, 'password': password},
-            success: function(data) {
-              if (data === '1') {
-                loginScreen.makeEmail.setValue('Account already exists.');
-                loginScreen.makePassword.reset();
-                loginScreen.makeUsername.reset();
-                console.log('account already exists');
-              } else {
-                sessionStorage.setItem('email', email);
-                sessionStorage.setItem('username', loginScreen.welcomeName);
-                loginScreen.transition();
-              }
-
-            }
-
-          });
-
-      } else {
-          // show errors
-          this.makeUsername.markAsTouched();
-          this.makeEmail.markAsTouched();
-          this.makePassword.markAsTouched();
-      }*/
   }
 
   /* Transition */
@@ -177,9 +66,5 @@ export class LoginScreenComponent {
       document.getElementById('login-view').style.transition = '0.5s';
       document.getElementById('login-view').style.opacity = '0';
     }, 1500);
-
-    setTimeout(function() {
-      loginScreen.login.emit(); // fire login event!
-    }, 2000);
   }
 }

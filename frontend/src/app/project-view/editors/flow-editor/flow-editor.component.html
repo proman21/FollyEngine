@@ -1,0 +1,35 @@
+<mat-drawer-container class="flow-editor">
+  <mat-drawer-content class="flow-outer">
+    <div class="flow-name">
+      <input type="text" maxlength="50" class="name-field" [value]="flow.name"
+             (keyup)="nameChange.emit($event.target.value)">
+      <button mat-button color="primary" class="add-button">
+        <mat-icon>add box</mat-icon>
+      </button>
+      <button mat-button class="destroy-button" color="warn">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+    <div class="flow-inner">
+      <app-flow-paper [graphData]="flow.graph" (openNodeSelector)="drawer.open()" (saveGraph)="saveFlowGraph($event)"></app-flow-paper>
+    </div>
+  </mat-drawer-content>
+  <mat-drawer mode="side" position="end">
+    <mat-tree class="catTree" [dataSource]="catDataSource" [treeControl]="catTreeControl">
+      <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding (click)="createNode(node)">
+        <button mat-icon-button disabled></button>
+        {{node.name}}
+      </mat-tree-node>
+
+      <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding matTreeNodeToggle>
+        <button mat-icon-button
+                [attr.aria-label]="'toggle ' + node.name">
+          <mat-icon class="mat-icon-rtl-mirror">
+            {{catTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+          </mat-icon>
+        </button>
+        {{node.name}}
+      </mat-tree-node>
+    </mat-tree>
+  </mat-drawer>
+</mat-drawer-container>

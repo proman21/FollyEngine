@@ -42,11 +42,7 @@ class ProjectViewSet(views.ModelViewSet):
     """
     serializer_class = serializers.ProjectSerializer
     permission_classes = (permissions.IsAuthenticated,)
-    prefetch_for_includes = {
-        '__all__': [],
-        'entities': ['__all__'],
-        'components': ['__all__']
-    }
+    lookup_field = 'slug'
 
     def get_serializer_class(self):
         serializer = self.serializer_class
@@ -77,16 +73,16 @@ class EntityViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_queryset(self):
-        return Entity.objects.filter(project=self.kwargs['project_pk'])
+        return Entity.objects.filter(project__slug=self.kwargs['project_slug'])
 
     def perform_create(self, serializer):
-        project = Project.objects.get(pk=self.kwargs['project_pk'])
+        project = Project.objects.get(slug=self.kwargs['project_slug'])
         serializer.save(project=project)
 
 
 class EntityRelationshipView(views.RelationshipView):
     def get_queryset(self):
-        return Entity.objects.filter(project=self.kwargs['project_pk'])
+        return Entity.objects.filter(project__slug=self.kwargs['project_slug'])
 
 
 class ComponentViewSet(viewsets.ModelViewSet):
@@ -94,10 +90,10 @@ class ComponentViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_queryset(self):
-        return Component.objects.filter(project=self.kwargs['project_pk'])
+        return Component.objects.filter(project__slug=self.kwargs['project_slug'])
 
     def perform_create(self, serializer):
-        project = Project.objects.get(pk=self.kwargs['project_pk'])
+        project = Project.objects.get(slug=self.kwargs['project_slug'])
         serializer.save(project=project)
 
 
@@ -106,8 +102,8 @@ class FlowViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.IsAuthenticated,)
 
     def get_queryset(self):
-        return Flow.objects.filter(project=self.kwargs['project_pk'])
+        return Flow.objects.filter(project__slug=self.kwargs['project_slug'])
 
     def perform_create(self, serializer):
-        project = Project.objects.get(pk=self.kwargs['project_pk'])
+        project = Project.objects.get(slug=self.kwargs['project_slug'])
         serializer.save(project=project)

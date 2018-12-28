@@ -1,0 +1,11 @@
+<mat-list-item class="component">
+    <div class="attribute" *ngFor="let a of component.attributes">
+      <mat-card class="component-card">
+        <div class="component-name">{{a.name}}</div>
+        <mat-card-content>
+          <div class="component-description">{{a.description}}</div>
+          <div class="component-type">{{a.type.name}}</div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+</mat-list-item>

@@ -1,0 +1,23 @@
+<div class="start">
+  <div class="welcome">
+
+    <h1 mat-dialog-title>Folly Designer</h1>
+    <span>Version 0.0.1 Beta</span>
+    <mat-dialog-actions>
+      <button mat-raised-button color="primary" (click)="openNewProjectView()">
+        <mat-icon class="icon">description</mat-icon>Create New Project
+      </button>
+    </mat-dialog-actions>
+    <a href=#>Check out the tutorial</a>
+    <a href=#>Explore the FD Forum</a>
+
+  </div>
+
+  <div class="open">
+    <div *ngFor="let project of projectsQuery.getAll()">
+      <a class="load-btn" routerLink="/projects/{{project.slug}}" mat-raised-button color="primary">
+        {{project.title}}
+      </a>
+    </div>
+  </div>
+</div>

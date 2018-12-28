@@ -7,87 +7,30 @@
   <div id="content" class="middle">
 
     <h1>Folly Designer</h1>
-    <h2 *ngIf="state">Log In</h2>
-    <h2 *ngIf="!state">Sign Up</h2>
+    <h2>Log In</h2>
 
     <!-- Log In -->
-    <mat-card *ngIf="state" class="login-card">
-      <form (ngSubmit)="signIn()">
-        <div>
-          <mat-icon>person</mat-icon>
-          <mat-form-field>
-            <input matInput placeholder="Username" [formControl]="username">
-            <mat-error *ngIf="username.invalid">{{ getUsernameErrorMessage() }}</mat-error>
-          </mat-form-field>
-        </div>
+    <mat-card class="login-card">
+      <form (ngSubmit)="signIn()" [formGroup]="loginForm">
+        <mat-form-field>
+          <input matInput required placeholder="Username" formControlName="username">
+          <mat-error *ngIf="username.errors?.required">
+            Username cannot be empty.
+          </mat-error>
+        </mat-form-field>
 
-        <div>
-          <mat-icon>lock</mat-icon>
-          <mat-form-field>
-            <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'"
-              [formControl]="password">
-            <mat-icon class="eyeIcon" matSuffix (click)="hide = !hide">{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
-            <mat-error *ngIf="password.invalid">{{ getPasswordErrorMessage() }}</mat-error>
-          </mat-form-field>
-        </div>
+        <mat-form-field>
+          <input matInput required type="password" placeholder="Password" formControlName="password">
+          <mat-error *ngIf="password.errors?.required">
+            Password cannot be empty.
+          </mat-error>
+        </mat-form-field>
 
-        <button id="signin-button" mat-raised-button color="primary" type="submit">Sign
-          In</button>
-
-        <!--a (click)="guestLogin()">Forgot your password?</a-->
+        <button id="signin-button" mat-raised-button color="primary" type="submit">
+          Sign In
+        </button>
       </form>
     </mat-card>
-
-    <!-- Sign Up -->
-
-    <mat-card *ngIf="!state" class="login-card">
-      <form (submit)="createAccount()">
-        <!--div>
-                    <mat-icon>person</mat-icon>
-                    <mat-form-field>
-                        <input required matInput placeholder="Username" [formControl]="makeUsername">
-                        <mat-error *ngIf="makeUsername.invalid">{{ getMakeUsernameErrorMessage() }}</mat-error>
-                    </mat-form-field>
-                </div-->
-
-        <div>
-          <mat-icon>mail</mat-icon>
-          <mat-form-field>
-            <input required matInput placeholder="Email" [formControl]="makeEmail">
-            <mat-error *ngIf="makeEmail.invalid">{{ getMakeEmailErrorMessage() }}</mat-error>
-          </mat-form-field>
-        </div>
-
-        <div>
-          <mat-icon>lock</mat-icon>
-          <mat-form-field>
-            <input required matInput placeholder="Password" [type]="makeHide ? 'password' : 'text'"
-              [formControl]="makePassword">
-            <mat-icon class="eyeIcon" matSuffix (click)="makeHide = !makeHide">{{makeHide ? 'visibility' : 'visibility_off'}}</mat-icon>
-            <mat-error *ngIf="makePassword.invalid">{{ getMakePasswordErrorMessage() }}</mat-error>
-          </mat-form-field>
-        </div>
-
-        <button id="creatAccount-button" mat-raised-button color="primary" type="submit">Create
-          Account</button>
-      </form>
-    </mat-card>
-
-    <!-- Social Media -->
-    <!--div id="services">
-            <button mat-raised-button style="background-color: #3B5998; color: white;"> <mat-icon svgIcon="facebook"></mat-icon> </button>
-            <button mat-raised-button style="background-color: #DD4B39; color: white;"> <mat-icon svgIcon="googleplus"></mat-icon> </button>
-            <button mat-raised-button style="background-color: #F2F2F2; color: darkgray;"> <mat-icon svgIcon="microsoft"></mat-icon> </button>
-        </div-->
-
-    <!-- Make an Account -->
-    <!--div *ngIf="state">
-            <span id="assistMessage">Don't have an account?</span>&nbsp;<a id="assistAction" href="#" (click)="toggleState()">Create an account</a>
-        </div>
-
-        <div *ngIf="!state">
-            <span id="assistMessage">Already have an account?</span>&nbsp;<a id="assistAction" href="#" (click)="toggleState()">Log In</a>
-        </div-->
 
   </div>
 </div>

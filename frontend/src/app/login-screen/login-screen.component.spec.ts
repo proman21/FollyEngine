@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { DesignerService } from '../designer/designer.service';
+import { DesignerService } from '../state/state.service';
 import { LoginScreenModule } from './login-screen.module';
 
 describe('LoginScreenComponent', () => {

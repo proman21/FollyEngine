@@ -1,0 +1,20 @@
+<div class="search-list">
+  <div class="search">
+    <mat-form-field class="input-field">
+      <input #searchInput (keyup)="searchTerm.next(searchInput.value)" matInput type="search" placeholder="Search" value="">
+    </mat-form-field>
+    <button mat-icon-button color="primary" class="add-button" (click)="newResource.emit()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+  <mat-list>
+    <div *ngFor="let r of searchResults | async">
+      <a class="element" (click)="openResource.emit(r.id)">
+        <mat-list-item>
+          {{r.name}}
+        </mat-list-item>
+      </a>
+    </div>
+  </mat-list>
+  <ng-content></ng-content>
+</div>

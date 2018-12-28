@@ -5,10 +5,6 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
   selector: 'generic-select-dialog',
   templateUrl: 'generic-select-dialog.html'
 })
-export class GenericSelectDialog {
-  constructor(public dialogRef: MatDialogRef<GenericSelectDialog>, @Inject(MAT_DIALOG_DATA) public data: any) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
+export class GenericSelectDialogComponent {
+  constructor(public dialogRef: MatDialogRef<GenericSelectDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {}
 }

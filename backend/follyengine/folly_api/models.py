@@ -5,10 +5,12 @@ from django.dispatch import receiver
 from django.utils.text import slugify
 from rest_framework.authtoken.models import Token
 from django.contrib.postgres.fields import JSONField
+from ulid2 import generate_ulid_as_uuid
 
 
 # Create your models here.
 class Project(models.Model):
+    id = models.UUIDField(default=generate_ulid_as_uuid, primary_key=True)
     title = models.CharField(max_length=64)
     slug = models.SlugField(max_length=64, allow_unicode=True)
     description = models.TextField(blank=True)
@@ -31,6 +33,7 @@ class Project(models.Model):
 
 
 class Component(models.Model):
+    id = models.UUIDField(default=generate_ulid_as_uuid, primary_key=True)
     name = models.CharField(max_length=64)
     slug = models.SlugField(max_length=64, allow_unicode=True)
     description = models.TextField(blank=True)
@@ -46,6 +49,7 @@ class Component(models.Model):
 
 
 class Entity(models.Model):
+    id = models.UUIDField(default=generate_ulid_as_uuid, primary_key=True)
     name = models.CharField(max_length=64)
     slug = models.SlugField(max_length=64, allow_unicode=True)
     description = models.TextField(blank=True)
@@ -61,8 +65,9 @@ class Entity(models.Model):
 
 
 class Flow(models.Model):
+    id = models.UUIDField(default=generate_ulid_as_uuid, primary_key=True)
     name = models.CharField(max_length=64)
-    data = JSONField()
+    graph = JSONField()
     project = models.ForeignKey(Project, related_name='flows',
                                 on_delete=models.CASCADE)
 

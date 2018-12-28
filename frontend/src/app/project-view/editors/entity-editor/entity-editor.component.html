@@ -1,0 +1,50 @@
+<div class="entity-name">
+  <input #name type="text" maxlength="50" class="name-field" [value]="entity.name"
+    (keyup)="name$.next(name.value)">
+  <button mat-button color="primary" class="add-button" (click)="addComponent()">
+    <mat-icon>add box</mat-icon>
+  </button>
+  <button mat-button class="destroy-button" color="warn" (click)="destroyEntity.emit()">
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>
+<div class="entity-components">
+  <mat-accordion multi="true">
+    <mat-expansion-panel hideToggle="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Description
+        </mat-panel-title>
+        <mat-panel-description>
+          {{entity.description}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-card-content>
+        <mat-form-field class="description">
+          <textarea #description matInput [value]="entity.description" (keyup)="description$.next(description.value)"></textarea>
+        </mat-form-field>
+      </mat-card-content>
+
+    </mat-expansion-panel>
+    <mat-expansion-panel hideToggle="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Components
+        </mat-panel-title>
+        <mat-panel-description>
+          {{componentNames}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item *ngFor="let component of components; let i=index">
+            <p>{{component.name}}</p>
+            <button mat-icon-button><mat-icon>delete</mat-icon></button>
+          </mat-list-item>
+        </mat-list>
+        <button mat-raised-button (click)="addComponent()">Add Component</button>
+      </mat-card-content>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

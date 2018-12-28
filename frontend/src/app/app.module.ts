@@ -5,18 +5,17 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 // Components
 import { AppComponent } from './app.component';
-import { GenericSelectDialog } from './dialogs/dialogs.component';
-import { ProjectManagementComponent } from './project-management/project-management.component';
+import { GenericSelectDialogComponent } from './dialogs/dialogs.component';
+import { ProjectEditorComponent } from './project-view/project-editor.component';
 import { LoginScreenComponent } from './login-screen/login-screen.component';
 
 // Angular material
 import { MaterialModule } from './material.module';
 
 // Services
-import { DesignerService } from './designer/designer.service';
 
 // Modules
-import { ProjectManagementModule } from './project-management/project-management.module';
+import { ProjectViewModule } from './project-view/project-view.module';
 import { LoginScreenModule } from './login-screen/login-screen.module';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -26,6 +25,12 @@ import { AuthInterceptor } from './auth/auth.interceptor';
 
 import { Injector } from '@angular/core';
 import { setAppInjector } from './app-injector';
+import { DashboardComponent } from "./dashboard-view/dashboard/dashboard.component";
+import { DashboardViewModule } from "./dashboard-view/dashboard-view.module";
+import { AuthGuard } from "./auth/auth.guard";
+import { NgxJsonapiModule } from "ngx-jsonapi";
+import { StateModule } from "./state/state.module";
+import { AuthModule } from "./auth/auth.module";
 
 const appRoutes: Routes = [
   {
@@ -35,13 +40,13 @@ const appRoutes: Routes = [
   },
   {
     path: 'projects',
-    component: ProjectManagementComponent
-    //loadChildren: './books/books.module#BooksModule'
+    component: DashboardComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'projects/:id',
-    component: ProjectManagementComponent
-    //loadChildren: './books/books.module#BooksModule'
+    component: ProjectEditorComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'login',
@@ -50,20 +55,22 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, GenericSelectDialog],
-  entryComponents: [GenericSelectDialog],
+  declarations: [AppComponent, GenericSelectDialogComponent],
+  entryComponents: [GenericSelectDialogComponent],
   imports: [
     MaterialModule,
     BrowserModule,
     BrowserAnimationsModule,
-    ProjectManagementModule,
-    LoginScreenModule,
     FormsModule,
     HttpClientModule,
-    RouterModule.forRoot(appRoutes)
+    AuthModule,
+    RouterModule.forRoot(appRoutes),
+    StateModule,
+    ProjectViewModule,
+    DashboardViewModule,
+    LoginScreenModule
   ],
   providers: [
-    DesignerService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

@@ -1,0 +1,56 @@
+<div class="component-name">
+  <input matInput type="text" class="name-change" [formControl]="componentForm.get('name')">
+  <button mat-button class="attribute-new" color="primary" (click)="addAttribute()">
+    <mat-icon>add</mat-icon>
+  </button>
+  <button mat-button class="destroy-component" color="warn" (click)="destroyComponent.emit()">
+    <mat-icon>delete</mat-icon>
+  </button>
+</div>
+<div class="component-attributes">
+  <mat-accordion multi="true">
+    <mat-expansion-panel hideToggle="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Description
+        </mat-panel-title>
+        <mat-panel-description class="short-description">
+          {{component.description}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <mat-card-content>
+        <mat-form-field class="description">
+          <textarea #description matInput [formControl]="componentForm.get('description')"></textarea>
+        </mat-form-field>
+      </mat-card-content>
+
+    </mat-expansion-panel>
+    <mat-expansion-panel hideToggle="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Attributes
+        </mat-panel-title>
+        <mat-panel-description>
+          {{attributeList}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <mat-card-content>
+        <div class="attribute" *ngFor="let a of component.attributes; let i=index">
+          <attribute-display [attribute]="a" (attributeUpdate)="updateAttribute(i, $event)">
+            <button *attributeAction mat-icon-button (click)="removeAttribute(i)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </attribute-display>
+        </div>
+
+        <div class="attribute">
+          <attribute-display #newAttribute (attributeUpdate)="updateNewAttribute($event)">
+            <button *attributeAction mat-raised-button
+                    (click)="addNewAttribute()" [disabled]="newAttribute === null">Add Attribute</button>
+          </attribute-display>
+        </div>
+      </mat-card-content>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

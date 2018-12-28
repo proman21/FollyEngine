@@ -1,0 +1,30 @@
+<div class="menu">
+  <menubar [workspace]="view" [projectName]="projectName" [username]="username"
+           (openWelcome)="displayWelcomeDialog()" (pressSideBar)="toggleSideBar()"
+           (pressSave)="save()" (openSettings)="displaySettingsDialog()" (new)="makeNewProject()"
+           (pressNewEntity)="makeNewEntity()" (newComponent)="makeNewComponent()"
+           (addAction)="addNewAction()" (addTrigger)="addNewTrigger()"
+           (addCondition)="addNewCondition()" (addOperation)="addNewOperation()"
+           (addNestedFlow)="addNewNestedFlow()"></menubar>
+</div>
+
+<div class="main">
+  <mat-drawer-container class="container" autosize>
+    <mat-drawer [opened]="sidebarExpanded" mode="side" class="sideNav">
+      <mat-button-toggle-group #group="matButtonToggleGroup" vertical="true"
+        class="sidenav-buttons-group" (change)="setResourceView(group.value)">
+        <mat-button-toggle *ngFor="let view of resourceViews; let i=index" [value]="i" [ngClass]="{'selected':view.active}">{{view.name}}</mat-button-toggle>
+      </mat-button-toggle-group>
+    </mat-drawer>
+
+    <mat-drawer-content class="resource-view">
+      <search-list [data]="currentResourceView.query"
+                   (openResource)="openResource($event)"
+                   (newResource)="currentResourceView.createResource()" class="search-list">
+      </search-list>
+      <div class="editor">
+        <ng-template app-editor-host></ng-template>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>

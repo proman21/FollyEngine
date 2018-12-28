@@ -78,7 +78,9 @@ import { CdkTreeModule } from "@angular/cdk/tree";
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTreeModule,
+    CdkTreeModule
   ]
 })
 export class MaterialModule {}
