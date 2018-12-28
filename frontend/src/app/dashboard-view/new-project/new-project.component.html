@@ -1,0 +1,24 @@
+<h2 mat-dialog-title>New Project</h2>
+
+<mat-dialog-content [formGroup]="projectForm">
+  <mat-form-field>
+    <input matInput formControlName="title" placeholder="Project Name">
+    <mat-error *ngIf="title.errors.required">
+      A project name is required.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field>
+      <textarea matInput formControlName="description" placeholder="Description"
+                class="textDescription"></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-raised-button color="primary" (click)="createNewProject()">
+    Start Project
+  </button>
+  <button mat-raised-button mat-dialog-close>
+    Cancel
+  </button>
+</mat-dialog-actions>

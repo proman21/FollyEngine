@@ -1,0 +1,69 @@
+.flow-paper {
+  background: dimgrey;
+}
+
+.context-trigger {
+  position: absolute;
+}
+
+.header-title {
+  fill: white;
+  font: 7px sans-serif;
+  cursor: move;
+  dominant-baseline: hanging;
+}
+
+.header-background {
+  fill: grey;
+}
+
+.background {
+  fill: black;
+  fill-opacity: 0;
+  stroke: white;
+  stroke-width: 1px;
+}
+
+.background.selected {
+  stroke: gold;
+  stroke-width: 2px;
+}
+
+.body-background {
+  fill: black;
+  opacity: 80%;
+}
+
+.label {
+  fill: white;
+  font: 4px sans-serif;
+  dominant-baseline: hanging;
+}
+
+.pin-icon {
+  cursor: crosshair;
+  fill: black;
+  pointer-events: painted;
+}
+
+.control-icon {
+  stroke: whitesmoke;
+  stroke-width: 1px;
+}
+
+.data-icon {
+  stroke: green;
+  stroke-width: 1px;
+}
+
+.connection {
+  stroke: white;
+  stroke-width: 1px;
+  stroke-linecap: butt;
+}
+
+.connection-msg {
+  fill: white;
+  font: 4px sans-serif;
+  dominant-baseline: hanging;
+}

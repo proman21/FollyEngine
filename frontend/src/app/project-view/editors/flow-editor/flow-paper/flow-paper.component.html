@@ -1,0 +1,131 @@
+<svg #flowPaper
+     class="flow-paper"
+     (mousemove)="trackDrag($event)"
+     (mouseenter)="setFocus(true)"
+     (mouseleave)="setFocus(false)"
+     (mouseup)="cancelConnection()"
+     (click)="deselect($event)"
+     (contextmenu)="showContextMenu($event)">
+  <g class="nodes">
+    <g *ngFor="let n of nodeViewSet"
+       class="node"
+       #root="yogaLayout"
+       [yogaLayout]="n.layout.root"
+       [attr.transform]="n.transform">
+      <rect class="background"
+            [class.selected]="n.selected"
+            [attr.width]="root.layout.width"
+            [attr.height]="root.layout.height"></rect>
+      <g class="header"
+         #header="yogaLayout"
+        [yogaLayout]="n.layout.header" [attr.tranform]="layoutTransform(header.layout)">
+        <rect class="header-background"
+              [attr.x]="header.layout.left"
+              [attr.y]="header.layout.top"
+              [attr.height]="header.layout.height"
+              [attr.width]="header.layout.width"></rect>
+        <rect #headerIcon="yogaLayout"
+              class="header-icon"
+              [yogaLayout]="n.layout.header_icon"
+              [attr.x]="headerIcon.layout.left"
+              [attr.y]="headerIcon.layout.top"
+              [attr.height]="headerIcon.layout.height"
+              [attr.width]="headerIcon.layout.width"></rect>
+        <text #headerTitle="yogaLayout"
+              [yogaLayout]="n.layout.header_title"
+              class="header-title"
+              [attr.x]="headerTitle.layout.left"
+              [attr.y]="headerTitle.layout.top"
+              (mousedown)="startNodeDrag(n, $event)"
+              (mouseup)="stopNodeDrag(n)"
+              (click)="selectNode(n, $event)"
+        >{{n.descriptor.name}}</text>
+      </g>
+      <g #body="yogaLayout"
+         [yogaLayout]="n.layout.body"
+         class="pins"
+         [attr.transform]="layoutTransform(body.layout)">
+        <rect class="body-background"
+              [attr.height]="body.layout.height"
+              [attr.width]="body.layout.width">
+        </rect>
+        <g #pinSet="yogaLayout" *ngFor="let set of n.pinViews | keyvalue; let odd=odd;"
+           [yogaLayout]="odd ? n.layout.body_outputs : n.layout.body_inputs"
+           [attr.transform]="layoutTransform(pinSet.layout)">
+          <g #pinGroup="yogaLayout" *ngFor="let pin of set.value | keyvalue"
+             [yogaLayout]="pin.value.layout.root"
+             [attr.transform]="layoutTransform(pinGroup.layout)">
+            <ng-container *ngIf="pin.value.isControl()">
+              <rect #pinIcon="yogaLayout" class="pin-icon control-icon"
+                    [yogaLayout]="pin.value.layout.icon"
+                    [attr.x]="pinIcon.layout.left"
+                    [attr.y]="pinIcon.layout.top"
+                    [attr.width]="pinIcon.layout.width"
+                    [attr.height]="pinIcon.layout.height"
+                    (mousedown)="startConnection(
+                    pinIconLocation(n, body.layout, pinSet.layout, pinGroup.layout, pinIcon.layout),
+                    n, set.key, pin.value)"
+                    (mouseenter)="hoverPin(n, set.key, pin.value)"
+                    (mouseleave)="leavePin()"
+                    (mouseup)="makeConnection()"
+              ></rect>
+              <text #pinLabel="yogaLayout"
+                    [yogaLayout]="pin.value.layout.label"
+                    class="label"
+                    [attr.x]="pinLabel.layout.left"
+                    [attr.y]="pinLabel.layout.top">
+                {{pin.value.pin.label}}
+              </text>
+            </ng-container>
+            <ng-container *ngIf="!pin.value.isControl()">
+              <circle #pinIcon="yogaLayout" class="pin-icon data-icon"
+                      cx="2" cy="2" r="2" [attr.transform]="layoutTransform(pinIcon.layout)"
+                      [yogaLayout]="pin.value.layout.icon"
+                      (mousedown)="startConnection(
+                  pinIconLocation(n, body.layout, pinSet.layout, pinGroup.layout, pinIcon.layout),
+                  n.key, set.key, pin.value)"
+                      (mouseenter)="hoverPin(n, set.key, pin.value)"
+                      (mouseleave)="leavePin()"
+                      (mouseup)="makeConnection()"
+              ></circle>
+              <text #pinLabel="yogaLayout"
+                    [yogaLayout]="pin.value.layout.label"
+                    class="label"
+                    [attr.x]="pinLabel.layout.left"
+                    [attr.y]="pinLabel.layout.top">
+                {{pin.value.pin.label}}
+              </text>
+            </ng-container>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g *ngIf="connectionHelper">
+    <line class="connection"
+          [attr.x1]="connectionHelper?.startPos.x"
+          [attr.y1]="connectionHelper?.startPos.y"
+          [attr.x2]="connectionHelper?.endPos.x"
+          [attr.y2]="connectionHelper?.endPos.y"
+    ></line>
+    <g *ngIf="!connectionHelper?.connectionAllowed"
+       #connTooltip="yogaLayout"
+       [yogaLayout]="connectionHelper?.tooltipLayout"
+       [attr.transform]="connectionHelper?.tooltipTransform">
+      <rect [attr.width]="connTooltip.layout.width"
+            [attr.height]="connTooltip.layout.height"></rect>
+      <text class="connection-msg"
+            #connErr="yogaLayout" [yogaLayout]="{}"
+            [attr.x]="connErr.layout.left" [attr.y]="connErr.layout.top">
+        {{connectionHelper?.errorMsg}}
+      </text>
+    </g>
+  </g>
+  <svg:g>
+
+  </svg:g>
+</svg>
+<button class="context-trigger" mat-button [matMenuTriggerFor]="ctxMenu" [ngStyle]="ctxMenuStyle"></button>
+<mat-menu #ctxMenu="matMenu" hasBackdrop="false">
+  <button mat-menu-item (click)="openNodeSelector.emit()">Add Node Here</button>
+</mat-menu>
