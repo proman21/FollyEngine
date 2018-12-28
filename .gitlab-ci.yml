@@ -1,0 +1,7 @@
+frontend:
+  script: "yarn --cwd ./frontend run build"
+  stage: build
+  artifacts:
+    name: "$CI_JOB_NAME"
+    paths:
+      - ./frontend/dist/
