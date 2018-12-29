@@ -2,6 +2,7 @@ version: '3'
 
 services:
   api:
+    build: backend/
     volumes:
       - ./backend/follyengine:/app/follyengine
     environment:
@@ -15,8 +16,9 @@ services:
       - POSTGRES_PASSWORD="cameo-Knot-walt-Joint-meyer"
 
   web:
+    image: nginx
     ports:
       - "80:80"
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./follyengine.dev.conf:/etc/nginx/conf.d/follyengine.dev.conf
+      - ./frontend/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./frontend/follyengine.dev.conf:/etc/nginx/conf.d/follyengine.dev.conf
