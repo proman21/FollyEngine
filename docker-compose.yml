@@ -2,20 +2,26 @@ version: '3'
 
 services:
   api:
-    build: ./backend
+    image: registry.gitlab.com/synthsym/follyengine/api:latest
     depends_on:
       - db
+    deploy:
+      replicas: 1
 
   db:
     image: postgres
     restart: always
     volumes:
       - db:/var/lib/postgresql/data
+    deploy:
+      replicas: 1
 
   web:
-    image: nginx
+    image: registry.gitlab.com/synthsym/follyengine/frontend:latest
     depends_on:
       - api
+    deploy:
+      replicas: 1
 
 volumes:
   db:
