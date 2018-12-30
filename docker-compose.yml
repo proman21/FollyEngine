@@ -34,6 +34,8 @@ services:
     image: registry.gitlab.com/synthsym/follyengine/frontend:develop
     depends_on:
       - api
+    ports:
+      - "8080:80"
     deploy:
       replicas: 1
       labels:
