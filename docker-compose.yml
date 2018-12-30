@@ -38,6 +38,7 @@ services:
       replicas: 1
       labels:
         - "traefik.frontend.rule=Host:$FRONTEND_HOST"
+        - "traefik.docker.network=$FRONTEND_NET"
     configs:
       - source: nginx_settings
         target: /etc/nginx/conf.d/follyengine.prod.conf
