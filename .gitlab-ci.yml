@@ -10,10 +10,8 @@ frontend:
     BUILD_IMAGE_TAG: $CI_REGISTRY_IMAGE/frontend-build:$CI_COMMIT_REF_SLUG
     IMAGE_TAG: $CI_REGISTRY_IMAGE/frontend:$CI_COMMIT_REF_SLUG
   script:
-    - docker pull $BUILD_IMAGE_TAG
     - docker build --pull -t $BUILD_IMAGE_TAG -f frontend/build.Dockerfile frontend/
     - docker push $BUILD_IMAGE_TAG
-    - docker pull $IMAGE_TAG
     - docker build --pull -t $IMAGE_TAG frontend/
     - docker push $IMAGE_TAG
 
@@ -22,6 +20,5 @@ api:
   variables:
     IMAGE_TAG: $CI_REGISTRY_IMAGE/api:$CI_COMMIT_REF_SLUG
   script:
-    - docker pull $IMAGE_TAG
     - docker build --pull -t $IMAGE_TAG backend/
     - docker push $IMAGE_TAG
