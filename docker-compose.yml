@@ -36,8 +36,8 @@ services:
       - api
     deploy:
       replicas: 1
-    ports:
-      - "8080:80"
+      labels:
+        - "traefik.frontend.rule=Host:$FRONTEND_HOST"
     configs:
       - source: nginx_settings
         target: /etc/nginx/conf.d/follyengine.prod.conf
