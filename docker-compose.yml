@@ -38,6 +38,7 @@ services:
       replicas: 1
       labels:
         - "traefik.frontend.rule=Host:$FRONTEND_HOST"
+        - "traefik.docker.network=${FRONTEND_NET:-traefik}"
     networks:
       - traefik
     configs:
@@ -48,9 +49,9 @@ volumes:
   db:
 
 networks:
-  ${FRONTEND_NET:traefik}:
+  traefik:
     external: true
-    name: traefik
+    name: ${FRONTEND_NET:traefik}
 
 secrets:
   db_user:
