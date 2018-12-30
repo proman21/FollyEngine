@@ -1,26 +1,60 @@
-version: '3'
+version: '3.7'
 
 services:
   api:
-    image: registry.gitlab.com/synthsym/follyengine/api:latest
+    image: registry.gitlab.com/synthsym/follyengine/api:develop
+    entrypoint: ["gunicorn", "-b", "0.0.0.0:8000", "follyengine.wsgi"]
     depends_on:
       - db
     deploy:
       replicas: 1
+    secrets:
+      - db_user
+      - db_password
+      - api_secret
+    configs:
+      - source: django_settings
+        target: /app/follyengine/settings/__init__.py
 
   db:
     image: postgres
     volumes:
       - db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER_FILE=/run/secrets/db_user
+      - POSTGRES_DB_FILE=/run/secrets/db_user
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db_password
     deploy:
       replicas: 1
+    secrets:
+      - db_user
+      - db_password
 
   web:
-    image: registry.gitlab.com/synthsym/follyengine/frontend:latest
+    image: registry.gitlab.com/synthsym/follyengine/frontend:develop
     depends_on:
       - api
     deploy:
       replicas: 1
+    ports:
+      - "8080:80"
+    configs:
+      - source: nginx_settings
+        target: /etc/nginx/conf.d/follyengine.prod.conf
 
 volumes:
   db:
+
+secrets:
+  db_user:
+    external: true
+  db_password:
+    external: true
+  api_secret:
+    external: true
+
+configs:
+  django_settings:
+    external: true
+  nginx_settings:
+    external: true
