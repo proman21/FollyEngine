@@ -49,8 +49,8 @@ volumes:
 
 networks:
   traefik:
-    external:
-      name: $FRONTEND_NET
+    external: true
+    name: $FRONTEND_NET
 
 secrets:
   db_user:
