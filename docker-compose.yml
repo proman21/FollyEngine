@@ -41,6 +41,7 @@ services:
         - "traefik.docker.network=${FRONTEND_NET:-traefik}"
     networks:
       - traefik
+      - default
     configs:
       - source: nginx_settings
         target: /etc/nginx/conf.d/follyengine.prod.conf
