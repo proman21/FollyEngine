@@ -52,7 +52,7 @@ volumes:
 networks:
   traefik:
     external: true
-    name: ${FRONTEND_NET:traefik}
+    name: ${FRONTEND_NET:-traefik}
 
 secrets:
   db_user:
