@@ -6,5 +6,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
   templateUrl: 'generic-select-dialog.html'
 })
 export class GenericSelectDialogComponent {
+  selected_id: number;
+
   constructor(public dialogRef: MatDialogRef<GenericSelectDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: any) {}
 }

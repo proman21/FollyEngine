@@ -1,8 +1,5 @@
 <div class="component-name">
   <input matInput type="text" class="name-change" [formControl]="componentForm.get('name')">
-  <button mat-button class="attribute-new" color="primary" (click)="addAttribute()">
-    <mat-icon>add</mat-icon>
-  </button>
   <button mat-button class="destroy-component" color="warn" (click)="destroyComponent.emit()">
     <mat-icon>delete</mat-icon>
   </button>

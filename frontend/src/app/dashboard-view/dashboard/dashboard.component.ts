@@ -15,7 +15,7 @@ import { filterNil } from "@datorama/akita";
 export class DashboardComponent implements OnInit {
   constructor(
     private projectsService: ProjectsService,
-    private projectsQuery: ProjectsQuery,
+    public projectsQuery: ProjectsQuery,
     private router: Router,
     private dialog: MatDialog
   ) {}

@@ -1,29 +1,69 @@
-version: '3'
+version: '3.7'
 
 services:
   api:
-    build: ./backend
+    image: registry.gitlab.com/synthsym/follyengine/api:develop
+    entrypoint: ["gunicorn", "-b", "0.0.0.0:8000", "follyengine.wsgi"]
     depends_on:
       - db
-    env_file: .env
-    environment:
-      - DJANGO_SETTINGS_MODULE=follyengine.settings.prod
+    deploy:
+      replicas: 1
+    secrets:
+      - db_user
+      - db_password
+      - api_secret
+    configs:
+      - source: django_settings
+        target: /app/follyengine/settings/__init__.py
 
   db:
     image: postgres
-    restart: always
-    env_file: .env
     volumes:
       - db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER_FILE=/run/secrets/db_user
+      - POSTGRES_DB_FILE=/run/secrets/db_user
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db_password
+    deploy:
+      replicas: 1
+    secrets:
+      - db_user
+      - db_password
 
   web:
-    image: nginx
-    ports:
-      - 80:80
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    image: registry.gitlab.com/synthsym/follyengine/frontend:develop
     depends_on:
       - api
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.frontend.rule=Host:$FRONTEND_HOST"
+        - "traefik.docker.network=${FRONTEND_NET:-traefik}"
+    networks:
+      - traefik
+      - default
+    configs:
+      - source: nginx_settings
+        target: /etc/nginx/conf.d/follyengine.prod.conf
 
 volumes:
   db:
+
+networks:
+  traefik:
+    external: true
+    name: ${FRONTEND_NET:-traefik}
+
+secrets:
+  db_user:
+    external: true
+  db_password:
+    external: true
+  api_secret:
+    external: true
+
+configs:
+  django_settings:
+    external: true
+  nginx_settings:
+    external: true

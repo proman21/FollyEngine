@@ -7,19 +7,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./menubar.component.css']
 })
 export class MenubarComponent implements OnInit {
-
-  constructor(private router: Router) {}
-  @Input()
-  workspace: number;
   @Input()
   username: string;
   @Input()
   projectName: string;
-
   // The hot key modifier will depend on operating system. Use option form
   // Windows and Command for macOS
-  hotKeyModifier: string = navigator.platform === 'MacIntel' ? '⌘' : 'CTRL';
 
+  hotKeyModifier: string = navigator.platform === 'MacIntel' ? '⌘' : 'CTRL';
   /* Sidebar Control */
   @Output()
   pressSideBar = new EventEmitter<string>();
@@ -34,46 +29,13 @@ export class MenubarComponent implements OnInit {
   @Output()
   pressSave = new EventEmitter<string>();
 
-  /* Entity Menu Control */
-  @Output()
-  pressNewEntity = new EventEmitter<string>();
-
-  /* DesignerComponent Menu Control */
-  @Output()
-  newComponent = new EventEmitter<string>();
-
-  @Output()
-  addAction = new EventEmitter<string>();
-
-  @Output()
-  addTrigger = new EventEmitter<string>();
-
-  @Output()
-  addCondition = new EventEmitter<string>();
-
-  @Output()
-  addOperation = new EventEmitter<string>();
-
-  @Output()
-  addNestedFlow = new EventEmitter<string>();
-
   /* User Menu Control */
   @Output()
   openSettings = new EventEmitter<string>();
 
-  ngOnInit() {}
+  constructor(private router: Router) {}
 
-  pressedSideBar() {
-    this.pressSideBar.emit();
-  }
-  selectedOpenWelcome() {
-    this.openWelcome.emit();
-  }
-  selectedNew() {
-    this.new.emit();
-  }
-  pressedSave() {
-    this.pressSave.emit();
+  ngOnInit() {
   }
 
   /* Edit Menu Control */
@@ -100,14 +62,6 @@ export class MenubarComponent implements OnInit {
   pressedPaste() {
     // Paste action specific to current menu selected
     console.log('Paste');
-  }
-  pressedNewEntity() {
-    // Action to add new entity to entity screen
-    this.pressNewEntity.emit();
-  }
-  pressedNewComponent() {
-    // Action to add new entity to entity screen
-    this.newComponent.emit();
   }
 
   /* Help Menu Control */
