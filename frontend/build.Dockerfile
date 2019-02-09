@@ -1,4 +1,5 @@
 FROM node:lts
+ENV NODE_ENV development
 
 COPY . /real-designer
 
