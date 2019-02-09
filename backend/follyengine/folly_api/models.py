@@ -1,14 +1,31 @@
+import datetime
+
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.text import slugify
+from django.utils import timezone
 from rest_framework.authtoken.models import Token
 from django.contrib.postgres.fields import JSONField
 from ulid2 import generate_ulid_as_uuid
 
 
 # Create your models here.
+class Invitation(models.Model):
+    accepted = models.BooleanField(default=False)
+    key = models.CharField(max_length=64, unique=True)
+    sent = models.DateTimeField(null=True)
+    email = models.EmailField(unique=True, max_length=254)
+    created = models.DateTimeField(default=timezone.now)
+    inviter = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.CASCADE)
+
+    def key_expired(self):
+        expiration_date = self.sent + datetime.timedelta(days=3)
+        return expiration_date <= timezone.now()
+
+
 class Project(models.Model):
     id = models.UUIDField(default=generate_ulid_as_uuid, primary_key=True)
     title = models.CharField(max_length=64)
