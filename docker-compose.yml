@@ -37,6 +37,8 @@ services:
     deploy:
       replicas: 1
       labels:
+        - "traefik.enable=true"
+        - "traefik.port=80"
         - "traefik.frontend.rule=Host:$FRONTEND_HOST"
         - "traefik.docker.network=${FRONTEND_NET:-traefik}"
     networks:
