@@ -1,11 +1,9 @@
 FROM python:3.6
 
-RUN pip install pipenv
-
 WORKDIR /app
-COPY Pipfile* ./
+COPY requirements.txt ./
 
-RUN pipenv install --system --deploy
+RUN pip --no-cache-dir install -r requirements.txt
 
 COPY . ./
 

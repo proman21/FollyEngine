@@ -33,3 +33,18 @@ Now you can bring up the whole stack using
 ```sh
 $ docker-compose up -d
 ```
+
+## Add New Dependencies
+
+Install the dependency into the `Pipfile` using the following command
+
+```sh
+$ pipenv install <new_dep>
+```
+
+Once installed, you will need to regenerate the `requirements.txt` file
+used to install the dependencies into the Docker image.
+
+```sh
+$ pipenv lock -r >| requirements.txt
+```
