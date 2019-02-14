@@ -9,13 +9,13 @@ services:
     deploy:
       replicas: 1
     environment:
-        - ENVIRON=production
+        - ENVIRON=development
         - API_SECRET_FILE=/run/secrets/api_secret
         - DB_USER_FILE=/run/secrets/db_user
         - DB_NAME_FILE=/run/secrets/db_user
         - DB_PASSWORD_FILE=/run/secrets/db_password
         - FE_SU_USERNAME=tim
-        - FE_SU_EMAIL=tim@folly.site
+        - FE_SU_EMAIL=home@folly.site
         - FE_SU_PASSWORD=phony-crusher-len
     secrets:
       - db_user
