@@ -8,6 +8,8 @@ services:
       - db
     deploy:
       replicas: 1
+    volumes:
+      - static:/app/static
     environment:
         - ENVIRON=development
         - API_SECRET_FILE=/run/secrets/api_secret
@@ -43,6 +45,8 @@ services:
     image: registry.gitlab.com/synthsym/follyengine/frontend:develop
     depends_on:
       - api
+    volumes:
+      - static:/var/www/html/static:ro
     deploy:
       replicas: 1
       labels:
@@ -59,6 +63,7 @@ services:
 
 volumes:
   db:
+  static:
 
 networks:
   traefik:

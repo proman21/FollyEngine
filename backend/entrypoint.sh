@@ -10,6 +10,8 @@ python manage.py createadmin $FE_SU_USERNAME $FE_SU_EMAIL $FE_SU_PASSWORD
 # Perform django checks based on environment
 if [[ ${ENVIRON:-production} == "production " ]]; then
     python manage.py check --deploy
+    # Compile static files
+    python manage.py collectstatic
 else
     python manage.py check
 fi

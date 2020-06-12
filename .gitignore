@@ -302,3 +302,6 @@ $RECYCLE.BIN/
 # MyPy
 .mypy_cache/
 *.iml
+
+# Local History
+/.history
